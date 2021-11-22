@@ -107,8 +107,16 @@ def plot_area_units(ax, indices, area_unit_size):
 
 def plot_area_over_alpha(results):
     area = [np.mean(result[ResultTag.AREA]) for result in results]
+    max_area = np.max(area)
+    area = [x/max_area for x in area]
     alpha = [result[ResultTag.PARAM].alpha for result in results]
 
-    plt.scatter(alpha, area)
+    num_repeats = results[0][ResultTag.PARAM].num_repeats
+    num_agents = results[0][ResultTag.PARAM].num_agents
 
+    fig, ax = plt.subplots()
+    ax.scatter(alpha, area)
+    ax.set_title(f"Explored area, mean over {num_repeats*num_agents} agents.")
+    ax.set_xlabel("alpha")
+    ax.set_ylabel("Normalized explored area.")
     plt.show()
