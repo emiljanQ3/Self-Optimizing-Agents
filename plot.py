@@ -103,3 +103,12 @@ def plot_area_units(ax, indices, area_unit_size):
         y = [base_y, base_y, base_y + area_unit_size, base_y + area_unit_size]
 
         ax.fill(x, y, 'green')
+
+
+def plot_area_over_alpha(results):
+    area = [np.mean(result[ResultTag.AREA]) for result in results]
+    alpha = [result[ResultTag.PARAM].alpha for result in results]
+
+    plt.scatter(alpha, area)
+
+    plt.show()

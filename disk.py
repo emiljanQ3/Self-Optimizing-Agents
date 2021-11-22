@@ -22,3 +22,19 @@ def load(load_tag, params):
         results = pickle.load(file)
 
     return results
+
+
+def load_all(params):
+    index = 0
+    results = []
+    while True:
+        file = params.save_id + str(index) + '.pkl'
+        path = params.results_path + file
+        if os.path.exists(path):
+            with open(path, 'rb') as file:
+                results.append(pickle.load(file))
+            index += 1
+        else:
+            break
+
+    return results

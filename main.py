@@ -2,10 +2,11 @@ from world import create_world
 from move import create_mover
 from simulation import simulate
 from record import create_data_recorder
-from disk import save
+from disk import save, load_all
 from plot import display_results
 from config import Params
 import numpy as np
+from plot import plot_area_over_alpha
 
 
 def run_simulation(params):
@@ -26,5 +27,5 @@ def run_param_search(params):
 
 if __name__ == '__main__':
     params = Params()
-    run_param_search(params)
-
+    # run_param_search(params)
+    plot_area_over_alpha(load_all(params))
