@@ -18,7 +18,7 @@ class Params:
         self.selected_mover = MoveTag.LEVY
         self.alpha = 1
         # World
-        self.selected_world = WorldTag.CONCAVE_CELLS
+        self.selected_world = WorldTag.CONVEX_CELLS
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
         self.world_height = 10
