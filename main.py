@@ -27,5 +27,5 @@ def run_param_search(params):
 
 if __name__ == '__main__':
     params = Params()
-    # run_param_search(params)
+    run_param_search(params)
     plot_area_over_alpha(load_all(params))
