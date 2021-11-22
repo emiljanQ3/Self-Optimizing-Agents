@@ -17,6 +17,7 @@ class WorldTag(Enum):
 class ResultTag:
     POSITION = "position"
     PARAM = "param"
+    AREA = "area"
 
 
 class AlphaInitTag:

@@ -12,7 +12,7 @@ class Params:
         self.alpha_tag = AlphaInitTag.LINSPACE
         # Movement
         self.delta_time = 1
-        self.speed = 1
+        self.speed = 0.01
         self.trans_sd = 0
         self.ang_sd = pi/6
         self.selected_mover = MoveTag.LEVY
@@ -25,6 +25,8 @@ class Params:
         self.world_width = 10
         # Record
         self.is_recording_position = True
+        self.is_recording_area = True
+        self.area_unit_size = 0.1
         # Plot
         self.is_plotting_trajectories = True
 
