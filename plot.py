@@ -4,9 +4,16 @@ import numpy as np
 
 
 def display_results(results, params):
+
     if params.is_plotting_trajectories:
         if ResultTag.POSITION in results:
             fig, ax = plt.subplots(1, 1)
+            if params.is_plotting_area_units:
+                if ResultTag.AREA_INDICES in results:
+                    plot_area_units(ax, results[ResultTag.AREA_INDICES][0], results[ResultTag.PARAM].area_unit_size)
+                else:
+                    print("Can't plot area units as there are no area indices saved in results.")
+
             plot_world(ax, results[ResultTag.PARAM], results[ResultTag.POSITION])
             plot_trajectories(ax, results[ResultTag.POSITION])
         else:
@@ -86,3 +93,13 @@ def plot_trajectories(ax, positions_over_time):
     ax.plot(positions_over_time[0, :, :, 0], positions_over_time[0, :, :, 1])
     ax.set_aspect('equal')
     ax.legend()
+
+
+def plot_area_units(ax, indices, area_unit_size):
+    for pair in indices:
+        base_x = pair[0]*area_unit_size
+        base_y = pair[1]*area_unit_size
+        x = [base_x, base_x + area_unit_size, base_x + area_unit_size, base_x]
+        y = [base_y, base_y, base_y + area_unit_size, base_y + area_unit_size]
+
+        ax.fill(x, y, 'green')

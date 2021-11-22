@@ -30,5 +30,6 @@ class Params:
         self.area_unit_size = 0.1
         # Plot
         self.is_plotting_trajectories = True
+        self.is_plotting_area_units = True
 
 
