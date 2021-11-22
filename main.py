@@ -5,6 +5,7 @@ from record import create_data_recorder
 from disk import save
 from plot import display_results
 from config import Params
+import numpy as np
 
 
 def run_simulation(params):
@@ -15,7 +16,15 @@ def run_simulation(params):
     save(results, params)
     display_results(results, params)
 
+
+def run_param_search(params):
+
+    for alpha in np.linspace(1, 2, 11):
+        params.alpha = alpha
+        run_simulation(params)
+
+
 if __name__ == '__main__':
     params = Params()
-    run_simulation(params)
+    run_param_search(params)
 

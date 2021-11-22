@@ -10,6 +10,10 @@ class DataRecorder:
         for c in self.components:
             c.record(agents, new_agents, world, mover, rep, step)
 
+    def new_repeat(self):
+        for c in self.components:
+            c.new_repeat()
+
     def get_results(self):
         results = dict()
         for c in self.components:
@@ -26,6 +30,9 @@ class PositionRecorder:
     def record(self, agents, new_agents, world, mover, rep, step):
         self.positions_over_time[rep, step] = agents[:, :2]
 
+    def new_repeat(self):
+        self.record = lambda self, agents, new_agents, world, mover, rep, step: ()
+
     def get_results(self):
         return self.positions_over_time
 
@@ -35,6 +42,10 @@ class AreaGridRecorder:
         self.tag = ResultTag.AREA
         self.visited_spaces = [set() for i in range(params.num_agents)]
         self.area_unit_size = params.area_unit_size
+        self.saved_area = []
+
+    def new_repeat(self):
+        self.saved_area.append([len(x)*self.area_unit_size**2 for x in self.visited_spaces])
 
     def record(self, agents, new_agents, world, mover, rep, step):
         for i in range(np.shape(agents)[0]):
@@ -43,8 +54,7 @@ class AreaGridRecorder:
             self.visited_spaces[i].add(int_pos)
 
     def get_results(self):
-        area = [len(x)*self.area_unit_size**2 for x in self.visited_spaces]
-        return area
+        return self.saved_area
 
 
 class AreaIndexRecorder:
@@ -59,6 +69,9 @@ class AreaIndexRecorder:
             int_pos = (int(area_unit_pos[0]), int(area_unit_pos[1]))
             self.visited_spaces[i].add(int_pos)
 
+    def new_repeat(self):
+        self.record = lambda self, agents, new_agents, world, mover, rep, step: ()
+
     def get_results(self):
         return self.visited_spaces
 
@@ -67,6 +80,9 @@ class ParamRecorder:
     def __init__(self, params):
         self.tag = ResultTag.PARAM
         self.params = params
+
+    def new_repeat(self):
+        pass
 
     def record(self, agents, new_agents, world, mover, rep, step):
         pass

@@ -11,5 +11,7 @@ def simulate(world, mover, data_recorder, params):
             new_agents_pos = world.step(agents_pos, new_agents_pos, params)
             data_recorder.record(agents_pos, new_agents_pos, world, mover, rep, step)
             agents_pos = new_agents_pos
+            
+        data_recorder.new_repeat()
 
     return data_recorder.get_results()
