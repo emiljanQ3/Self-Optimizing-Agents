@@ -4,14 +4,14 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 10000
+        self.num_steps = 100000
         self.num_repeats = 1
-        self.num_agents = 5
-        self.save_id = "Test"
+        self.num_agents = 100
+        self.save_id = "Run1_Empty_world"
         self.results_path = "results/"
-        self.alpha_tag = AlphaInitTag.LINSPACE
+        self.alpha_tag = AlphaInitTag.SAME
         # Movement
-        self.delta_time = 1
+        self.delta_time = 0.1
         self.speed = 0.01
         self.trans_sd = 0
         self.ang_sd = pi/6
@@ -24,12 +24,12 @@ class Params:
         self.world_height = 10
         self.world_width = 10
         # Record
-        self.is_recording_position = True
+        self.is_recording_position = False
         self.is_recording_area = True
-        self.is_recording_area_indices = True
-        self.area_unit_size = 0.1
+        self.is_recording_area_indices = False
+        self.area_unit_size = 0.01
         # Plot
-        self.is_plotting_trajectories = True
-        self.is_plotting_area_units = True
+        self.is_plotting_trajectories = False
+        self.is_plotting_area_units = False
 
 
