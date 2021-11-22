@@ -47,6 +47,22 @@ class AreaGridRecorder:
         return area
 
 
+class AreaIndexRecorder:
+    def __init__(self, params):
+        self.tag = ResultTag.AREA_INDICES
+        self.visited_spaces = [set() for i in range(params.num_agents)]
+        self.area_unit_size = params.area_unit_size
+
+    def record(self, agents, new_agents, world, mover, rep, step):
+        for i in range(np.shape(agents)[0]):
+            area_unit_pos = np.floor(agents[i, :2] / self.area_unit_size)
+            int_pos = (int(area_unit_pos[0]), int(area_unit_pos[1]))
+            self.visited_spaces[i].add(int_pos)
+
+    def get_results(self):
+        return self.visited_spaces
+
+
 class ParamRecorder:
     def __init__(self, params):
         self.tag = ResultTag.PARAM
@@ -65,5 +81,7 @@ def create_data_recorder(params):
         components.append(PositionRecorder(params))
     if params.is_recording_area:
         components.append(AreaGridRecorder(params))
+    if params.is_recording_area_indices:
+        components.append(AreaIndexRecorder(params))
 
     return DataRecorder(components)

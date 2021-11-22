@@ -26,6 +26,7 @@ class Params:
         # Record
         self.is_recording_position = True
         self.is_recording_area = True
+        self.is_recording_area_indices = True
         self.area_unit_size = 0.1
         # Plot
         self.is_plotting_trajectories = True

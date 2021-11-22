@@ -18,6 +18,7 @@ class ResultTag:
     POSITION = "position"
     PARAM = "param"
     AREA = "area"
+    AREA_INDICES = "area_indices"
 
 
 class AlphaInitTag:
