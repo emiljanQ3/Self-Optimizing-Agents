@@ -7,7 +7,7 @@ class Params:
         self.num_steps = 100000
         self.num_repeats = 10
         self.num_agents = 100
-        self.save_id = "Run3_Convex_world"
+        self.save_id = "Run6_Convex_world"
         self.results_path = "results/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
@@ -19,7 +19,7 @@ class Params:
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONVEX_CELLS
-        self.cell_size = 1
+        self.cell_size = 0.5
         self.obstacle_size = 0.8  # relative to cell
         self.world_height = 10
         self.world_width = 10
