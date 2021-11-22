@@ -7,7 +7,7 @@ class Params:
         self.num_steps = 100000
         self.num_repeats = 10
         self.num_agents = 100
-        self.save_id = "Run2_Concave_world"
+        self.save_id = "Run3_Convex_world"
         self.results_path = "results/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
