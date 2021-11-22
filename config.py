@@ -7,7 +7,7 @@ class Params:
         self.num_steps = 100000
         self.num_repeats = 10
         self.num_agents = 100
-        self.save_id = "Run1_Empty_world"
+        self.save_id = "Run2_Concave_world"
         self.results_path = "results/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
@@ -18,7 +18,7 @@ class Params:
         self.selected_mover = MoveTag.LEVY
         self.alpha = 1
         # World
-        self.selected_world = WorldTag.EMPTY
+        self.selected_world = WorldTag.CONCAVE_CELLS
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
         self.world_height = 10
