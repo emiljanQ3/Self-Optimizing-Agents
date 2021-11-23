@@ -38,10 +38,10 @@ def plot_world_convex_cells(ax, max_x, max_y, min_x, min_y, result_params):
     cell_size = result_params.cell_size
     radius = result_params.obstacle_size * cell_size / 2
 
-    min_x_cell = np.int64(min_x // cell_size)
-    min_y_cell = np.int64(min_y // cell_size)
-    max_x_cell = np.int64(max_x // cell_size)
-    max_y_cell = np.int64(max_y // cell_size)
+    min_x_cell = -3  # np.int64(min_x // cell_size)
+    min_y_cell = -3  # np.int64(min_y // cell_size)
+    max_x_cell = 2  # np.int64(max_x // cell_size)
+    max_y_cell = 2  # np.int64(max_y // cell_size)
 
     for x_cell in range(int(min_x_cell), max_x_cell + 1):
         for y_cell in range(min_y_cell, max_y_cell + 1):
