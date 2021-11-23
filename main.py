@@ -37,7 +37,7 @@ def rerun_saved_run(results):
     rerun_params.is_plotting_trajectories = True
     rerun_params.is_plotting_area_units = True
     rerun_params.save_id += "rerun"
-    run_simulation(params)
+    run_simulation(rerun_params)
 
     plot_area_over_alpha(results)
 
