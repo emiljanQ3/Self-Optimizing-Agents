@@ -20,11 +20,23 @@ def run_simulation(params):
     display_results(results, params)
 
 
-def run_param_search(params):
+def run_param_search(params: Params):
 
-    for alpha in np.linspace(1, 2, 11):
-        params.alpha = alpha
-        run_simulation(params)
+    params_list = []
+    for v in np.logspace(-6, 6, num=13, base=2):
+        for alpha in np.linspace(1, 2, 11):
+            temp_params = copy.deepcopy(params)
+            temp_params.alpha = alpha
+            temp_params.speed *= v
+
+            step_size = temp_params.area_unit_size/2
+            time = temp_params.delta_time * temp_params.num_steps
+
+            temp_params.delta_time = step_size/temp_params.speed
+            temp_params.num_steps = time/temp_params.delta_time
+
+            temp_params.save_id += f"_v{v}_a{alpha}"
+            params_list.append(temp_params)
 
 
 def rerun_saved_run(results):
@@ -46,4 +58,3 @@ def rerun_saved_run(results):
 if __name__ == '__main__':
     params = Params()
     run_param_search(params)
-    plot_area_over_alpha(load_all(params))
