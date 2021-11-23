@@ -39,7 +39,7 @@ class ConvexCells:
     def apply(self, agents, new_agents, params):
         center_cell_pos = np.mod(new_agents[:, :2], params.cell_size) - np.ones([1, 2]) * params.cell_size / 2
         rho, phi = utils.cart2pol(center_cell_pos[:, 0], center_cell_pos[:, 1])
-        rho = np.minimum(rho, self.r)
+        rho = np.maximum(rho, self.r)
         x, y = utils.pol2cart(rho, phi)
         diff = - center_cell_pos
         diff[:, 0] += x
