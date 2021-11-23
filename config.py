@@ -4,11 +4,11 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 100000
+        self.num_steps = 10000
         self.num_repeats = 10
         self.num_agents = 100
-        self.save_id = "Run11_large_Convex_world"
-        self.results_path = "results/"
+        self.save_id = "Run12_2D_param_search"
+        self.results_path = "results/v_alpha_2Dplot/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
@@ -19,7 +19,7 @@ class Params:
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONVEX_CELLS
-        self.cell_size = 2
+        self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
         self.world_height = 10
         self.world_width = 10
