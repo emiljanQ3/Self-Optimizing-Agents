@@ -45,5 +45,5 @@ def rerun_saved_run(results):
 
 if __name__ == '__main__':
     params = Params()
-    params.save_id = "Run8_Convex_world"
-    rerun_saved_run(load_all(params))
+    run_param_search(params)
+    plot_area_over_alpha(load_all(params))
