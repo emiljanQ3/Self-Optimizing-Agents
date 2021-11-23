@@ -7,6 +7,7 @@ from plot import display_results
 from config import Params
 import numpy as np
 from plot import plot_area_over_alpha
+from tags import ResultTag, AlphaInitTag
 
 
 def run_simulation(params):
@@ -25,7 +26,23 @@ def run_param_search(params):
         run_simulation(params)
 
 
+def rerun_saved_run(results):
+    rerun_params = results[0][ResultTag.PARAM]
+    rerun_params.num_agents = 5
+    rerun_params.num_repeats = 1
+    rerun_params.alpha_tag = AlphaInitTag.LINSPACE
+    rerun_params.is_recording_position = True
+    rerun_params.is_recording_area = False
+    rerun_params.is_recording_area_indices = True
+    rerun_params.is_plotting_trajectories = True
+    rerun_params.is_plotting_area_units = True
+    rerun_params.save_id += "rerun"
+    run_simulation(params)
+
+    plot_area_over_alpha(results)
+
+
 if __name__ == '__main__':
     params = Params()
-    run_param_search(params)
-    plot_area_over_alpha(load_all(params))
+    params.save_id = "Run1_Empty_world"
+    rerun_saved_run(load_all(params))
