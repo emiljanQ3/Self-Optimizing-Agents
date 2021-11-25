@@ -26,6 +26,6 @@ def normalize_area_to_best_alpha(results):
     normalized_results = copy.deepcopy(results)
 
     for r in normalized_results:
-        r[ResultTag.AREA] = r[ResultTag.AREA] / max_area_for_speed[r[ResultTag.PARAM]]
+        r[ResultTag.AREA] = r[ResultTag.AREA] / max_area_for_speed[r[ResultTag.PARAM].speed]
 
     return normalized_results
