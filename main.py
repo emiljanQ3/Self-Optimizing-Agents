@@ -9,6 +9,7 @@ import numpy as np
 from plot import plot_area_over_alpha
 from tags import ResultTag, AlphaInitTag
 import copy
+from multiprocessing import Pool
 
 
 def run_simulation(params):
@@ -29,14 +30,18 @@ def run_param_search(params: Params):
             temp_params.alpha = alpha
             temp_params.speed *= v
 
-            step_size = temp_params.area_unit_size/2
-            time = temp_params.delta_time * temp_params.num_steps
+            step_size = temp_params.area_unit_size/10
 
             temp_params.delta_time = step_size/temp_params.speed
-            temp_params.num_steps = time/temp_params.delta_time
 
             temp_params.save_id += f"_v{v}_a{alpha}"
             params_list.append(temp_params)
+
+            #print(f"Step Size:{step_size}, delta_time: {temp_params.delta_time }, alpha: {temp_params.alpha}, speed: {temp_params.speed}"
+            #      f", num_steps: {temp_params.num_steps}, save_id: {temp_params.save_id}")
+
+    pool = Pool()
+    pool.map(run_simulation, params_list)
 
 
 def rerun_saved_run(results):
