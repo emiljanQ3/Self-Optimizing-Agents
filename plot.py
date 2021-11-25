@@ -131,7 +131,9 @@ def plot_alpha_speed_surface(results):
         speeds.add(p.speed)
 
     alphas = list(alphas)
+    alphas.sort()
     speeds = list(speeds)
+    speeds.sort()
     X = -np.ones((len(speeds), len(alphas)))
     Y = -np.ones((len(speeds), len(alphas)))
     Z = -np.ones((len(speeds), len(alphas)))
@@ -153,7 +155,10 @@ def plot_alpha_speed_surface(results):
             Z[i, j] = mean
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-    ax.plot_surface(X, Y, Z)
+    ax.plot_surface(np.log2(X), Y, Z)
+    ax.set_xlabel("speed")
+    ax.set_ylabel("alpha")
+    ax.set_zlabel("area")
     plt.show()
 
 
@@ -161,12 +166,15 @@ def scatter_alpha_speed_surface(results):
     params = [r[ResultTag.PARAM] for r in results]
     areas = [r[ResultTag.AREA] for r in results]
 
-    x = [it.speed for it in params]
+    x = [np.log2(it.speed) for it in params]
     y = [it.alpha for it in params]
     z = [np.mean(it) for it in areas]
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
     ax.scatter(x, y, z)
+    ax.set_xlabel("speed")
+    ax.set_ylabel("alpha")
+    ax.set_zlabel("area")
     plt.show()
 
 
