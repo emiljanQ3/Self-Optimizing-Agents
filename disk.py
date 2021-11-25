@@ -1,5 +1,6 @@
 import pickle
 import os
+from config import Params
 
 
 
@@ -24,7 +25,7 @@ def load(load_tag, params):
     return results
 
 
-def load_all(params):
+def load_all_numbered(params):
     index = 0
     results = []
     while True:
@@ -36,5 +37,15 @@ def load_all(params):
             index += 1
         else:
             break
+
+    return results
+
+
+def load_all(params: Params):
+    results = []
+    for file_name in os.listdir(params.results_path):
+        if file_name.startswith(params.save_id):
+            with open(params.results_path + file_name, 'rb') as file:
+                results.append(pickle.load(file))
 
     return results
