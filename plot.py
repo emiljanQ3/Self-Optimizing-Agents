@@ -120,3 +120,39 @@ def plot_area_over_alpha(results):
     ax.set_xlabel("alpha")
     ax.set_ylabel("Normalized explored area.")
     plt.show()
+
+
+def plot_alpha_speed_surface(results):
+    params = [r[ResultTag.PARAM] for r in results]
+    alphas = set()
+    speeds = set()
+    for p in params:
+        alphas.add(p.alpha)
+        speeds.add(p.speed)
+
+    alphas = list(alphas)
+    speeds = list(speeds)
+    X = -np.ones((len(speeds), len(alphas)))
+    Y = -np.ones((len(speeds), len(alphas)))
+    Z = -np.ones((len(speeds), len(alphas)))
+    for i in range(len(speeds)):
+        for j in range(len(alphas)):
+            X[i, j] = speeds[i]
+            Y[i, j] = alphas[j]
+            matching_results = filter(lambda it: it[ResultTag.PARAM].alpha == alphas[j]
+                                                 and it[ResultTag.PARAM].speed == speeds[i], results)
+
+            count = 0
+            sum = 0
+            for r in matching_results:
+                areas = r[ResultTag.AREA]
+                sum += np.sum(areas)
+                count += np.size(areas)
+
+            mean = sum/count
+            Z[i, j] = mean
+
+    fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+    ax.plot_surface(X, Y, Z)
+    plt.show()
+
