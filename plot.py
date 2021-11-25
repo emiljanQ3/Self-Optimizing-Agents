@@ -156,3 +156,18 @@ def plot_alpha_speed_surface(results):
     ax.plot_surface(X, Y, Z)
     plt.show()
 
+
+def scatter_alpha_speed_surface(results):
+    params = [r[ResultTag.PARAM] for r in results]
+    areas = [r[ResultTag.AREA] for r in results]
+
+    x = [it.speed for it in params]
+    y = [it.alpha for it in params]
+    z = [np.mean(it) for it in areas]
+
+    fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+    ax.scatter(x, y, z)
+    plt.show()
+
+
+
