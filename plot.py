@@ -1,6 +1,7 @@
 from tags import ResultTag, WorldTag
 from matplotlib import pyplot as plt
 import numpy as np
+from matplotlib import cm
 
 
 def display_results(results, params):
@@ -155,11 +156,10 @@ def plot_alpha_speed_surface(results):
             Z[i, j] = mean
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-    ax.plot_surface(np.log2(X), Y, Z)
-    ax.set_xlabel("speed")
+    ax.plot_surface(np.log2(X), Y, Z, cmap=cm.get_cmap('viridis'))
+    ax.set_xlabel("log2(speed)")
     ax.set_ylabel("alpha")
     ax.set_zlabel("area")
-    plt.show()
 
 
 def scatter_alpha_speed_surface(results):
@@ -172,10 +172,9 @@ def scatter_alpha_speed_surface(results):
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
     ax.scatter(x, y, z)
-    ax.set_xlabel("speed")
+    ax.set_xlabel("log2(speed)")
     ax.set_ylabel("alpha")
     ax.set_zlabel("area")
-    plt.show()
 
 
 

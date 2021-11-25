@@ -3,13 +3,15 @@ from move import create_mover
 from simulation import simulate
 from record import create_data_recorder
 from disk import save, load_all
-from plot import display_results
+from plot import display_results, plot_alpha_speed_surface, scatter_alpha_speed_surface
 from config import Params
 import numpy as np
 from plot import plot_area_over_alpha
 from tags import ResultTag, AlphaInitTag
 import copy
 from multiprocessing import Pool
+from utils import normalize_area_to_best_alpha
+from matplotlib import pyplot as plt
 
 
 def run_simulation(params):
@@ -24,7 +26,7 @@ def run_simulation(params):
 def run_param_search(params: Params):
 
     params_list = []
-    for v in np.logspace(-6, 6, num=13, base=2):
+    for v in np.logspace(7, 10, num=4, base=2):
         for alpha in np.linspace(1, 2, 11):
             temp_params = copy.deepcopy(params)
             temp_params.alpha = alpha
@@ -63,3 +65,7 @@ def rerun_saved_run(results):
 if __name__ == '__main__':
     params = Params()
     run_param_search(params)
+    plot_alpha_speed_surface(load_all(params))
+    plot_alpha_speed_surface(normalize_area_to_best_alpha(load_all(params)))
+    scatter_alpha_speed_surface(load_all(params))
+    plt.show()
