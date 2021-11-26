@@ -7,8 +7,8 @@ class Params:
         self.num_steps = 10000
         self.num_repeats = 10
         self.num_agents = 100
-        self.save_id = "Run13_2D_param_search"
-        self.results_path = "results/2D_withDetails/"
+        self.save_id = "Run14_2D_concave"
+        self.results_path = "results/2D_concave/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
@@ -18,7 +18,7 @@ class Params:
         self.selected_mover = MoveTag.LEVY
         self.alpha = 1
         # World
-        self.selected_world = WorldTag.CONVEX_CELLS
+        self.selected_world = WorldTag.CONCAVE_CELLS
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
         self.world_height = 10
