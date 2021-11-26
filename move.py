@@ -104,7 +104,7 @@ def create_mover(params):
         return Mover([LevyRotater(sample_levy_aykut, params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY:
         if params.alpha_tag == AlphaInitTag.SAME:
-            return Mover([ExactLevyMover(params)])
+            return Mover([LevyRotater(sample_levy, params), ForwardMovement()])
         else:
             return Mover([AgentSpecificLevyRotater(params), ForwardMovement()])
 
