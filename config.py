@@ -7,8 +7,8 @@ class Params:
         self.num_steps = 10000
         self.num_repeats = 10
         self.num_agents = 100
-        self.save_id = "Run12_2D_param_search"
-        self.results_path = "results/v_alpha_2Dplot/"
+        self.save_id = "Run13_2D_param_search"
+        self.results_path = "results/2D_withDetails/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
