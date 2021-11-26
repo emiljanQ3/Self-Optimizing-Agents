@@ -152,7 +152,11 @@ def plot_alpha_speed_surface(results):
                 sum += np.sum(areas)
                 count += np.size(areas)
 
-            mean = sum/count
+            if count == 0:
+                mean = np.NAN
+            else:
+                mean = sum/count
+
             Z[i, j] = mean
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
