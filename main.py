@@ -12,7 +12,7 @@ import copy
 from multiprocessing import Pool
 from utils import normalize_area_to_best_alpha
 from matplotlib import pyplot as plt
-from tqdm import tqdm
+from tqdm.contrib.concurrent import process_map
 
 
 def run_simulation(params):
@@ -27,7 +27,7 @@ def run_simulation(params):
 def run_param_search(params: Params):
 
     params_list = []
-    for v in np.logspace(11, 20, num=10, base=2):
+    for v in np.logspace(-6, 6, num=13, base=2):
         for alpha in np.linspace(1, 2, 11):
             temp_params = copy.deepcopy(params)
             temp_params.alpha = alpha
@@ -40,11 +40,7 @@ def run_param_search(params: Params):
             temp_params.save_id += f"_v{v}_a{alpha}"
             params_list.append(temp_params)
 
-            #print(f"Step Size:{step_size}, delta_time: {temp_params.delta_time }, alpha: {temp_params.alpha}, speed: {temp_params.speed}"
-            #      f", num_steps: {temp_params.num_steps}, save_id: {temp_params.save_id}")
-
-    pool = Pool()
-    tqdm(pool.imap(run_simulation, params_list))
+    process_map(run_simulation, params_list)
 
 
 def rerun_saved_run(results):
