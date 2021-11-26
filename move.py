@@ -73,6 +73,28 @@ class AgentSpecificLevyRotater:
         return agents, agents_data
 
 
+class ExactLevyMover:
+    def __init__(self, params):
+        self.levy_timer = sample_levy(params.num_agents, params)
+
+    def apply(self, agents, agents_data, params):
+        remaining_delta_time = params.delta_time * np.ones(params.num_agents)
+        delta_pos = np.zeros(params.num_agents, 3)
+        is_turning = self.levy_timer < remaining_delta_time
+        while any(is_turning):
+            remaining_delta_time[is_turning] -= self.levy_timer[is_turning]
+            delta_pos[:, 0] += np.cos(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[is_turning]
+            delta_pos[:, 1] += np.sin(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[is_turning]
+            self.levy_timer[is_turning] = sample_levy(is_turning.sum(), params)
+            delta_pos[:, 2][is_turning] += np.random.standard_normal(is_turning.sum()) * params.ang_sd
+            is_turning = self.levy_timer < remaining_delta_time
+
+        delta_pos[:, 0] += np.cos(delta_pos[:, 2]) * params.speed * remaining_delta_time
+        delta_pos[:, 1] += np.sin(delta_pos[:, 2]) * params.speed * remaining_delta_time
+
+        return agents + delta_pos
+
+
 def create_mover(params):
     if params.selected_mover == MoveTag.BROWNIAN:
         return Mover([BrownianTranslation()])
@@ -82,7 +104,7 @@ def create_mover(params):
         return Mover([LevyRotater(sample_levy_aykut, params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY:
         if params.alpha_tag == AlphaInitTag.SAME:
-            return Mover([LevyRotater(sample_levy, params), ForwardMovement()])
+            return Mover([ExactLevyMover(params)])
         else:
             return Mover([AgentSpecificLevyRotater(params), ForwardMovement()])
 
