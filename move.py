@@ -79,12 +79,12 @@ class ExactLevyMover:
 
     def apply(self, agents, agents_data, params):
         remaining_delta_time = params.delta_time * np.ones(params.num_agents)
-        delta_pos = np.zeros(params.num_agents, 3)
+        delta_pos = np.zeros((params.num_agents, 3))
         is_turning = self.levy_timer < remaining_delta_time
         while any(is_turning):
             remaining_delta_time[is_turning] -= self.levy_timer[is_turning]
-            delta_pos[:, 0] += np.cos(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[is_turning]
-            delta_pos[:, 1] += np.sin(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[is_turning]
+            delta_pos[:, 0][is_turning] += np.cos(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[is_turning]
+            delta_pos[:, 1][is_turning] += np.sin(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[is_turning]
             self.levy_timer[is_turning] = sample_levy(is_turning.sum(), params)
             delta_pos[:, 2][is_turning] += np.random.standard_normal(is_turning.sum()) * params.ang_sd
             is_turning = self.levy_timer < remaining_delta_time
@@ -92,7 +92,7 @@ class ExactLevyMover:
         delta_pos[:, 0] += np.cos(delta_pos[:, 2]) * params.speed * remaining_delta_time
         delta_pos[:, 1] += np.sin(delta_pos[:, 2]) * params.speed * remaining_delta_time
 
-        return agents + delta_pos
+        return agents + delta_pos, agents_data
 
 
 def create_mover(params):
