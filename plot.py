@@ -153,7 +153,7 @@ def plot_alpha_speed_surface(results):
                 count += np.size(areas)
 
             if count == 0:
-                mean = np.NAN
+                mean = -1
             else:
                 mean = sum/count
 
