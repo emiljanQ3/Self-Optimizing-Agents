@@ -4,7 +4,11 @@ from data import AgentsData
 
 
 def init_agents_pos(params):
-    return np.random.random_sample([params.num_agents, 3])
+    random = np.random.random_sample([params.num_agents, 3])
+    random[:, 0] *= params.world_width
+    random[:, 1] *= params.world_height
+    random[:, 2] *= 2*np.pi
+    return random
 
 
 def init_agents_data(params):
