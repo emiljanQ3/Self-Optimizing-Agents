@@ -19,6 +19,20 @@ def scipy_example():
     ax.set_xscale('log')
 
 
+def test_periodic_function():
+    x = np.linspace(-30, 30, 1000)
+    world_width = 26
+    y = (np.floor(
+        abs(
+            np.mod(
+                x, world_width
+            ) - (world_width / 2)
+        )
+    ) - (world_width / 2 - 1) / 2)
+    plt.plot(x, y)
+    plt.show()
+
+
 def dist_test(title, sample_dist):
     fig, ax = plt.subplots()
     params = Params()
@@ -41,9 +55,9 @@ def dist_test(title, sample_dist):
     ax.set_ylabel("Relative frequency")
 
 if __name__ == '__main__':
-    dist_test("Aykut book distribution", sample_levy_aykut)
-    dist_test("Abs Symmetric Stable levy distribution", sample_levy)
-    dist_test("Shifted Stable levy distribution", lambda x, params: levy_stable.rvs(alpha=params.alpha, beta=1, size=x))
-    scipy_example()
-
+    # dist_test("Aykut book distribution", sample_levy_aykut)
+    # dist_test("Abs Symmetric Stable levy distribution", sample_levy)
+    # dist_test("Shifted Stable levy distribution", lambda x, params: levy_stable.rvs(alpha=params.alpha, beta=1, size=x))
+    # scipy_example()
+    test_periodic_function()
     plt.show()

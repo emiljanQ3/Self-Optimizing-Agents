@@ -59,6 +59,28 @@ class LevyRotater:
         return agents, agents_data
 
 
+class LevyRotaterVaryingDelta:
+    def __init__(self, levy_dist_sampler, params):
+        self.levy_timer = levy_dist_sampler(params.num_agents, params)
+        self.dist_sampler = levy_dist_sampler
+
+    def apply(self, agents, agents_data, params):
+        self.levy_timer -= params.delta_time \
+            * 2 ** (np.floor(
+                abs(
+                    np.mod(
+                        agents[:, 0], params.world_width
+                    ) - (params.world_width/2)
+                )
+            ) - (params.world_width / 2 - 1) / 2)
+
+        is_turning = self.levy_timer <= 0
+        self.levy_timer[is_turning] = self.dist_sampler(is_turning.sum(), params)
+        agents[:, 2][is_turning] += np.random.standard_normal(is_turning.sum()) * params.ang_sd
+
+        return agents, agents_data
+
+
 class AgentSpecificLevyRotater:
     def __init__(self, params):
         self.levy_timer = np.zeros(params.num_agents)
@@ -107,5 +129,7 @@ def create_mover(params):
             return Mover([LevyRotater(sample_levy, params), ForwardMovement()])
         else:
             return Mover([AgentSpecificLevyRotater(params), ForwardMovement()])
+    if params.selected_mover == MoveTag.LEVY_VARYING_DElTA:
+        return Mover([LevyRotaterVaryingDelta(sample_levy, params), ForwardMovement()])
 
     raise Exception("Invalid movetag in parameters.")

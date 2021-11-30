@@ -21,8 +21,8 @@ class Params:
         self.selected_world = WorldTag.CONCAVE_CELLS
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
-        self.world_height = 10
-        self.world_width = 10
+        self.world_height = 1
+        self.world_width = 26
         # Record
         self.is_recording_position = False
         self.is_recording_area = True
