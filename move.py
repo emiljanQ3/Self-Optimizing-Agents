@@ -129,7 +129,7 @@ def create_mover(params):
             return Mover([LevyRotater(sample_levy, params), ForwardMovement()])
         else:
             return Mover([AgentSpecificLevyRotater(params), ForwardMovement()])
-    if params.selected_mover == MoveTag.LEVY_VARYING_DElTA:
+    if params.selected_mover == MoveTag.LEVY_VARYING_DELTA:
         return Mover([LevyRotaterVaryingDelta(sample_levy, params), ForwardMovement()])
 
     raise Exception("Invalid movetag in parameters.")
