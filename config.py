@@ -4,11 +4,11 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 10000
-        self.num_repeats = 10
+        self.num_steps = 100000
+        self.num_repeats = 100
         self.num_agents = 100
-        self.save_id = "Run15_varying_deltas"
-        self.results_path = "results/varying/"
+        self.save_id = "Run16_varying_deltas"
+        self.results_path = "results/varying_2/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
