@@ -5,6 +5,7 @@ class MoveTag(Enum):
     ACTIVE_ROTDIFF = "active_rotdiff"
     AYKUT_LEVY = "aykut_levy"
     LEVY = "levy"
+    LEVY_VARYING_DELTA = "levy_varying_delta"
 
 
 class WorldTag(Enum):
