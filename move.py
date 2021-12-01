@@ -100,7 +100,7 @@ class AlwaysOptimalLevyRotater:
         turning_idx = np.argwhere(self.levy_timer <= 0)
         for i in turning_idx:
             self.levy_timer[i] = levy_stable.rvs(
-                alpha=self.optimal_alphas[cell_exponent(agents[i, 0], params.world_width)], beta=0)
+                alpha=self.optimal_alphas[cell_exponent(agents[i, 0].item(), params.world_width)], beta=0)
             agents[i, 2] += np.random.standard_normal() * params.ang_sd
 
         return agents, agents_data
