@@ -27,19 +27,18 @@ def run_simulation(params):
 def run_param_search(params: Params):
 
     params_list = []
-    #for v in np.logspace(-6, 6, num=13, base=2):
-    v = 1
-    for alpha in np.linspace(1, 2, 11):
-        temp_params = copy.deepcopy(params)
-        temp_params.alpha = alpha
-        temp_params.speed *= v
+    for v in np.logspace(-6, 6, num=25, base=2):
+        for alpha in np.linspace(1, 2, 21):
+            temp_params = copy.deepcopy(params)
+            temp_params.alpha = alpha
+            temp_params.speed *= v
 
-        step_size = temp_params.area_unit_size/10
+            step_size = temp_params.area_unit_size/10
 
-        temp_params.delta_time = step_size/temp_params.speed
+            temp_params.delta_time = step_size/temp_params.speed
 
-        temp_params.save_id += f"_v{v}_a{alpha}"
-        params_list.append(temp_params)
+            temp_params.save_id += f"_v{v}_a{alpha}"
+            params_list.append(temp_params)
 
     process_map(run_simulation, params_list)
 
@@ -62,9 +61,9 @@ def rerun_saved_run(results):
 
 if __name__ == '__main__':
     params = Params()
-    #run_param_search(params)
+    run_param_search(params)
     #plot_alpha_speed_surface(load_all(params))
     #plot_alpha_speed_surface(normalize_area_to_best_alpha(load_all(params)))
     #scatter_alpha_speed_surface(load_all(params))
-    run_simulation(params)
+    #run_simulation(params)
     #plt.show()

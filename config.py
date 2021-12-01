@@ -7,15 +7,15 @@ class Params:
         self.num_steps = 100000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "Run17_optimal_alphas"
-        self.results_path = "results/optimal/"
+        self.save_id = "Run18_finer_concave"
+        self.results_path = "results/finer_2D_concave/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01
         self.trans_sd = 0
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA
+        self.selected_mover = MoveTag.LEVY
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONCAVE_CELLS
