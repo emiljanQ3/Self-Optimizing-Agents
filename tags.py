@@ -6,6 +6,7 @@ class MoveTag(Enum):
     AYKUT_LEVY = "aykut_levy"
     LEVY = "levy"
     LEVY_VARYING_DELTA = "levy_varying_delta"
+    LEVY_OPTIMAL_ALPHA = "levy_optimal_alpha"
 
 
 class WorldTag(Enum):

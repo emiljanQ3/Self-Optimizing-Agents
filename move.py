@@ -2,6 +2,7 @@ import numpy as np
 from scipy.stats import levy_stable
 from tags import MoveTag, AlphaInitTag
 
+
 class Mover:
     def __init__(self, components):
         self.components = components
@@ -38,7 +39,7 @@ class ForwardMovement:
 
 
 def sample_levy_aykut(size, params):
-    return np.power(np.random.random_sample(size),-1*(3-params.alpha))
+    return np.power(np.random.random_sample(size), -1 * (3 - params.alpha))
 
 
 def sample_levy(size, params):
@@ -59,24 +60,48 @@ class LevyRotater:
         return agents, agents_data
 
 
+def delta_variation(x, width):
+    return 2 ** cell_exponent(x, width)
+
+
+def cell_exponent(x, width):
+    return (np.floor(
+                abs(
+                    np.mod(
+                        x, width
+                    ) - (width / 2)
+                )
+            ) - (width / 2 - 1) / 2)
+
+
 class LevyRotaterVaryingDelta:
     def __init__(self, levy_dist_sampler, params):
         self.levy_timer = levy_dist_sampler(params.num_agents, params)
         self.dist_sampler = levy_dist_sampler
 
     def apply(self, agents, agents_data, params):
-        self.levy_timer -= params.delta_time \
-            * 2 ** (np.floor(
-                abs(
-                    np.mod(
-                        agents[:, 0], params.world_width
-                    ) - (params.world_width/2)
-                )
-            ) - (params.world_width / 2 - 1) / 2)
+        self.levy_timer -= params.delta_time * delta_variation(x=agents[:, 0], width=params.world_width)
 
         is_turning = self.levy_timer <= 0
         self.levy_timer[is_turning] = self.dist_sampler(is_turning.sum(), params)
         agents[:, 2][is_turning] += np.random.standard_normal(is_turning.sum()) * params.ang_sd
+
+        return agents, agents_data
+
+
+class AlwaysOptimalLevyRotater:
+    def __init__(self, params):
+        self.levy_timer = np.zeros(params.num_agents)
+        self.optimal_alphas = {-6: 1.0, -5: 1.0, -4: 1.0, -3: 1.0, -2: 1.1, -1: 1.2, 0: 1.2,
+                               1: 1.5, 2: 2.0, 3: 1.9, 4: 2.0, 5: 2.0, 6: 2.0}
+
+    def apply(self, agents, agents_data, params):
+        self.levy_timer -= params.delta_time * delta_variation(x=agents[:, 0], width=params.world_width)
+        turning_idx = np.argwhere(self.levy_timer <= 0)
+        for i in turning_idx:
+            self.levy_timer[i] = levy_stable.rvs(
+                alpha=self.optimal_alphas[cell_exponent(agents[i, 0]), params.world_width], beta=0)
+            agents[i, 2] += np.random.standard_normal() * params.ang_sd
 
         return agents, agents_data
 
@@ -105,8 +130,10 @@ class ExactLevyMover:
         is_turning = self.levy_timer < remaining_delta_time
         while any(is_turning):
             remaining_delta_time[is_turning] -= self.levy_timer[is_turning]
-            delta_pos[:, 0][is_turning] += np.cos(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[is_turning]
-            delta_pos[:, 1][is_turning] += np.sin(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[is_turning]
+            delta_pos[:, 0][is_turning] += np.cos(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[
+                is_turning]
+            delta_pos[:, 1][is_turning] += np.sin(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[
+                is_turning]
             self.levy_timer[is_turning] = sample_levy(is_turning.sum(), params)
             delta_pos[:, 2][is_turning] += np.random.standard_normal(is_turning.sum()) * params.ang_sd
             is_turning = self.levy_timer < remaining_delta_time
@@ -131,5 +158,7 @@ def create_mover(params):
             return Mover([AgentSpecificLevyRotater(params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_VARYING_DELTA:
         return Mover([LevyRotaterVaryingDelta(sample_levy, params), ForwardMovement()])
+    if params.selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA:
+        return Mover([AlwaysOptimalLevyRotater(params), ForwardMovement()])
 
     raise Exception("Invalid movetag in parameters.")
