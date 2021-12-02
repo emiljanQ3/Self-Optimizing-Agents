@@ -1,21 +1,23 @@
-from tags import ResultTag, WorldTag
+from tags import ResultTag, WorldTag, MoveTag
 from matplotlib import pyplot as plt
 import numpy as np
 from matplotlib import cm
+from move import cell_exponent
 
 
 def display_results(results, params):
-
+    result_params = results[ResultTag.PARAM]
     if params.is_plotting_trajectories:
         if ResultTag.POSITION in results:
             fig, ax = plt.subplots(1, 1)
             if params.is_plotting_area_units:
                 if ResultTag.AREA_INDICES in results:
-                    plot_area_units(ax, results[ResultTag.AREA_INDICES][0], results[ResultTag.PARAM].area_unit_size)
+                    plot_area_units(ax, results[ResultTag.AREA_INDICES][0], result_params.area_unit_size)
                 else:
                     print("Can't plot area units as there are no area indices saved in results.")
 
-            plot_world(ax, results[ResultTag.PARAM], results[ResultTag.POSITION])
+            plot_world(ax, result_params, results[ResultTag.POSITION])
+
             plot_trajectories(ax, results[ResultTag.POSITION])
         else:
             print("Can't plot position over time as there is no position data saved in results.")
@@ -33,6 +35,10 @@ def plot_world(ax, result_params, result_positions):
         plot_world_convex_cells(ax, max_x, max_y, min_x, min_y, result_params)
     elif result_params.selected_world == WorldTag.CONCAVE_CELLS:
         plot_world_concave_cells(ax, max_x, max_y, min_x, min_y, result_params)
+
+    if result_params.selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA \
+            or result_params.selected_mover == MoveTag.LEVY_VARYING_DELTA:
+        plot_varying_delta(ax, result_params, min_x, max_x)
 
 
 def plot_world_convex_cells(ax, max_x, max_y, min_x, min_y, result_params):
@@ -72,9 +78,9 @@ def plot_world_concave_cells(ax, max_x, max_y, min_x, min_y, result_params):
             x_corners = [0.5, -0.5, -0.5, 0.5]
             y_corners = [0.5, 0.5, -0.5, -0.5]
             for i in range(4):
-                unit_poly_x = np.cos(np.linspace(i*np.pi/2, (i+1)*np.pi/2, 200)) * h
+                unit_poly_x = np.cos(np.linspace(i * np.pi / 2, (i + 1) * np.pi / 2, 200)) * h
                 bad_x = np.nonzero(abs(unit_poly_x) > 0.5)
-                unit_poly_y = np.sin(np.linspace(i*np.pi/2, (i+1)*np.pi/2, 200)) * h
+                unit_poly_y = np.sin(np.linspace(i * np.pi / 2, (i + 1) * np.pi / 2, 200)) * h
                 bad_y = np.nonzero(abs(unit_poly_y) > 0.5)
                 bad = np.append(bad_x, bad_y)
 
@@ -90,6 +96,13 @@ def plot_world_concave_cells(ax, max_x, max_y, min_x, min_y, result_params):
                 ax.fill(poly_x, poly_y, 'gray')
 
 
+def plot_varying_delta(ax, result_params, min_x, max_x):
+    x = np.linspace(min_x, max_x, (max_x-min_x)*100)
+    y = cell_exponent(x, result_params.world_width)
+
+    ax.plot(x, y)
+
+
 def plot_trajectories(ax, positions_over_time):
     ax.plot(positions_over_time[0, :, :, 0], positions_over_time[0, :, :, 1])
     ax.set_aspect('equal')
@@ -98,8 +111,8 @@ def plot_trajectories(ax, positions_over_time):
 
 def plot_area_units(ax, indices, area_unit_size):
     for pair in indices:
-        base_x = pair[0]*area_unit_size
-        base_y = pair[1]*area_unit_size
+        base_x = pair[0] * area_unit_size
+        base_y = pair[1] * area_unit_size
         x = [base_x, base_x + area_unit_size, base_x + area_unit_size, base_x]
         y = [base_y, base_y, base_y + area_unit_size, base_y + area_unit_size]
 
@@ -109,7 +122,7 @@ def plot_area_units(ax, indices, area_unit_size):
 def plot_area_over_alpha(results):
     area = [np.mean(result[ResultTag.AREA]) for result in results]
     max_area = np.max(area)
-    area = [x/max_area for x in area]
+    area = [x / max_area for x in area]
     alpha = [result[ResultTag.PARAM].alpha for result in results]
 
     num_repeats = results[0][ResultTag.PARAM].num_repeats
@@ -117,7 +130,7 @@ def plot_area_over_alpha(results):
 
     fig, ax = plt.subplots()
     ax.scatter(alpha, area)
-    ax.set_title(f"Explored area, mean over {num_repeats*num_agents} agents.")
+    ax.set_title(f"Explored area, mean over {num_repeats * num_agents} agents.")
     ax.set_xlabel("alpha")
     ax.set_ylabel("Normalized explored area.")
     plt.show()
@@ -155,7 +168,7 @@ def plot_alpha_speed_surface(results):
             if count == 0:
                 mean = -1
             else:
-                mean = sum/count
+                mean = sum / count
 
             Z[i, j] = mean
 
@@ -179,6 +192,3 @@ def scatter_alpha_speed_surface(results):
     ax.set_xlabel("log2(speed)")
     ax.set_ylabel("alpha")
     ax.set_zlabel("area")
-
-
-
