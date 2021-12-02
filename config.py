@@ -7,8 +7,8 @@ class Params:
         self.num_steps = 100000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "Run18_finer_concave"
-        self.results_path = "results/finer_2D_concave/"
+        self.save_id = "Run19_optimal_fixed"
+        self.results_path = "results/optimal/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
