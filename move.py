@@ -92,8 +92,8 @@ class LevyRotaterVaryingDelta:
 class AlwaysOptimalLevyRotater:
     def __init__(self, params):
         self.levy_timer = np.zeros(params.num_agents)
-        self.optimal_alphas = {-6: 1.0, -5: 1.0, -4: 1.0, -3: 1.0, -2: 1.1, -1: 1.2, 0: 1.2,
-                               1: 1.5, 2: 2.0, 3: 1.9, 4: 2.0, 5: 2.0, 6: 2.0}
+        self.optimal_alphas = {6: 1.0, 5: 1.0, 4: 1.0, 3: 1.0, 2: 1.1, 1: 1.2, 0: 1.2,
+                               -1: 1.5, -2: 2.0, -3: 1.9, -4: 2.0, -5: 2.0, -6: 2.0}
 
     def apply(self, agents, agents_data, params):
         self.levy_timer -= params.delta_time * delta_variation(x=agents[:, 0], width=params.world_width)
