@@ -1,3 +1,5 @@
+import math
+
 from tags import ResultTag, WorldTag, MoveTag
 from matplotlib import pyplot as plt
 import numpy as np
@@ -97,7 +99,7 @@ def plot_world_concave_cells(ax, max_x, max_y, min_x, min_y, result_params):
 
 
 def plot_varying_delta(ax, result_params, min_x, max_x):
-    x = np.linspace(min_x, max_x, (max_x-min_x)*100)
+    x = np.linspace(min_x, max_x, math.ceil(max_x-min_x)*100)
     y = cell_exponent(x, result_params.world_width)
 
     ax.plot(x, y)
