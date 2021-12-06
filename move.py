@@ -200,5 +200,9 @@ def create_mover(params):
         return Mover([LevyRotaterVaryingDelta(sample_levy, params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA:
         return Mover([AlwaysOptimalLevyRotater(params), ForwardMovement()])
+    if params.selected_mover == MoveTag.LEVY_VARYING_DELTA_CONTRAST:
+        return Mover([BigContrastLevyRotaterVaryingDelta(sample_levy, params), ForwardMovement()])
+    if params.selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST:
+        return Mover([BigContrastOptimalLevyRotater(params), ForwardMovement()])
 
     raise Exception("Invalid movetag in parameters.")

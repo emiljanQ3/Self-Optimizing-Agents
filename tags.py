@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class MoveTag(Enum):
     BROWNIAN = "brownian"
     ACTIVE_ROTDIFF = "active_rotdiff"
@@ -7,6 +8,8 @@ class MoveTag(Enum):
     LEVY = "levy"
     LEVY_VARYING_DELTA = "levy_varying_delta"
     LEVY_OPTIMAL_ALPHA = "levy_optimal_alpha"
+    LEVY_VARYING_DELTA_CONTRAST = "levy_varying_delta_contrast"
+    LEVY_OPTIMAL_ALPHA_CONTRAST = "levy_optimal_alpha_contrast"
 
 
 class WorldTag(Enum):
