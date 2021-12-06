@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 from scipy.stats import levy_stable
 from tags import MoveTag, AlphaInitTag
@@ -64,6 +66,13 @@ def delta_variation(x, width):
     return 2 ** cell_exponent(x, width)
 
 
+def big_contrast_delta_variation(x):
+    cells = np.mod(np.floor(x), 2)
+    cells[cells == 0] = 3
+    cells[cells == 1] = -4
+    return 2 ** cells
+
+
 def cell_exponent(x, width):
     return (np.floor(
                 abs(
@@ -101,6 +110,37 @@ class AlwaysOptimalLevyRotater:
         for i in turning_idx:
             self.levy_timer[i] = levy_stable.rvs(
                 alpha=self.optimal_alphas[cell_exponent(agents[i, 0].item(), params.world_width)], beta=0)
+            agents[i, 2] += np.random.standard_normal() * params.ang_sd
+
+        return agents, agents_data
+
+
+class BigContrastLevyRotaterVaryingDelta:
+    def __init__(self, levy_dist_sampler, params):
+        self.levy_timer = levy_dist_sampler(params.num_agents, params)
+        self.dist_sampler = levy_dist_sampler
+
+    def apply(self, agents, agents_data, params):
+        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
+
+        is_turning = self.levy_timer <= 0
+        self.levy_timer[is_turning] = self.dist_sampler(is_turning.sum(), params)
+        agents[:, 2][is_turning] += np.random.standard_normal(is_turning.sum()) * params.ang_sd
+
+        return agents, agents_data
+
+
+class BigContrastOptimalLevyRotater:
+    def __init__(self, params):
+        self.levy_timer = np.zeros(params.num_agents)
+        self.optimal_alphas = {3: 1.0, -4: 2.0}
+
+    def apply(self, agents, agents_data, params):
+        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
+        turning_idx = np.argwhere(self.levy_timer <= 0)
+        for i in turning_idx:
+            self.levy_timer[i] = levy_stable.rvs(
+                alpha=math.floor(agents[i, 0].item()) % 2 + 1, beta=0)
             agents[i, 2] += np.random.standard_normal() * params.ang_sd
 
         return agents, agents_data
