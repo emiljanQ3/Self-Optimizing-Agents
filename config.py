@@ -15,7 +15,7 @@ class Params:
         self.speed = 0.01
         self.trans_sd = 0
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
+        self.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONCAVE_CELLS
