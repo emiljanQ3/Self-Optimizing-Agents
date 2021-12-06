@@ -108,8 +108,8 @@ class AlwaysOptimalLevyRotater:
         self.levy_timer -= params.delta_time * delta_variation(x=agents[:, 0], width=params.world_width)
         turning_idx = np.argwhere(self.levy_timer <= 0)
         for i in turning_idx:
-            self.levy_timer[i] = levy_stable.rvs(
-                alpha=self.optimal_alphas[cell_exponent(agents[i, 0].item(), params.world_width)], beta=0)
+            self.levy_timer[i] = np.abs(levy_stable.rvs(
+                alpha=self.optimal_alphas[cell_exponent(agents[i, 0].item(), params.world_width)], beta=0))
             agents[i, 2] += np.random.standard_normal() * params.ang_sd
 
         return agents, agents_data
@@ -139,8 +139,8 @@ class BigContrastOptimalLevyRotater:
         self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
         turning_idx = np.argwhere(self.levy_timer <= 0)
         for i in turning_idx:
-            self.levy_timer[i] = levy_stable.rvs(
-                alpha=math.floor(agents[i, 0].item()) % 2 + 1, beta=0)
+            self.levy_timer[i] = np.abs(levy_stable.rvs(
+                alpha=math.floor(agents[i, 0].item()) % 2 + 1, beta=0))
             agents[i, 2] += np.random.standard_normal() * params.ang_sd
 
         return agents, agents_data
@@ -154,7 +154,7 @@ class AgentSpecificLevyRotater:
         self.levy_timer -= params.delta_time
         turning_idx = np.argwhere(self.levy_timer <= 0)
         for i in turning_idx:
-            self.levy_timer[i] = levy_stable.rvs(alpha=agents_data.alphas[i], beta=0)
+            self.levy_timer[i] = np.abs(levy_stable.rvs(alpha=agents_data.alphas[i], beta=0))
             agents[i, 2] += np.random.standard_normal() * params.ang_sd
 
         return agents, agents_data
