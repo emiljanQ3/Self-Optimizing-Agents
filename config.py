@@ -7,15 +7,15 @@ class Params:
         self.num_steps = 100000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "Run19_optimal_fixed"
-        self.results_path = "results/optimal/"
+        self.save_id = "run20_set_alphas"
+        self.results_path = "results/contrast_v1/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01
         self.trans_sd = 0
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.LEVY
+        self.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONCAVE_CELLS
