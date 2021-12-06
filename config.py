@@ -7,7 +7,7 @@ class Params:
         self.num_steps = 100000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "run20_set_alphas"
+        self.save_id = "run21_opti_alpha"
         self.results_path = "results/contrast_v1/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
