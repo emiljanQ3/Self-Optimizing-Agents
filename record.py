@@ -31,7 +31,7 @@ class PositionRecorder:
         self.positions_over_time[rep, step] = agents[:, :2]
 
     def new_repeat(self):
-        self.record = lambda self, agents, new_agents, world, mover, rep, step: ()
+        self.record = lambda *args: ()
 
     def get_results(self):
         return self.positions_over_time
@@ -70,7 +70,7 @@ class AreaIndexRecorder:
             self.visited_spaces[i].add(int_pos)
 
     def new_repeat(self):
-        self.record = lambda self, agents, new_agents, world, mover, rep, step: ()
+        self.record = lambda *args: ()
 
     def get_results(self):
         return self.visited_spaces
