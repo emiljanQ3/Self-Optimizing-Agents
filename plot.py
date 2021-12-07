@@ -138,6 +138,29 @@ def plot_area_over_alpha(results):
     plt.show()
 
 
+def plot_many_area_over_time(result_list):
+    params = result_list[0][ResultTag.PARAM]
+    fig, ax = plt.subplots()
+    for result in result_list:
+        plot_area_over_time(ax, result, max_area=1, label=str(result[ResultTag.PARAM].alpha))
+    ax.set_title(f"Explored area, mean over {params.num_repeats * params.num_agents} agents.")
+    ax.set_xlabel("steps")
+    ax.set_ylabel("Normalized explored area.")
+    ax.legend()
+    plt.show()
+
+
+def plot_area_over_time(ax, results, max_area, label):
+    steps = range(results[ResultTag.PARAM].num_steps)
+    area_times = results[ResultTag.AREA_TIME]
+    y = np.zeros(len(steps))
+    for at in area_times:
+        for step in at:
+            y[step:] += 1
+    y = y / max_area / len(area_times)
+    ax.plot(steps, y, label=label)
+
+
 def plot_alpha_speed_surface(results):
     params = [r[ResultTag.PARAM] for r in results]
     alphas = set()
