@@ -66,7 +66,7 @@ class AreaOverTimeRecorder:
         self.saved_area = []
 
     def new_repeat(self):
-        self.saved_area.append(self.visited_spaces)
+        self.saved_area.extend(self.visited_spaces)
         self.visited_spaces = [dict() for i in self.visited_spaces]
 
     def record(self, agents, new_agents, world, mover, rep, step):
