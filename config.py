@@ -7,8 +7,8 @@ class Params:
         self.num_steps = 100000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "run21_opti_alpha"
-        self.results_path = "results/contrast_v1/"
+        self.save_id = "run22_single_circle"
+        self.results_path = "results/single_circle_v1/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
@@ -25,7 +25,7 @@ class Params:
         self.world_width = 26
         # Record
         self.is_recording_position = False
-        self.is_recording_area = True
+        self.is_recording_area = False
         self.is_recording_area_indices = False
         self.is_recording_area_over_time = True
         self.area_unit_size = 0.05

@@ -64,8 +64,9 @@ def rerun_saved_run(results):
 if __name__ == '__main__':
     params = Params()
     run_param_search(params)
-    plot_alpha_speed_surface(load_all(params))
-    plot_alpha_speed_surface(normalize_area_to_best_alpha(load_all(params)))
-    scatter_alpha_speed_surface(load_all(params))
+    plot_area_over_alpha(load_all(params))
+    #plot_alpha_speed_surface(load_all(params))
+    #plot_alpha_speed_surface(normalize_area_to_best_alpha(load_all(params)))
+    #scatter_alpha_speed_surface(load_all(params))
     #run_simulation(params)
-    plt.show()
+    #plt.show()
