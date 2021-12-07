@@ -12,8 +12,11 @@ def create_world(params):
         return World([ConvexCells(params)])
     if params.selected_world == WorldTag.CONCAVE_CELLS:
         return World([ConcaveCells(params)])
+    if params.selected_world == WorldTag.CIRCLE:
+        return World([SingleCircle(params)])
 
     raise Exception("Invalid worldtag in parameters.")
+
 
 class World:
     def __init__(self, components):
@@ -32,6 +35,7 @@ class RepeatingBoundaryConditions:
         new_agents[:, 1] = np.mod(new_agents[:, 1], params.world_height)
         return agents, np.mod(new_agents)
 
+
 class ConvexCells:
     def __init__(self, params):
         self.r = params.obstacle_size*params.cell_size/2
@@ -49,6 +53,7 @@ class ConvexCells:
 
         return agents, new_agents
 
+
 class ConcaveCells:
     def __init__(self, params):
         x = params.obstacle_size
@@ -65,6 +70,22 @@ class ConcaveCells:
         diff[:, 1] += y
 
         new_agents[:, :2] += diff
+
+        return agents, new_agents
+
+
+class SingleCircle:
+    def __init__(self, params):
+        self.r = params.cell_size
+
+    def apply(self, agents, new_agents, params):
+        center_cell_pos = new_agents[:, :2]
+        rho, phi = utils.cart2pol(center_cell_pos[:, 0], center_cell_pos[:, 1])
+        rho = np.minimum(rho, self.r)
+        x, y = utils.pol2cart(rho, phi)
+
+        new_agents[:, 0] = x
+        new_agents[:, 1] = y
 
         return agents, new_agents
 
