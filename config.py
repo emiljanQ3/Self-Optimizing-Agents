@@ -15,10 +15,10 @@ class Params:
         self.speed = 0.01
         self.trans_sd = 0
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
+        self.selected_mover = MoveTag.LEVY
         self.alpha = 1
         # World
-        self.selected_world = WorldTag.CONCAVE_CELLS
+        self.selected_world = WorldTag.CIRCLE
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
         self.world_height = 1
@@ -27,6 +27,7 @@ class Params:
         self.is_recording_position = False
         self.is_recording_area = True
         self.is_recording_area_indices = False
+        self.is_recording_area_over_time = True
         self.area_unit_size = 0.05
         # Plot
         self.is_plotting_trajectories = False

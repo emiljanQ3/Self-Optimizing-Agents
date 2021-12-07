@@ -58,6 +58,35 @@ class AreaGridRecorder:
         return self.saved_area
 
 
+class AreaOverTimeRecorder:
+    def __init__(self, params):
+        self.tag = ResultTag.AREA_TIME
+        self.visited_spaces = [dict() for i in range(params.num_agents)]
+        self.area_unit_size = params.area_unit_size
+        self.saved_area = []
+
+    def new_repeat(self):
+        self.saved_area.append(self.visited_spaces)
+        self.visited_spaces = [dict() for i in self.visited_spaces]
+
+    def record(self, agents, new_agents, world, mover, rep, step):
+        for i in range(np.shape(agents)[0]):
+            area_unit_pos = np.floor(agents[i, :2] / self.area_unit_size)
+            int_pos = (int(area_unit_pos[0]), int(area_unit_pos[1]))
+            if int_pos not in self.visited_spaces[i]:
+                self.visited_spaces[i][int_pos] = step
+
+    def get_results(self):
+        results = []
+        for d in self.saved_area:
+            steps = []
+            for key in d:
+                steps.append(d[key])
+            results.append(steps)
+
+        return results
+
+
 class AreaIndexRecorder:
     def __init__(self, params):
         self.tag = ResultTag.AREA_INDICES
@@ -100,5 +129,7 @@ def create_data_recorder(params):
         components.append(AreaGridRecorder(params))
     if params.is_recording_area_indices:
         components.append(AreaIndexRecorder(params))
+    if params.is_recording_area_over_time:
+        components.append(AreaOverTimeRecorder(params))
 
     return DataRecorder(components)

@@ -25,6 +25,7 @@ class ResultTag:
     PARAM = "param"
     AREA = "area"
     AREA_INDICES = "area_indices"
+    AREA_TIME = "area_time"
 
 
 class AlphaInitTag:
