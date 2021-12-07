@@ -4,15 +4,15 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 10000
+        self.num_steps = 100000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "run23_slow_circle"
-        self.results_path = "results/single_circle_v2/"
+        self.save_id = "run24_normie_circle"
+        self.results_path = "results/single_circle_v3/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
-        self.speed = 0.001
+        self.speed = 0.01
         self.trans_sd = 0
         self.ang_sd = pi/6
         self.selected_mover = MoveTag.LEVY

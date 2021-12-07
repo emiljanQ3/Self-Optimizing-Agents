@@ -142,7 +142,7 @@ def plot_many_area_over_time(result_list):
     params = result_list[0][ResultTag.PARAM]
     fig, ax = plt.subplots()
     for result in result_list:
-        plot_area_over_time(ax, result, max_area=1, label=str(result[ResultTag.PARAM].alpha))
+        plot_area_over_time(ax, result, max_area=20 ** 2 * np.pi, label=str(result[ResultTag.PARAM].alpha))
     ax.set_title(f"Explored area, mean over {params.num_repeats * params.num_agents} agents.")
     ax.set_xlabel("steps")
     ax.set_ylabel("Normalized explored area.")
