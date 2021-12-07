@@ -46,6 +46,7 @@ class AreaGridRecorder:
 
     def new_repeat(self):
         self.saved_area.append([len(x)*self.area_unit_size**2 for x in self.visited_spaces])
+        [x.clear() for x in self.visited_spaces]
 
     def record(self, agents, new_agents, world, mover, rep, step):
         for i in range(np.shape(agents)[0]):
