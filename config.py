@@ -7,12 +7,12 @@ class Params:
         self.num_steps = 10000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "run22_single_circle"
-        self.results_path = "results/single_circle_v1/"
+        self.save_id = "run23_slow_circle"
+        self.results_path = "results/single_circle_v2/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
-        self.speed = 0.01
+        self.speed = 0.001
         self.trans_sd = 0
         self.ang_sd = pi/6
         self.selected_mover = MoveTag.LEVY
