@@ -33,11 +33,6 @@ def run_param_search(params: Params):
         temp_params = copy.deepcopy(params)
         temp_params.alpha = alpha
         temp_params.speed *= v
-
-        step_size = temp_params.area_unit_size/10
-
-        temp_params.delta_time = step_size/temp_params.speed
-
         temp_params.save_id += f"_v{v}_a{alpha}"
         params_list.append(temp_params)
 
