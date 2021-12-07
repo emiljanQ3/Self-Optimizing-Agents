@@ -27,14 +27,13 @@ def run_simulation(params):
 def run_param_search(params: Params):
 
     params_list = []
-    #for v in np.logspace(-6, 6, num=25, base=2):
-    v = 1
-    for alpha in np.linspace(1, 2, 11):
-        temp_params = copy.deepcopy(params)
-        temp_params.alpha = alpha
-        temp_params.speed *= v
-        temp_params.save_id += f"_v{v}_a{alpha}"
-        params_list.append(temp_params)
+    for v in [1/10, 1, 10]:
+        for alpha in np.linspace(1, 2, 11):
+            temp_params = copy.deepcopy(params)
+            temp_params.alpha = alpha
+            temp_params.speed *= v
+            temp_params.save_id += f"_v{v}_a{alpha}"
+            params_list.append(temp_params)
 
     process_map(run_simulation, params_list)
 
