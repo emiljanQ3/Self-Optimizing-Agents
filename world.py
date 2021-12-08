@@ -56,6 +56,8 @@ class ChangingViscosity:
             self.timer = timer
             self.i = (self.i + 1) % len(params.viscosity_times)
 
+        self.timer -= 1
+
         return agents, new_agents
 
 

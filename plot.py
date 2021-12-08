@@ -142,9 +142,9 @@ def plot_many_area_over_time(result_list):
     params = result_list[0][ResultTag.PARAM]
     fig, ax = plt.subplots()
     for result in result_list:
-        plot_area_over_steps(ax, result, max_area=20 ** 2 * np.pi, label=str(result[ResultTag.PARAM].alpha))
+        plot_area_over_time(ax, result, max_area=20 ** 2 * np.pi, label=str(result[ResultTag.PARAM].alpha))
     ax.set_title(f"Explored area, mean over {params.num_repeats * params.num_agents} agents.")
-    ax.set_xlabel("steps")
+    ax.set_xlabel("time")
     ax.set_ylabel("Normalized explored area.")
     ax.legend()
     plt.show()
@@ -160,6 +160,37 @@ def plot_area_over_steps(ax, results, max_area, label):
     y = y / max_area / len(area_times)
     #col = plt.cm.get_cmap("plasma")(results[ResultTag.PARAM].alpha - 1)
     ax.plot(steps, y, label=label)
+
+
+def plot_area_over_time(ax, results, max_area, label):
+    params = results[ResultTag.PARAM]
+    steps = range(params.num_steps)
+    area_times = results[ResultTag.AREA_TIME]
+    y = np.zeros(len(steps))
+    for at in area_times:
+        for step in at:
+            y[step:] += 1
+    y = y / max_area / len(area_times)
+
+    x = []
+    time = 0
+    timer = 0
+    i = 0
+    base_speed = params.speed
+    base_delta_t = params.delta_time
+    for step in steps:
+        if timer == 0:
+            speed_factor, timer = params.viscosity_times[i]
+            delta_time = base_delta_t / speed_factor
+
+            i = (i + 1) % len(params.viscosity_times)
+
+        time += delta_time
+        timer -= 1
+        x.append(time)
+
+    #col = plt.cm.get_cmap("plasma")(results[ResultTag.PARAM].alpha - 1)
+    ax.plot(x, y, label=label)
 
 
 def plot_alpha_speed_surface(results):
