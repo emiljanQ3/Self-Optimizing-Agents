@@ -27,7 +27,7 @@ def run_simulation(params):
 def run_param_search(params: Params):
 
     params_list = []
-    for v in [1, 1/10]:
+    for v in [1]:
         for alpha in np.linspace(1, 2, 11):
             temp_params = copy.deepcopy(params)
             temp_params.alpha = alpha
@@ -42,9 +42,9 @@ def run_param_search(params: Params):
             temp_params.save_id += f"_v{v}_a{alpha}"
             params_list.append(temp_params)
 
-    # temp_params = copy.deepcopy(params)
-    # temp_params.save_id += "_x"
-    # params_list.append(temp_params)
+    temp_params = copy.deepcopy(params)
+    temp_params.save_id += "_x"
+    params_list.append(temp_params)
 
     process_map(run_simulation, params_list)
     #it = [run_simulation(x) for x in params_list]
