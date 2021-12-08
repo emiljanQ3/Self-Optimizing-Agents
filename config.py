@@ -7,8 +7,8 @@ class Params:
         self.num_steps = 10000
         self.num_repeats = 10
         self.num_agents = 10
-        self.save_id = "run27_3_speeds_constant_time"
-        self.results_path = "results/single_circle_v7/"
+        self.save_id = "run28_2_speeds_over_time"
+        self.results_path = "results/single_circle_v8/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
