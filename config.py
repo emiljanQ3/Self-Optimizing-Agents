@@ -8,8 +8,9 @@ class Params:
         self.num_repeats = 10
         self.num_agents = 10
         self.save_id = "run28_2_speeds_over_time"
-        self.results_path = "results/single_circle_v8/"
+        self.results_path = "results/testing2/"
         self.alpha_tag = AlphaInitTag.SAME
+        self.alpha_times = [(1, 1000), (2, 1000)]
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01

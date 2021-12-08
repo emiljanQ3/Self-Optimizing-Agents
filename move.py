@@ -62,6 +62,23 @@ class LevyRotater:
         return agents, agents_data
 
 
+class AlphaChanger:
+
+    def __init__(self, params):
+        self.i = 0
+        self.timer = 0
+
+    def apply(self, agents, new_agents, params):
+        if self.timer == 0:
+            params.alpha, self.timer = params.alpha_times[self.i]
+
+            self.i = (self.i + 1) % len(params.viscosity_times)
+
+        self.timer -= 1
+
+        return agents, new_agents
+
+
 def delta_variation(x, width):
     return 2 ** cell_exponent(x, width)
 
@@ -185,24 +202,27 @@ class ExactLevyMover:
 
 
 def create_mover(params):
+    components = []
+    if len(params.alpha_times) > 0:
+        components.append(AlphaChanger(params))
     if params.selected_mover == MoveTag.BROWNIAN:
-        return Mover([BrownianTranslation()])
+        components.extend([BrownianTranslation()])
     if params.selected_mover == MoveTag.ACTIVE_ROTDIFF:
-        return Mover([BrownianRotation(), ForwardMovement()])
+        components.extend([BrownianRotation(), ForwardMovement()])
     if params.selected_mover == MoveTag.AYKUT_LEVY:
-        return Mover([LevyRotater(sample_levy_aykut, params), ForwardMovement()])
+        components.extend([LevyRotater(sample_levy_aykut, params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY:
         if params.alpha_tag == AlphaInitTag.SAME:
-            return Mover([LevyRotater(sample_levy, params), ForwardMovement()])
+            components.extend([LevyRotater(sample_levy, params), ForwardMovement()])
         else:
-            return Mover([AgentSpecificLevyRotater(params), ForwardMovement()])
+            components.extend([AgentSpecificLevyRotater(params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_VARYING_DELTA:
-        return Mover([LevyRotaterVaryingDelta(sample_levy, params), ForwardMovement()])
+        components.extend([LevyRotaterVaryingDelta(sample_levy, params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA:
-        return Mover([AlwaysOptimalLevyRotater(params), ForwardMovement()])
+        components.extend([AlwaysOptimalLevyRotater(params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_VARYING_DELTA_CONTRAST:
-        return Mover([BigContrastLevyRotaterVaryingDelta(sample_levy, params), ForwardMovement()])
+        components.extend([BigContrastLevyRotaterVaryingDelta(sample_levy, params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST:
-        return Mover([BigContrastOptimalLevyRotater(params), ForwardMovement()])
+        components.extend([BigContrastOptimalLevyRotater(params), ForwardMovement()])
 
-    raise Exception("Invalid movetag in parameters.")
+    return Mover(components)
