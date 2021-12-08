@@ -27,7 +27,7 @@ def run_simulation(params):
 def run_param_search(params: Params):
 
     params_list = []
-    for v in [1/10, 1, 10]:
+    for v in [1/10, 1]:
         for alpha in np.linspace(1, 2, 11):
             temp_params = copy.deepcopy(params)
             temp_params.alpha = alpha

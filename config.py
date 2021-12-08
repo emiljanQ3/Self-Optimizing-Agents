@@ -4,11 +4,11 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 100000
-        self.num_repeats = 100
+        self.num_steps = 10000
+        self.num_repeats = 10
         self.num_agents = 10
-        self.save_id = "run26_3_speeds"
-        self.results_path = "results/single_circle_v5/"
+        self.save_id = "run27_3_speeds_constant_step"
+        self.results_path = "results/single_circle_v6/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5
