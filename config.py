@@ -4,13 +4,13 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 10000
-        self.num_repeats = 10
+        self.num_steps = 50000
+        self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "run28_2_speeds_over_time"
-        self.results_path = "results/testing2/"
+        self.save_id = "run30"
+        self.results_path = "results/static_circle_50000/"
         self.alpha_tag = AlphaInitTag.SAME
-        self.alpha_times = [(1, 1000), (2, 1000)]
+        self.alpha_times = [] # [(1.7, 1000), (1.2, 1000)]
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01
@@ -22,9 +22,9 @@ class Params:
         self.selected_world = WorldTag.CIRCLE
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
-        self.world_height = 1
-        self.world_width = 26
-        self.viscosity_times = [(1, 1000), (1/10, 1000)]
+        self.world_height = 2
+        self.world_width = 2
+        self.viscosity_times = [] # [(1, 1000), (1/10, 1000)]
         # Record
         self.is_recording_position = False
         self.is_recording_area = False
