@@ -158,6 +158,7 @@ def plot_area_over_time(ax, results, max_area, label):
         for step in at:
             y[step:] += 1
     y = y / max_area / len(area_times)
+    #col = plt.cm.get_cmap("plasma")(results[ResultTag.PARAM].alpha - 1)
     ax.plot(steps, y, label=label)
 
 
