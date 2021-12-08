@@ -4,16 +4,19 @@ import utils
 
 
 def create_world(params):
+    components = []
+    if len(params.viscosity_times) > 0:
+        components.append(ChangingViscosity(params))
     if params.selected_world == WorldTag.EMPTY:
-        return World([])
+        return World(components.extend([]))
     if params.selected_world == WorldTag.EMPTY_REPEATING:
-        return World([RepeatingBoundaryConditions()])
+        return World(components.extend([RepeatingBoundaryConditions()]))
     if params.selected_world == WorldTag.CONVEX_CELLS:
-        return World([ConvexCells(params)])
+        return World(components.extend([ConvexCells(params)]))
     if params.selected_world == WorldTag.CONCAVE_CELLS:
-        return World([ConcaveCells(params)])
+        return World(components.extend([ConcaveCells(params)]))
     if params.selected_world == WorldTag.CIRCLE:
-        return World([SingleCircle(params)])
+        return World(components.extend([SingleCircle(params)]))
 
     raise Exception("Invalid worldtag in parameters.")
 
@@ -34,6 +37,24 @@ class RepeatingBoundaryConditions:
         new_agents[:, 0] = np.mod(new_agents[:, 0], params.world_width)
         new_agents[:, 1] = np.mod(new_agents[:, 1], params.world_height)
         return agents, np.mod(new_agents)
+
+
+class ChangingViscosity:
+
+    def __init__(self, params):
+        self.i = 0
+        self.timer = 0
+        self.base_speed = params.speed
+        self.base_delta_t = params.delta_time
+
+    def apply(self, agents, new_agents, params):
+        if self.timer == 0:
+            speed_factor, timer = params.viscosity_times[self.i]
+            params.speed = self.base_speed*speed_factor
+            params.delta_time = self.base_delta_t/speed_factor
+
+            self.timer = timer
+            self.i = (self.i + 1) % len(params.viscosity_times)
 
 
 class ConvexCells:

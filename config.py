@@ -23,6 +23,7 @@ class Params:
         self.obstacle_size = 0.8  # relative to cell
         self.world_height = 1
         self.world_width = 26
+        self.viscosity_times = [(1, 1000), (1/10, 1000)]
         # Record
         self.is_recording_position = False
         self.is_recording_area = False
