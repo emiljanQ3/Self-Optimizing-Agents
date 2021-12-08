@@ -56,6 +56,8 @@ class ChangingViscosity:
             self.timer = timer
             self.i = (self.i + 1) % len(params.viscosity_times)
 
+        return agents, new_agents
+
 
 class ConvexCells:
     def __init__(self, params):
