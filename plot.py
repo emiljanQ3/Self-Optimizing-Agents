@@ -139,15 +139,18 @@ def plot_area_over_alpha(results):
 
 
 def plot_many_area_over_time(result_list):
-    params = result_list[0][ResultTag.PARAM]
     fig, ax = plt.subplots()
+    i = 0
     for result in result_list:
+        i += 1
+        params = result[ResultTag.PARAM]
         label = "alpha: " + str(params.alpha) if len(params.alpha_times) == 0 else "varying alpha"
+        line = "--" if i > 10 else "-"
         max_area = 20 ** 2 * np.pi
         if len(params.viscosity_times) > 0:
-            plot_area_over_time(ax, result, max_area=max_area, label=label)
+            plot_area_over_time(ax, result, max_area=max_area, label=label, line=line)
         else:
-            plot_area_over_steps(ax, result, max_area=max_area, label=label)
+            plot_area_over_steps(ax, result, max_area=max_area, label=label, line=line)
 
     ax.set_title(f"Explored area, mean over {params.num_repeats * params.num_agents} agents.")
     ax.set_xlabel("time")
@@ -156,7 +159,7 @@ def plot_many_area_over_time(result_list):
     plt.show()
 
 
-def plot_area_over_steps(ax, results, max_area, label):
+def plot_area_over_steps(ax, results, max_area, label, line):
     steps = range(results[ResultTag.PARAM].num_steps)
     area_times = results[ResultTag.AREA_TIME]
     y = np.zeros(len(steps))
@@ -166,10 +169,10 @@ def plot_area_over_steps(ax, results, max_area, label):
     y = y / max_area / len(area_times)
     x = [step*results[ResultTag.PARAM].delta_time for step in steps]
     #col = plt.cm.get_cmap("plasma")(results[ResultTag.PARAM].alpha - 1)
-    ax.plot(x, y, label=label)
+    ax.plot(x, y, line, label=label)
 
 
-def plot_area_over_time(ax, results, max_area, label):
+def plot_area_over_time(ax, results, max_area, label, line):
     params = results[ResultTag.PARAM]
     steps = range(params.num_steps)
     area_times = results[ResultTag.AREA_TIME]
@@ -197,7 +200,7 @@ def plot_area_over_time(ax, results, max_area, label):
         x.append(time)
 
     #col = plt.cm.get_cmap("plasma")(results[ResultTag.PARAM].alpha - 1)
-    ax.plot(x, y, label=label)
+    ax.plot(x, y, line, label=label)
 
 
 def plot_alpha_speed_surface(results):
