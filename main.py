@@ -40,6 +40,7 @@ def run_param_search(params: Params):
             params_list.append(temp_params)
 
     process_map(run_simulation, params_list)
+    #it = [run_simulation(x) for x in params_list]
 
 
 if __name__ == '__main__':
