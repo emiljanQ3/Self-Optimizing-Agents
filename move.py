@@ -72,7 +72,7 @@ class AlphaChanger:
         if self.timer == 0:
             params.alpha, self.timer = params.alpha_times[self.i]
 
-            self.i = (self.i + 1) % len(params.viscosity_times)
+            self.i = (self.i + 1) % len(params.alpha_times)
 
         self.timer -= 1
 
