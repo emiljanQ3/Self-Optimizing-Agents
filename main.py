@@ -42,22 +42,6 @@ def run_param_search(params: Params):
     process_map(run_simulation, params_list)
 
 
-def rerun_saved_run(results):
-    rerun_params = copy.deepcopy(results[0][ResultTag.PARAM])
-    rerun_params.num_agents = 5
-    rerun_params.num_repeats = 1
-    rerun_params.alpha_tag = AlphaInitTag.LINSPACE
-    rerun_params.is_recording_position = True
-    rerun_params.is_recording_area = False
-    rerun_params.is_recording_area_indices = True
-    rerun_params.is_plotting_trajectories = True
-    rerun_params.is_plotting_area_units = True
-    rerun_params.save_id += "_rerun"
-    run_simulation(rerun_params)
-
-    plot_area_over_alpha(results)
-
-
 if __name__ == '__main__':
     params = Params()
     run_param_search(params)
