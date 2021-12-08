@@ -8,17 +8,17 @@ def create_world(params):
     if len(params.viscosity_times) > 0:
         components.append(ChangingViscosity(params))
     if params.selected_world == WorldTag.EMPTY:
-        return World(components.extend([]))
+        components.extend([])
     if params.selected_world == WorldTag.EMPTY_REPEATING:
-        return World(components.extend([RepeatingBoundaryConditions()]))
+        components.extend([RepeatingBoundaryConditions()])
     if params.selected_world == WorldTag.CONVEX_CELLS:
-        return World(components.extend([ConvexCells(params)]))
+        components.extend([ConvexCells(params)])
     if params.selected_world == WorldTag.CONCAVE_CELLS:
-        return World(components.extend([ConcaveCells(params)]))
+        components.extend([ConcaveCells(params)])
     if params.selected_world == WorldTag.CIRCLE:
-        return World(components.extend([SingleCircle(params)]))
+        components.extend([SingleCircle(params)])
 
-    raise Exception("Invalid worldtag in parameters.")
+    return World(components)
 
 
 class World:
