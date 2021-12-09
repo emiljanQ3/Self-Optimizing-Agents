@@ -7,10 +7,10 @@ class Params:
         self.num_steps = 50000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "run32"
-        self.results_path = "results/changing_circle_50002/"
+        self.save_id = "run33"
+        self.results_path = "results/changing_circle_50003/"
         self.alpha_tag = AlphaInitTag.SAME
-        self.alpha_times = [(1.7, 100), (1.2, 100)]
+        self.alpha_times = [(1.7, 10000), (1.2, 10000)]
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01
@@ -24,7 +24,7 @@ class Params:
         self.obstacle_size = 0.8  # relative to cell
         self.world_height = 2
         self.world_width = 2
-        self.viscosity_times = [(1, 100), (1/10, 100)]
+        self.viscosity_times = [(1, 10000), (1/10, 10000)]
         # Record
         self.is_recording_position = False
         self.is_recording_area = False
