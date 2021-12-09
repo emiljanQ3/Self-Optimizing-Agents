@@ -149,7 +149,7 @@ def plot_many_area_at_time(result_list, time):
 
     ax.set_title(f"Explored area at time = {time}, mean over {params.num_repeats * params.num_agents} agents.")
     ax.set_ylabel("Normalized explored area.")
-    plt.show()
+    plt.draw()
 
 
 def plot_area_at_time(ax, results, target_time, max_area, label):
@@ -160,8 +160,12 @@ def plot_area_at_time(ax, results, target_time, max_area, label):
     ax.bar(label, area[index])
 
 
-def plot_many_area_over_time(result_list):
+def plot_many_area_over_time(result_list, time=None):
     fig, ax = plt.subplots()
+
+    if time is not None:
+        ax.plot([time, time], [0, 1], 'k')
+
     i = 0
     for result in result_list:
         i += 1
@@ -176,7 +180,7 @@ def plot_many_area_over_time(result_list):
     ax.set_xlabel("time")
     ax.set_ylabel("Normalized explored area.")
     ax.legend()
-    plt.show()
+    plt.draw()
 
 
 def plot_area_over_time(ax, results, max_area, label, line):
@@ -212,7 +216,7 @@ def get_varied_time(params):
     timer = 0
     i = 0
     base_speed = params.speed
-    base_delta_t = params.delta_time
+    base_delta_t = 0.5  # TODO revert params.delta_time
     for step in range(params.num_steps):
         if timer == 0:
             speed_factor, timer = params.viscosity_times[i]
