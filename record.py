@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 from tags import ResultTag
 
@@ -109,7 +111,7 @@ class AreaIndexRecorder:
 class ParamRecorder:
     def __init__(self, params):
         self.tag = ResultTag.PARAM
-        self.params = params
+        self.params = copy.deepcopy(params)
 
     def new_repeat(self):
         pass
