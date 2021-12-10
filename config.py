@@ -11,6 +11,7 @@ class Params:
         self.results_path = "results/changing_circle_high_contrast/"
         self.alpha_tag = AlphaInitTag.SAME
         self.alpha_times = [(2, 1000), (1, 1000)]
+        self.redirect_on_alpha_change = True
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01

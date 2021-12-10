@@ -64,15 +64,20 @@ class LevyRotater:
 
 class AlphaChanger:
 
-    def __init__(self, params):
+    def __init__(self, params, levy_rotater=None):
         self.i = 0
         self.timer = 0
+        self.redirect_on_alpha_change = params.redirect_on_alpha_change
+        self.levy_rotater = levy_rotater
 
     def apply(self, agents, new_agents, params):
         if self.timer == 0:
             params.alpha, self.timer = params.alpha_times[self.i]
 
             self.i = (self.i + 1) % len(params.alpha_times)
+
+            if self.redirect_on_alpha_change:
+                self.levy_rotater.levy_timer[:] = 0
 
         self.timer -= 1
 
@@ -203,8 +208,6 @@ class ExactLevyMover:
 
 def create_mover(params):
     components = []
-    if len(params.alpha_times) > 0:
-        components.append(AlphaChanger(params))
     if params.selected_mover == MoveTag.BROWNIAN:
         components.extend([BrownianTranslation()])
     if params.selected_mover == MoveTag.ACTIVE_ROTDIFF:
@@ -213,7 +216,10 @@ def create_mover(params):
         components.extend([LevyRotater(sample_levy_aykut, params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY:
         if params.alpha_tag == AlphaInitTag.SAME:
-            components.extend([LevyRotater(sample_levy, params), ForwardMovement()])
+            rotator = LevyRotater(sample_levy, params)
+            components.extend([rotator, ForwardMovement()])
+            if len(params.alpha_times) > 0:
+                components.append(AlphaChanger(params, rotator))
         else:
             components.extend([AgentSpecificLevyRotater(params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_VARYING_DELTA:
