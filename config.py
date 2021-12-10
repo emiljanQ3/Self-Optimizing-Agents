@@ -7,8 +7,8 @@ class Params:
         self.num_steps = 50000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "run36"
-        self.results_path = "results/changing_circle_high_contrast/"
+        self.save_id = "run37"
+        self.results_path = "results/changing_circle_high_contrast_instant_alpha/"
         self.alpha_tag = AlphaInitTag.SAME
         self.alpha_times = [(2, 1000), (1, 1000)]
         self.redirect_on_alpha_change = True
