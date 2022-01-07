@@ -12,6 +12,9 @@ class Params:
         self.alpha_tag = AlphaInitTag.SAME
         self.alpha_times = [(2, 1000), (1, 1000)]
         self.redirect_on_alpha_change = True
+        # Learning
+        self.update_memory = True
+        self.memory_length = 32
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01
