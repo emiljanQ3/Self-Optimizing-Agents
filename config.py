@@ -13,8 +13,10 @@ class Params:
         self.alpha_times = [(2, 1000), (1, 1000)]
         self.redirect_on_alpha_change = True
         # Learning
+        self.train_network = True
         self.update_memory = True
-        self.memory_length = 32
+        self.memory_length = 16
+        self.memory_compression_factor = 8
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01
