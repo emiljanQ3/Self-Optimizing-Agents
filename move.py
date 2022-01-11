@@ -102,7 +102,7 @@ def cell_exponent(x, width):
                         x, width
                     ) - (width / 2)
                 )
-            ) - (width / 2 - 1) / 2)
+            ) - (width / 2) / 2)
 
 
 class LevyRotaterVaryingDelta:
