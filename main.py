@@ -14,13 +14,15 @@ from multiprocessing import Pool
 from utils import normalize_area_to_best_alpha
 from matplotlib import pyplot as plt
 from tqdm.contrib.concurrent import process_map
+from data import DataModifier
 
 
 def run_simulation(params):
     world = create_world(params)
     mover = create_mover(params)
-    data_recorder = create_data_recorder(params)
-    results = simulate(world, mover, data_recorder, params)
+    data_recorder, visited_segments = create_data_recorder(params)
+    data_modifier = DataModifier(visited_segments, params)
+    results = simulate(world, mover, data_recorder, data_modifier, params)
     save(results, params)
     display_results(results, params)
 

@@ -13,7 +13,7 @@ def init_agents_pos(params):
 
 def init_agents_data(params):
     if params.alpha_tag == AlphaInitTag.SAME:
-        return AgentsData(alphas=np.ones(params.num_agents) * params.alpha)
+        return AgentsData(alphas=np.ones(params.num_agents) * params.alpha, params=params)
     if params.alpha_tag == AlphaInitTag.LINSPACE:
-        return AgentsData(alphas=np.linspace(1, 2, params.num_agents))
+        return AgentsData(alphas=np.linspace(1, 2, params.num_agents), params=params)
 
