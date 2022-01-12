@@ -16,11 +16,6 @@ class Mover:
         return agents, agents_data
 
 
-class BrownianTranslation:
-    def apply(self, agents, agents_data, params):
-        return add_noise(agents, [params.trans_sd, params.trans_sd, 0]), agents_data
-
-
 class BrownianRotation:
     def apply(self, agents, agents_data, params):
         return add_noise(agents, [0, 0, params.ang_sd]), agents_data
@@ -60,28 +55,6 @@ class LevyRotater:
         agents[:, 2][is_turning] += np.random.standard_normal(is_turning.sum()) * params.ang_sd
 
         return agents, agents_data
-
-
-class AlphaChanger:
-
-    def __init__(self, params, levy_rotater=None):
-        self.i = 0
-        self.timer = 0
-        self.redirect_on_alpha_change = params.redirect_on_alpha_change
-        self.levy_rotater = levy_rotater
-
-    def apply(self, agents, new_agents, params):
-        if self.timer == 0:
-            params.alpha, self.timer = params.alpha_times[self.i]
-
-            self.i = (self.i + 1) % len(params.alpha_times)
-
-            if self.redirect_on_alpha_change:
-                self.levy_rotater.levy_timer[:] = 0
-
-        self.timer -= 1
-
-        return agents, new_agents
 
 
 def delta_variation(x, width):
@@ -208,8 +181,7 @@ class ExactLevyMover:
 
 def create_mover(params):
     components = []
-    if params.selected_mover == MoveTag.BROWNIAN:
-        components.extend([BrownianTranslation()])
+
     if params.selected_mover == MoveTag.ACTIVE_ROTDIFF:
         components.extend([BrownianRotation(), ForwardMovement()])
     if params.selected_mover == MoveTag.AYKUT_LEVY:
@@ -218,8 +190,6 @@ def create_mover(params):
         if params.alpha_tag == AlphaInitTag.SAME:
             rotator = LevyRotater(sample_levy, params)
             components.extend([rotator, ForwardMovement()])
-            if len(params.alpha_times) > 0:
-                components.append(AlphaChanger(params, rotator))
         else:
             components.extend([AgentSpecificLevyRotater(params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_VARYING_DELTA:

@@ -38,8 +38,6 @@ def run_param_search(params: Params):
 
             temp_params.delta_time = step_size / temp_params.speed
 
-            temp_params.alpha_times = []
-
             temp_params.save_id += f"_v{v}_a{alpha}"
             params_list.append(temp_params)
 

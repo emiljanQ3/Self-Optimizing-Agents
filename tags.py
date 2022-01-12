@@ -17,7 +17,6 @@ class WorldTag(Enum):
     EMPTY_REPEATING = "empty_repeating"
     CONVEX_CELLS = "convex_cells"
     CONCAVE_CELLS = "concave_cells"
-    CIRCLE = "circle"
 
 
 class ResultTag:
