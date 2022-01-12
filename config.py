@@ -18,7 +18,6 @@ class Params:
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01
-        self.trans_sd = 0
         self.ang_sd = pi/6
         self.selected_mover = MoveTag.LEVY
         self.alpha = 1
@@ -28,7 +27,6 @@ class Params:
         self.obstacle_size = 0.8  # relative to cell
         self.world_height = 2
         self.world_width = 2
-        self.viscosity_times = [(2**6, 1000), (2**(-6), 1000)]
         # Record
         self.is_recording_position = False
         self.is_recording_area = False
