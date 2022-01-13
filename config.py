@@ -4,7 +4,7 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 50000
+        self.num_steps = 100000
         self.num_repeats = 100
         self.num_agents = 10
         self.save_id = "run38"
