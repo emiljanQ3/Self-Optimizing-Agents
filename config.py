@@ -7,8 +7,8 @@ class Params:
         self.num_steps = 50000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "run37"
-        self.results_path = "results/changing_circle_high_contrast_instant_alpha/"
+        self.save_id = "run38"
+        self.results_path = "results/high_contrast_instant_alpha/"
         self.alpha_tag = AlphaInitTag.SAME
         # Learning
         self.train_network = True
@@ -19,19 +19,19 @@ class Params:
         self.delta_time = 0.5
         self.speed = 0.01
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.LEVY
+        self.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
         self.alpha = 1
         # World
-        self.selected_world = WorldTag.CIRCLE
+        self.selected_world = WorldTag.CONCAVE_CELLS
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
         self.world_height = 2
         self.world_width = 2
         # Record
         self.is_recording_position = False
-        self.is_recording_area = False
+        self.is_recording_area = True
         self.is_recording_area_indices = False
-        self.is_recording_area_over_time = True
+        self.is_recording_area_over_time = False
         self.area_unit_size = 0.05
         # Plot
         self.is_plotting_trajectories = False
