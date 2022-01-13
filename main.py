@@ -8,7 +8,7 @@ from plot import display_results, plot_alpha_speed_surface, scatter_alpha_speed_
 from config import Params
 import numpy as np
 from plot import plot_area_over_alpha
-from tags import ResultTag, AlphaInitTag
+from tags import ResultTag, AlphaInitTag, MoveTag
 import copy
 from multiprocessing import Pool
 from utils import normalize_area_to_best_alpha
@@ -30,22 +30,25 @@ def run_simulation(params):
 def run_param_search(params: Params):
 
     params_list = []
-    for v in [1]:
-        for alpha in np.linspace(1, 2, 11):
-            temp_params = copy.deepcopy(params)
-            temp_params.alpha = alpha
-            temp_params.speed *= v
 
-            step_size = temp_params.area_unit_size / 10
+    slow_optimal_params = copy.deepcopy(params)
+    slow_optimal_params.save_id += "_slow_optimal"
+    slow_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
+    slow_optimal_params.alpha = 2.2
+    params_list.append(slow_optimal_params)
 
-            temp_params.delta_time = step_size / temp_params.speed
+    instant_optimal_params = copy.deepcopy(params)
+    instant_optimal_params.save_id += "_instant_optimal"
+    instant_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH
+    instant_optimal_params.alpha = 2.3
+    params_list.append(instant_optimal_params)
 
-            temp_params.save_id += f"_v{v}_a{alpha}"
-            params_list.append(temp_params)
+    for alpha in np.linspace(1, 2, 11):
+        temp_params = copy.deepcopy(params)
+        temp_params.alpha = alpha
 
-    temp_params = copy.deepcopy(params)
-    temp_params.save_id += "_x"
-    params_list.append(temp_params)
+        temp_params.save_id += f"_a{alpha}"
+        params_list.append(temp_params)
 
     process_map(run_simulation, params_list)
     #it = [run_simulation(x) for x in params_list]
@@ -54,7 +57,6 @@ def run_param_search(params: Params):
 if __name__ == '__main__':
     params = Params()
     run_param_search(params)
-    plot_many_area_at_time(load_all(params), 24999)
-    plot_many_area_over_time(load_all(params), 24999)
+    plot_area_over_alpha(load_all(params))
     plt.show()
 
