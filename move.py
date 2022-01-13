@@ -126,19 +126,29 @@ class BigContrastLevyRotaterVaryingDelta:
 
 
 class BigContrastOptimalLevyRotater:
-    def __init__(self, params):
+    def __init__(self, params, instant_switch=False):
         self.levy_timer = np.zeros(params.num_agents)
-        self.optimal_alphas = {3: 1.0, -4: 2.0}
+        self.instant_switch = instant_switch
+        self.last_x = 0
+        # self.optimal_alphas = {3: 1.0, -4: 2.0}
 
     def apply(self, agents, agents_data, params):
         self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
-        turning_idx = np.argwhere(self.levy_timer <= 0)
+        turning_idx = np.argwhere(np.logical_or(self.levy_timer <= 0,  self.apply_instant_switch(agents)))
         for i in turning_idx:
             self.levy_timer[i] = np.abs(levy_stable.rvs(
                 alpha=math.floor(agents[i, 0].item()) % 2 + 1, beta=0))
             agents[i, 2] += np.random.standard_normal() * params.ang_sd
 
         return agents, agents_data
+
+    def apply_instant_switch(self, agents):
+        if not self.instant_switch:
+            return 0
+        this_x = np.floor(agents[:, 0])
+        answer = this_x != self.last_x
+        self.last_x = this_x
+        return answer
 
 
 class AgentSpecificLevyRotater:
@@ -155,28 +165,28 @@ class AgentSpecificLevyRotater:
         return agents, agents_data
 
 
-class ExactLevyMover:
-    def __init__(self, params):
-        self.levy_timer = sample_levy(params.num_agents, params)
-
-    def apply(self, agents, agents_data, params):
-        remaining_delta_time = params.delta_time * np.ones(params.num_agents)
-        delta_pos = np.zeros((params.num_agents, 3))
-        is_turning = self.levy_timer < remaining_delta_time
-        while any(is_turning):
-            remaining_delta_time[is_turning] -= self.levy_timer[is_turning]
-            delta_pos[:, 0][is_turning] += np.cos(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[
-                is_turning]
-            delta_pos[:, 1][is_turning] += np.sin(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[
-                is_turning]
-            self.levy_timer[is_turning] = sample_levy(is_turning.sum(), params)
-            delta_pos[:, 2][is_turning] += np.random.standard_normal(is_turning.sum()) * params.ang_sd
-            is_turning = self.levy_timer < remaining_delta_time
-
-        delta_pos[:, 0] += np.cos(delta_pos[:, 2]) * params.speed * remaining_delta_time
-        delta_pos[:, 1] += np.sin(delta_pos[:, 2]) * params.speed * remaining_delta_time
-
-        return agents + delta_pos, agents_data
+# class ExactLevyMover:
+#     def __init__(self, params):
+#         self.levy_timer = sample_levy(params.num_agents, params)
+#
+#     def apply(self, agents, agents_data, params):
+#         remaining_delta_time = params.delta_time * np.ones(params.num_agents)
+#         delta_pos = np.zeros((params.num_agents, 3))
+#         is_turning = self.levy_timer < remaining_delta_time
+#         while any(is_turning):
+#             remaining_delta_time[is_turning] -= self.levy_timer[is_turning]
+#             delta_pos[:, 0][is_turning] += np.cos(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[
+#                 is_turning]
+#             delta_pos[:, 1][is_turning] += np.sin(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[
+#                 is_turning]
+#             self.levy_timer[is_turning] = sample_levy(is_turning.sum(), params)
+#             delta_pos[:, 2][is_turning] += np.random.standard_normal(is_turning.sum()) * params.ang_sd
+#             is_turning = self.levy_timer < remaining_delta_time
+#
+#         delta_pos[:, 0] += np.cos(delta_pos[:, 2]) * params.speed * remaining_delta_time
+#         delta_pos[:, 1] += np.sin(delta_pos[:, 2]) * params.speed * remaining_delta_time
+#
+#         return agents + delta_pos, agents_data
 
 
 def create_mover(params):
@@ -200,5 +210,7 @@ def create_mover(params):
         components.extend([BigContrastLevyRotaterVaryingDelta(sample_levy, params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST:
         components.extend([BigContrastOptimalLevyRotater(params), ForwardMovement()])
+    if params.selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH:
+        components.extend([BigContrastOptimalLevyRotater(params, instant_switch=True), ForwardMovement()])
 
     return Mover(components)
