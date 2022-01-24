@@ -3,9 +3,10 @@ import numpy as np
 
 class AgentsData:
 
-    def __init__(self, alphas, params):
+    def __init__(self, alphas, params, network_containers=None):
         self.alphas = alphas
         self.memory = np.zeros((params.num_agents, params.memory_length))
+        self.network_containers = network_containers
 
 
 class DataModifier:

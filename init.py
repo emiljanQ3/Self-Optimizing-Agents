@@ -1,6 +1,7 @@
 import numpy as np
 from tags import AlphaInitTag
 from data import AgentsData
+from neural_networks import NeuralNetworkContainer
 
 
 def init_agents_pos(params):
@@ -16,4 +17,7 @@ def init_agents_data(params):
         return AgentsData(alphas=np.ones(params.num_agents) * params.alpha, params=params)
     if params.alpha_tag == AlphaInitTag.LINSPACE:
         return AgentsData(alphas=np.linspace(1, 2, params.num_agents), params=params)
+    if params.alpha_tag == AlphaInitTag.NETWORK:
+        return AgentsData(alphas=None, params=params,
+                          network_containers=[NeuralNetworkContainer(params) for _ in range(params.num_agents)])
 

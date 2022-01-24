@@ -31,3 +31,4 @@ class ResultTag:
 class AlphaInitTag:
     LINSPACE = "linspace"
     SAME = "same"
+    NETWORK = "network"
