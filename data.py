@@ -7,6 +7,8 @@ class AgentsData:
         self.alphas = alphas
         self.memory = np.zeros((params.num_agents, params.memory_length))
         self.network_containers = network_containers
+        self.reward_since_last_action = np.zeros(params.num_agents)
+        self.steps_since_last_action = np.zeros(params.num_agents)
 
 
 class DataModifier:
