@@ -44,6 +44,8 @@ class NeuralNetworkContainer:
         self.last_memory = compressed_memory
         self.last_selected_alpha = selected_alpha
 
+        return selected_alpha
+
     def train_network(self, num_batches):
         if len(self.experience_buffer) < initial_actions_before_training:
             return
