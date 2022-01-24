@@ -175,14 +175,14 @@ class BigContrastNeuralNetworkLevyRotater:
         agents_data.steps_since_last_action += 1
         turning_idx = np.nonzero(self.levy_timer <= 0)[0]
         for i in turning_idx:
-            mean_reward = agents_data.reward_since_last_action[i]/agents_data.steps_since_last_action
+            mean_reward = agents_data.reward_since_last_action[i]/agents_data.steps_since_last_action[i]
             agents_data.network_containers[i].train_network(1)
             alpha = agents_data.network_containers[i].get_next_alpha(agents_data.memory[i], mean_reward)
             self.levy_timer[i] = np.abs(levy_stable.rvs(alpha=alpha, beta=0))
             agents[i, 2] += np.random.standard_normal() * params.ang_sd
 
-            agents_data.reward_since_last_action = 0
-            agents_data.steps_since_last_action = 0
+            agents_data.reward_since_last_action[i] = 0
+            agents_data.steps_since_last_action[i] = 0
 
         return agents, agents_data
 
