@@ -11,6 +11,7 @@ class MoveTag(Enum):
     LEVY_VARYING_DELTA_CONTRAST = "levy_varying_delta_contrast"
     LEVY_OPTIMAL_ALPHA_CONTRAST = "levy_optimal_alpha_contrast"
     LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH = "LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH"
+    NEURAL_LEVY = "neural_levy"
 
 
 class WorldTag(Enum):

@@ -165,28 +165,20 @@ class AgentSpecificLevyRotater:
         return agents, agents_data
 
 
-# class ExactLevyMover:
-#     def __init__(self, params):
-#         self.levy_timer = sample_levy(params.num_agents, params)
-#
-#     def apply(self, agents, agents_data, params):
-#         remaining_delta_time = params.delta_time * np.ones(params.num_agents)
-#         delta_pos = np.zeros((params.num_agents, 3))
-#         is_turning = self.levy_timer < remaining_delta_time
-#         while any(is_turning):
-#             remaining_delta_time[is_turning] -= self.levy_timer[is_turning]
-#             delta_pos[:, 0][is_turning] += np.cos(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[
-#                 is_turning]
-#             delta_pos[:, 1][is_turning] += np.sin(delta_pos[:, 2][is_turning]) * params.speed * self.levy_timer[
-#                 is_turning]
-#             self.levy_timer[is_turning] = sample_levy(is_turning.sum(), params)
-#             delta_pos[:, 2][is_turning] += np.random.standard_normal(is_turning.sum()) * params.ang_sd
-#             is_turning = self.levy_timer < remaining_delta_time
-#
-#         delta_pos[:, 0] += np.cos(delta_pos[:, 2]) * params.speed * remaining_delta_time
-#         delta_pos[:, 1] += np.sin(delta_pos[:, 2]) * params.speed * remaining_delta_time
-#
-#         return agents + delta_pos, agents_data
+class NeuralNetworkLevyRotater:
+    def __init__(self, params):
+        self.levy_timer = np.zeros(params.num_agents)
+
+    def apply(self, agents, agents_data, params):
+        self.levy_timer -= params.delta_time
+        turning_idx = np.argwhere(self.levy_timer <= 0)
+        for i in turning_idx:
+            agents_data.network_containers[i].train_network(1)
+            alpha = agents_data.network_containers[i].get_next_alpha()
+            self.levy_timer[i] = np.abs(levy_stable.rvs(alpha=alpha, beta=0))
+            agents[i, 2] += np.random.standard_normal() * params.ang_sd
+
+        return agents, agents_data
 
 
 def create_mover(params):
@@ -212,5 +204,7 @@ def create_mover(params):
         components.extend([BigContrastOptimalLevyRotater(params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH:
         components.extend([BigContrastOptimalLevyRotater(params, instant_switch=True), ForwardMovement()])
+    if params.selected_mover == MoveTag.NEURAL_LEVY:
+        components.extend([NeuralNetworkLevyRotater(params), ForwardMovement()])
 
     return Mover(components)
