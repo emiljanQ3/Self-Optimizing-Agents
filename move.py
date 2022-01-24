@@ -171,8 +171,6 @@ class BigContrastNeuralNetworkLevyRotater:
 
     def apply(self, agents, agents_data, params):
         self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
-        agents_data.reward_since_last_action += agents_data.memory[:, -1]
-        agents_data.steps_since_last_action += 1
         turning_idx = np.nonzero(self.levy_timer <= 0)[0]
         for i in turning_idx:
             mean_reward = agents_data.reward_since_last_action[i]/agents_data.steps_since_last_action[i]

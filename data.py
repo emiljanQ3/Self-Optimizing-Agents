@@ -34,6 +34,9 @@ class DataModifier:
                 self.sum = self.sum * 0
                 self.counter = 0
 
+            agent_data.steps_since_last_action += 1
+            agent_data.reward_since_last_action += diff
+
 
 
     def new_repeat(self, agent_data, params):

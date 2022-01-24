@@ -34,8 +34,7 @@ class NeuralNetworkContainer:
         self.last_memory = None
         self.last_selected_alpha = None
 
-    def get_next_alpha(self, recent_memory, mean_reward):
-        compressed_memory = compress(recent_memory)
+    def get_next_alpha(self, compressed_memory, mean_reward):
         selected_alpha = self.__select_alpha(compressed_memory)
 
         if self.last_memory is not None:
@@ -109,10 +108,3 @@ def create_qnet(params: Params):
     return keras.Model(inputs=inputs, outputs=action)
 
 
-def compress(uncompressed_memory):
-    compressed_memory = np.zeros(compressed_memory_length)
-
-    for i in range(compressed_memory_length):
-        compressed_memory[i] = np.sum(uncompressed_memory[i*memory_compression_rate:(i+1)*memory_compression_rate])
-
-    return compressed_memory
