@@ -1,3 +1,5 @@
+import random
+
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -51,7 +53,7 @@ class NeuralNetworkContainer:
             return
 
         for i in range(num_batches):
-            chosen_experiences = np.random.choice(self.experience_buffer, batch_size, replace=False)
+            chosen_experiences = random.sample(self.experience_buffer, batch_size)
             compressed_memories = np.array([it[0] for it in chosen_experiences])
             alpha = np.array([it[1] for it in chosen_experiences])
             reward = np.array([it[2] for it in chosen_experiences])
