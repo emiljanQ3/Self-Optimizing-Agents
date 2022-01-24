@@ -45,6 +45,9 @@ class NeuralNetworkContainer:
         self.last_selected_alpha = selected_alpha
 
     def train_network(self, num_batches):
+        if len(self.experience_buffer) < initial_actions_before_training:
+            return
+
         for i in range(num_batches):
             chosen_experiences = np.random.choice(self.experience_buffer, batch_size, replace=False)
             compressed_memories = np.array([it[0] for it in chosen_experiences])
@@ -90,6 +93,7 @@ class NeuralNetworkContainer:
             self.epsilon *= epsilon_decay_factor
             if self.epsilon < epsilon_min:
                 self.epsilon = epsilon_min
+
 
 def create_qnet(params: Params):
     inputs = layers.Input(shape=(compressed_memory_length + 1,))
