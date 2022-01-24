@@ -15,8 +15,8 @@ epsilon_decay_factor = 0.99
 initial_actions_before_training = 1000
 max_replay_buffer_size = np.inf
 batch_size = 32  # Size of batch taken from replay buffer
-compressed_memory_length = 16
-memory_compression_rate = 16
+# compressed_memory_length = 16
+# memory_compression_rate = 16
 num_alpha_options = 11
 
 optimizer = keras.optimizers.SGD(learning_rate=1e-3)
@@ -33,6 +33,7 @@ class NeuralNetworkContainer:
         # self.network_copy = copy.deepcopy(self.network)
         self.last_memory = None
         self.last_selected_alpha = None
+        self.input_size = params.memory_compression_factor + 1
 
     def get_next_alpha(self, compressed_memory, mean_reward):
         selected_alpha = self.__select_alpha(compressed_memory)
@@ -57,7 +58,7 @@ class NeuralNetworkContainer:
             alpha = np.array([it[1] for it in chosen_experiences])
             reward = np.array([it[2] for it in chosen_experiences])
 
-            x = np.zeros((batch_size, compressed_memory_length + 1))
+            x = np.zeros((batch_size, self.input_size))
             x[:, :-1] = compressed_memories
             x[:, -1] = alpha
             y_target = reward
@@ -99,7 +100,7 @@ class NeuralNetworkContainer:
 
 
 def create_qnet(params: Params):
-    inputs = layers.Input(shape=(compressed_memory_length + 1,))
+    inputs = layers.Input(shape=(params.memory_length + 1,))
 
     layer1 = layers.Dense(12, activation="relu")(inputs)
 
