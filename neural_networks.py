@@ -88,7 +88,8 @@ class NeuralNetworkContainer:
     def __epsilon_decay(self):
         if len(self.experience_buffer) > initial_actions_before_training:
             self.epsilon *= epsilon_decay_factor
-
+            if self.epsilon < epsilon_min:
+                self.epsilon = epsilon_min
 
 def create_qnet(params: Params):
     inputs = layers.Input(shape=(compressed_memory_length + 1,))
