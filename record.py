@@ -2,6 +2,8 @@ import copy
 
 import numpy as np
 from tags import ResultTag
+from config import Params
+from data import AgentsData
 
 
 class DataRecorder:
@@ -123,7 +125,42 @@ class ParamRecorder:
         return self.params
 
 
-def create_data_recorder(params):
+class LossRecorder:
+    def __init__(self, params):
+        self.num_agents = params.num_agents
+        self.tag = ResultTag.LOSS
+        self.losses = [[] for _ in range(params.num_agents*params.num_repeats)]
+        self.repeat_index = 0
+
+    def new_repeat(self):
+        self.repeat_index += 1
+
+    def record(self, agents, new_agents, agent_data: AgentsData, world, mover, rep, step):
+        for i in range(self.num_agents):
+            j = i + self.repeat_index * self.num_agents
+            self.losses[j].append(agent_data.network_containers[j].last_loss)
+
+    def get_results(self):
+        return self.losses
+
+
+# class NetworkSaver:
+#     def __init__(self, params):
+#         self.tag = None
+#         self.params = copy.deepcopy(params)
+#
+#     def new_repeat(self):
+#         pass
+#
+#     def record(self, agents, new_agents, agent_data, world, mover, rep, step):
+#         pass
+#
+#     def get_results(self):
+#         return self.params
+
+
+
+def create_data_recorder(params: Params):
     components = [ParamRecorder(params)]
     visited_segments = None
     if params.is_recording_position:
@@ -138,5 +175,9 @@ def create_data_recorder(params):
         rec = AreaOverTimeRecorder(params)
         components.append(rec)
         visited_segments = rec.visited_spaces
+    if params.is_recording_loss:
+        components.append(LossRecorder(params))
+#    if params.is_saving_network:
+#        components.append(NetworkSaver(params))
 
     return DataRecorder(components), visited_segments

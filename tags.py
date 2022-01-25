@@ -27,6 +27,7 @@ class ResultTag:
     AREA = "area"
     AREA_INDICES = "area_indices"
     AREA_TIME = "area_time"
+    LOSS = "loss"
 
 
 class AlphaInitTag:

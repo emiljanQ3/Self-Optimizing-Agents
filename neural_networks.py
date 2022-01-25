@@ -34,6 +34,7 @@ class NeuralNetworkContainer:
         self.last_memory = None
         self.last_selected_alpha = None
         self.input_size = params.memory_compression_factor + 1
+        self.last_loss = None
 
     def get_next_alpha(self, compressed_memory, mean_reward):
         selected_alpha = self.__select_alpha(compressed_memory)
@@ -70,6 +71,8 @@ class NeuralNetworkContainer:
             grads = tape.gradient(loss_value, self.network.trainable_weights)
 
             optimizer.apply_gradients(zip(grads, self.network.trainable_weights))
+
+        self.last_loss = loss_value
 
     def __select_alpha(self, compressed_memory):
         r = np.random.random_sample()
