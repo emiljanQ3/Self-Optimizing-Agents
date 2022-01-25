@@ -4,7 +4,7 @@ from simulation import simulate
 from record import create_data_recorder
 from disk import save, load_all
 from plot import display_results, plot_alpha_speed_surface, scatter_alpha_speed_surface, \
-    plot_many_area_over_time, plot_many_area_at_time
+    plot_many_area_over_time, plot_many_area_at_time, plot_loss_over_time
 from config import Params
 import numpy as np
 from plot import plot_area_over_alpha
@@ -54,10 +54,22 @@ def run_param_search(params: Params):
     #it = [run_simulation(x) for x in params_list]
 
 
+def run_paralell(params: Params, num_simulations):
+
+    params_list = []
+
+    for i in range(num_simulations):
+        temp_params = copy.deepcopy(params)
+
+        temp_params.save_id += f"-1"
+        params_list.append(temp_params)
+
+    process_map(run_simulation, params_list)
+
+
 if __name__ == '__main__':
     params = Params()
-    #run_param_search(params)
-    run_simulation(params)
-    plot_area_over_alpha(load_all(params))
+    run_paralell(params, 8)
+    plot_loss_over_time(load_all(params))
     plt.show()
 
