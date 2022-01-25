@@ -286,3 +286,12 @@ def scatter_alpha_speed_surface(results):
     ax.set_xlabel("log2(speed)")
     ax.set_ylabel("alpha")
     ax.set_zlabel("area")
+
+
+def plot_loss_over_time(results):
+    loss_collections = [r[ResultTag.LOSS] for r in results]
+    agent_losses = [item for sublist in loss_collections for item in sublist]
+
+    fig, ax = plt.subplots()
+    for al in agent_losses:
+        ax.plot(al)
