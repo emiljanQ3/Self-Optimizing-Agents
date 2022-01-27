@@ -138,6 +138,27 @@ def plot_area_over_alpha(results):
     plt.show()
 
 
+def plot_last_area_over_alpha(result_list, last_steps):
+    results = [(x[ResultTag.AREA_TIME], x[ResultTag.PARAM]) for x in result_list]
+
+    mean_areas = []
+    labels = []
+    for area_times, params in results:
+        sum = 0
+        for at in area_times:
+            area = np.sum(np.array(at) > (params.num_steps - last_steps))
+            sum += area
+
+        mean = sum / len(area_times)
+
+        mean_areas.append(mean)
+        labels.append(params.save_id)
+
+    fig, ax = plt.subplots()
+
+    ax.bar(labels, mean_areas)
+
+
 def plot_many_area_at_time(result_list, time):
     fig, ax = plt.subplots()
     for result in result_list:
@@ -288,10 +309,23 @@ def scatter_alpha_speed_surface(results):
     ax.set_zlabel("area")
 
 
-def plot_loss_over_time(results):
+def plot_loss_over_time(results, rolling_mean=1):
     loss_collections = [r[ResultTag.LOSS] for r in results]
     agent_losses = [item for sublist in loss_collections for item in sublist]
+
+    if rolling_mean > 1:
+        agent_losses = [moving_average(al, rolling_mean) for al in agent_losses]
 
     fig, ax = plt.subplots()
     for al in agent_losses:
         ax.plot(al)
+
+
+def moving_average(list, n):
+    averaged = np.zeros(len(list)+n)
+    for i in range(len(list)):
+        if list[i] is not None:
+
+            averaged[i:i+n] += list[i]
+    averaged /= n
+    return averaged[n-1:-n]
