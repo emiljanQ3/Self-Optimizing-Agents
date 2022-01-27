@@ -70,7 +70,7 @@ class AreaOverTimeRecorder:
         self.saved_area = []
 
     def new_repeat(self):
-        self.saved_area.extend(self.visited_spaces)
+        self.saved_area.extend(copy.deepcopy(self.visited_spaces))
         [x.clear() for x in self.visited_spaces]
 
     def record(self, agents, new_agents, agent_data, world, mover, rep, step):
