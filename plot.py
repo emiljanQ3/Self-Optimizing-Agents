@@ -314,7 +314,7 @@ def plot_loss_over_time(results, rolling_mean=1):
     agent_losses = [item for sublist in loss_collections for item in sublist]
 
     if rolling_mean > 1:
-        agent_losses = [moving_average(al, rolling_mean) for al in agent_losses]
+        agent_losses = [fast_moving_average(al, rolling_mean) for al in agent_losses]
 
     fig, ax = plt.subplots()
     for al in agent_losses:
@@ -329,3 +329,9 @@ def moving_average(list, n):
             averaged[i:i+n] += list[i]
     averaged /= n
     return averaged[n-1:-n]
+
+
+def fast_moving_average(list, n):
+    ret = np.cumsum(list, dtype=float)
+    ret[n:] = ret[n:] - ret[:-n]
+    return ret[n - 1:] / n
