@@ -3,8 +3,7 @@ from move import create_mover
 from simulation import simulate
 from record import create_data_recorder
 from disk import save, load_all
-from plot import display_results, plot_alpha_speed_surface, scatter_alpha_speed_surface, \
-    plot_many_area_over_time, plot_many_area_at_time, plot_loss_over_time
+import plot
 from config import Params
 import numpy as np
 from plot import plot_area_over_alpha
@@ -24,7 +23,7 @@ def run_simulation(params):
     data_modifier = DataModifier(visited_segments, params)
     results = simulate(world, mover, data_recorder, data_modifier, params)
     save(results, params)
-    display_results(results, params)
+    #display_results(results, params)
 
 
 def run_param_search(params: Params):
@@ -50,8 +49,8 @@ def run_param_search(params: Params):
         temp_params.save_id += f"_a{alpha}"
         params_list.append(temp_params)
 
-    process_map(run_simulation, params_list)
-    #it = [run_simulation(x) for x in params_list]
+    #process_map(run_simulation, params_list)
+    it = [run_simulation(x) for x in params_list]
 
 
 def run_paralell(params: Params, num_simulations):
@@ -64,12 +63,12 @@ def run_paralell(params: Params, num_simulations):
         temp_params.save_id += f"-1"
         params_list.append(temp_params)
 
+    for param in params_list:
+        run_simulation(param)
     process_map(run_simulation, params_list)
 
 
 if __name__ == '__main__':
     params = Params()
-    run_paralell(params, 8)
-    plot_loss_over_time(load_all(params))
-    plt.show()
+    run_param_search(params)
 
