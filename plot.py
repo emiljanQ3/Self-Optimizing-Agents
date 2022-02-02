@@ -332,6 +332,6 @@ def moving_average(list, n):
 
 
 def fast_moving_average(list, n):
-    ret = np.cumsum(list, dtype=float)
+    ret = np.cumsum([i for i in list if i], dtype=float)
     ret[n:] = ret[n:] - ret[:-n]
     return ret[n - 1:] / n
