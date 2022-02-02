@@ -4,10 +4,10 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 1000000
+        self.num_steps = 10000000
         self.num_repeats = 1
         self.num_agents = 1
-        self.save_id = "run44-1"
+        self.save_id = "run44-2"
         self.results_path = "results/neural_training_3/"
         self.alpha_tag = AlphaInitTag.NETWORK
         # Learning
