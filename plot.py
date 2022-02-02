@@ -156,7 +156,7 @@ def plot_last_area_over_alpha(result_list, last_steps):
 
     fig, ax = plt.subplots()
 
-    ax.bar(labels, mean_areas)
+    ax.bar(range(len(mean_areas)), mean_areas, tick_label=labels)
 
 
 def plot_many_area_at_time(result_list, time):
