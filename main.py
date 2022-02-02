@@ -63,12 +63,14 @@ def run_paralell(params: Params, num_simulations):
         temp_params.save_id += f"-1"
         params_list.append(temp_params)
 
-    for param in params_list:
-        run_simulation(param)
     process_map(run_simulation, params_list)
 
 
 if __name__ == '__main__':
     params = Params()
-    run_param_search(params)
+    run_paralell(params, 8)
+    # run_param_search(params)
+    results = load_all(params)
+    plot.plot_last_area_over_alpha(results, 100000)
+    plt.show()
 
