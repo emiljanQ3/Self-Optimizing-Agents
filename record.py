@@ -167,7 +167,7 @@ class ActionBufferRecorder:
             agents_data.reward_since_last_action[i] = 0
             agents_data.steps_since_last_action[i] = 0
 
-        self.last_direction = agents[:, 2]
+        self.last_direction[:] = agents[:, 2]
 
     def get_results(self):
         return self.buffer
