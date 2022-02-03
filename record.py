@@ -206,6 +206,8 @@ def create_data_recorder(params: Params):
         visited_segments = rec.visited_spaces
     if params.is_recording_loss:
         components.append(LossRecorder(params))
+    if params.is_recording_buffer_dataset:
+        components.append(ActionBufferRecorder(params))
 #    if params.is_saving_network:
 #        components.append(NetworkSaver(params))
 
