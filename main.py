@@ -30,17 +30,17 @@ def run_param_search(params: Params):
 
     params_list = []
 
-    slow_optimal_params = copy.deepcopy(params)
-    slow_optimal_params.save_id += "_slow_optimal"
-    slow_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
-    slow_optimal_params.alpha = 2.2
-    params_list.append(slow_optimal_params)
-
-    instant_optimal_params = copy.deepcopy(params)
-    instant_optimal_params.save_id += "_instant_optimal"
-    instant_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH
-    instant_optimal_params.alpha = 2.3
-    params_list.append(instant_optimal_params)
+    # slow_optimal_params = copy.deepcopy(params)
+    # slow_optimal_params.save_id += "_slow_optimal"
+    # slow_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
+    # slow_optimal_params.alpha = 2.2
+    # params_list.append(slow_optimal_params)
+    #
+    # instant_optimal_params = copy.deepcopy(params)
+    # instant_optimal_params.save_id += "_instant_optimal"
+    # instant_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH
+    # instant_optimal_params.alpha = 2.3
+    # params_list.append(instant_optimal_params)
 
     for alpha in np.linspace(1, 2, 11):
         temp_params = copy.deepcopy(params)
@@ -49,8 +49,8 @@ def run_param_search(params: Params):
         temp_params.save_id += f"_a{alpha}"
         params_list.append(temp_params)
 
-    #process_map(run_simulation, params_list)
-    it = [run_simulation(x) for x in params_list]
+    process_map(run_simulation, params_list)
+    # it = [run_simulation(x) for x in params_list]
 
 
 def run_paralell(params: Params, num_simulations):
@@ -68,9 +68,10 @@ def run_paralell(params: Params, num_simulations):
 
 if __name__ == '__main__':
     params = Params()
-    run_paralell(params, 8)
-    # run_param_search(params)
-    results = load_all(params)
-    plot.plot_last_area_over_alpha(results, 100000)
-    plt.show()
+    # run_paralell(params, 8)
+    run_param_search(params)
+    #results = load_all(params)
+    #plot.plot_last_area_over_alpha(results, 1000000)
+    # plot.plot_area_over_alpha(results)
+    #plt.show()
 
