@@ -144,6 +144,35 @@ class LossRecorder:
         return self.losses
 
 
+class ActionBufferRecorder:
+    def __init__(self, params):
+        self.num_agents = params.num_agents
+        self.tag = ResultTag.BUFFER
+        self.buffer = []
+        self.last_state = [None for _ in range(self.num_agents)]
+        self.last_direction = np.zeros(self.num_agents)
+
+    def new_repeat(self):
+        self.last_state = [None for _ in range(self.num_agents)]
+        self.last_direction = np.zeros(self.num_agents)
+
+    def record(self, agents, new_agents, agents_data: AgentsData, world, mover, rep, step):
+        turning_idx = np.nonzero(self.last_direction != agents[:, 2])
+        for i in turning_idx:
+            mean_reward = agents_data.reward_since_last_action[i] / agents_data.steps_since_last_action[i]
+            if self.last_state[i] is not None:
+                self.buffer.append((self.last_state[i], agents_data.alphas[i], mean_reward))
+
+            self.last_state[i] = agents_data.memory[i]
+            agents_data.reward_since_last_action[i] = 0
+            agents_data.steps_since_last_action[i] = 0
+
+        self.last_direction = agents[:, 2]
+
+    def get_results(self):
+        return self.buffer
+
+
 # class NetworkSaver:
 #     def __init__(self, params):
 #         self.tag = None
