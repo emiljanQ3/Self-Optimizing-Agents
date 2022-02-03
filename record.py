@@ -157,7 +157,7 @@ class ActionBufferRecorder:
         self.last_direction = np.zeros(self.num_agents)
 
     def record(self, agents, new_agents, agents_data: AgentsData, world, mover, rep, step):
-        turning_idx = np.nonzero(self.last_direction != agents[:, 2])
+        turning_idx = np.nonzero(self.last_direction != agents[:, 2])[0]
         for i in turning_idx:
             mean_reward = agents_data.reward_since_last_action[i] / agents_data.steps_since_last_action[i]
             if self.last_state[i] is not None:
