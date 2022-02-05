@@ -49,3 +49,13 @@ def load_all(params: Params):
                 results.append(pickle.load(file))
 
     return results
+
+
+def map_load_all(params:Params, func):
+    results = []
+    for file_name in os.listdir(params.results_path):
+        if file_name.startswith(params.save_id):
+            with open(params.results_path + file_name, 'rb') as file:
+                results.append(func(pickle.load(file)))
+
+    return results
