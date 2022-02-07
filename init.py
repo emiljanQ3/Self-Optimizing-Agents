@@ -23,5 +23,7 @@ def init_agents_data(params):
                           network_containers=[NeuralNetworkContainer(params) for _ in range(params.num_agents)])
     if params.alpha_tag == AlphaInitTag.NETWORK and not params.train_network:
         model = keras.models.load_model("model1")
-        return AgentsData(alphas=None, params=params, network_containers=[model for _ in range(params.num_agents)])
+        container = NeuralNetworkContainer(params)
+        container.network = model
+        return AgentsData(alphas=None, params=params, network_containers=[container for _ in range(params.num_agents)])
 
