@@ -36,10 +36,10 @@ class NeuralNetworkContainer:
         self.input_size = params.memory_compression_factor + 1
         self.last_loss = None
 
-    def get_next_alpha(self, compressed_memory, mean_reward):
+    def get_next_alpha(self, compressed_memory, mean_reward, extend_buffer=True):
         selected_alpha = self.__select_alpha(compressed_memory)
 
-        if self.last_memory is not None:
+        if self.last_memory is not None and extend_buffer:
             self.experience_buffer.append((self.last_memory, self.last_selected_alpha, mean_reward))
             if len(self.experience_buffer) > max_replay_buffer_size:
                 self.experience_buffer.remove(0)

@@ -185,6 +185,21 @@ class BigContrastNeuralNetworkLevyRotater:
         return agents, agents_data
 
 
+class PretrainedNetworkLevyRotater:
+    def __init__(self, params):
+        self.levy_timer = np.zeros(params.num_agents)
+
+    def apply(self, agents, agents_data, params):
+        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
+        turning_idx = np.nonzero(self.levy_timer <= 0)[0]
+        for i in turning_idx:
+            alpha = agents_data.network_containers[i].get_next_alpha(agents_data.memory[i], None, extend_buffer=False)
+            self.levy_timer[i] = np.abs(levy_stable.rvs(alpha=alpha, beta=0))
+            agents[i, 2] += np.random.standard_normal() * params.ang_sd
+
+        return agents, agents_data
+
+
 def create_mover(params):
     components = []
 
@@ -208,7 +223,9 @@ def create_mover(params):
         components.extend([BigContrastOptimalLevyRotater(params), ForwardMovement()])
     if params.selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH:
         components.extend([BigContrastOptimalLevyRotater(params, instant_switch=True), ForwardMovement()])
-    if params.selected_mover == MoveTag.NEURAL_LEVY:
+    if params.selected_mover == MoveTag.NEURAL_LEVY and params.train_network:
         components.extend([BigContrastNeuralNetworkLevyRotater(params), ForwardMovement()])
+    if params.selected_mover == MoveTag.NEURAL_LEVY and not params.train_network:
+        components.extend([PretrainedNetworkLevyRotater(params), ForwardMovement()])
 
     return Mover(components)
