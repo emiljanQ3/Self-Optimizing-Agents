@@ -2,6 +2,7 @@ import numpy as np
 from tags import AlphaInitTag
 from data import AgentsData
 from neural_networks import NeuralNetworkContainer
+from tensorflow import keras
 
 
 def init_agents_pos(params):
@@ -17,7 +18,10 @@ def init_agents_data(params):
         return AgentsData(alphas=np.ones(params.num_agents) * params.alpha, params=params)
     if params.alpha_tag == AlphaInitTag.LINSPACE:
         return AgentsData(alphas=np.linspace(1, 2, params.num_agents), params=params)
-    if params.alpha_tag == AlphaInitTag.NETWORK:
+    if params.alpha_tag == AlphaInitTag.NETWORK and params.train_network:
         return AgentsData(alphas=None, params=params,
                           network_containers=[NeuralNetworkContainer(params) for _ in range(params.num_agents)])
+    if params.alpha_tag == AlphaInitTag.NETWORK and not params.train_network:
+        model = keras.models.load_model("model1")
+        return AgentsData(alphas=None, params=params, network_containers=[model for _ in range(params.num_agents)])
 
