@@ -9,7 +9,7 @@ class Params:
         self.num_agents = 10
         self.save_id = "run47-"
         self.results_path = "results/instant_vs_slow_vs_constant/"
-        self.alpha_tag = AlphaInitTag.SAME
+        self.alpha_tag = AlphaInitTag.NETWORK
         # Learning
         self.train_network = False
         self.update_memory = True
