@@ -37,7 +37,7 @@ class NeuralNetworkContainer:
         self.last_loss = None
 
     def get_next_alpha(self, compressed_memory, mean_reward, extend_buffer=True):
-        selected_alpha = self.__select_alpha(compressed_memory)
+        selected_alpha = self.__select_alpha(compressed_memory, extend_buffer=extend_buffer)
 
         if self.last_memory is not None and extend_buffer:
             self.experience_buffer.append((self.last_memory, self.last_selected_alpha, mean_reward))
@@ -74,9 +74,9 @@ class NeuralNetworkContainer:
 
         self.last_loss = loss_value
 
-    def __select_alpha(self, compressed_memory):
+    def __select_alpha(self, compressed_memory, is_training):
         r = np.random.random_sample()
-        if r < self.epsilon:
+        if r < self.epsilon and is_training:
             selected_alpha = np.random.random_sample() + 1
         else:
             selected_alpha = self.__network_select(compressed_memory)
