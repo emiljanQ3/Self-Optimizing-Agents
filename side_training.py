@@ -76,4 +76,4 @@ if __name__ == '__main__':
     model = create_model()
     model.compile(optimizer="SGD", loss=keras.losses.MSE)
     model.fit(train_x, train_y, batch_size=32, epochs=10, validation_data=(val_x, val_y))
-    model.save("results/model1")
+    model.save("model1")
