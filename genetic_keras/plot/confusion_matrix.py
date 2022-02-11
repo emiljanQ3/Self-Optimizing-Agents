@@ -33,7 +33,7 @@ def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, 
     """
       config cell text and colors
       and return text elements to add and to dell
-      
+
     """
     text_add = []; text_del = [];
     cell_val = array_df[lin][col]
