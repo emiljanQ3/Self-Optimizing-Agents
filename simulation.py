@@ -1,10 +1,10 @@
 from init import init_agents_data, init_agents_pos
 
 
-def simulate(world, mover, data_recorder, data_modifier, params):
+def simulate(world, mover, data_recorder, data_modifier, params, model=None):
     for rep in range(params.num_repeats):
         agents_pos = init_agents_pos(params)
-        agents_data = init_agents_data(params)
+        agents_data = init_agents_data(params, model)
         for step in range(params.num_steps):
             new_agents_pos, agents_data = mover.step(agents_pos, agents_data, params)
             new_agents_pos = world.step(agents_pos, new_agents_pos, params)

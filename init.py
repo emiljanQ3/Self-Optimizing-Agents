@@ -13,11 +13,15 @@ def init_agents_pos(params):
     return random
 
 
-def init_agents_data(params):
+def init_agents_data(params, model):
     if params.alpha_tag == AlphaInitTag.SAME:
         return AgentsData(alphas=np.ones(params.num_agents) * params.alpha, params=params)
     if params.alpha_tag == AlphaInitTag.LINSPACE:
         return AgentsData(alphas=np.linspace(1, 2, params.num_agents), params=params)
+    if params.alpha_tag == AlphaInitTag.NETWORK and model is not None:
+        container = NeuralNetworkContainer(params)
+        container.network = model
+        return AgentsData(alphas=None, params=params, network_containers=[container for _ in range(params.num_agents)])
     if params.alpha_tag == AlphaInitTag.NETWORK and params.train_network:
         return AgentsData(alphas=None, params=params,
                           network_containers=[NeuralNetworkContainer(params) for _ in range(params.num_agents)])
