@@ -21,29 +21,25 @@ from data import DataModifier
 from config import Params
 
 params = Params()
-models = []
 
 
-def run_simulation(index):
-    model = models[index]
+def run_simulation(models):
     world = create_world(params)
     mover = create_mover(params)
     data_recorder, visited_segments = create_data_recorder(params)
     data_modifier = DataModifier(visited_segments, params)
-    results = simulate(world, mover, data_recorder, data_modifier, params, model)
+    results = simulate(world, mover, data_recorder, data_modifier, params, models)
     return results[ResultTag.AREA]
 
 
 def evaluate_population(population:np.ndarray, model: keras.Model):
-    global models
     models = [keras.models.clone_model(model) for _ in range(len(population))]
 
     for i in range(len(population)):
         weights = models[i].get_weights()
         set_params(models[i], population[i], weights)
 
-    pool = Pool()
-    scores = np.array(test_map(run_simulation, range(len(models))))
+    scores = run_simulation(models)
     scores = np.mean(scores, axis=(1, 2))
     return -scores
 

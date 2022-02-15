@@ -114,8 +114,8 @@ def create_qnet(params: Params):
 
 class GenNetContainer:
 
-    def __init__(self, params: Params):
-        self.network = create_gen_net(params)
+    def __init__(self, params: Params, model):
+        self.network = model
 
     def get_next_alpha(self, compressed_memory, mean_reward, extend_buffer=True):
         compressed_memory = np.reshape(compressed_memory, (1, len(compressed_memory)))
