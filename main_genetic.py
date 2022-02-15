@@ -12,7 +12,7 @@ params = Params()
 
 def genetic_training(mutation_factor, save_tag, epochs= 1000, decay=1, nr_elites=0):
 
-    save_string = f'saved_data/{save_tag}'
+    save_string = f'saved_genetic_training/{save_tag}/{save_tag}'
 
     model = create_gen_net(params)
     model.summary()
