@@ -11,8 +11,8 @@ class Params:
         self.results_path = "results/instant_vs_slow_vs_constant/"
         self.alpha_tag = AlphaInitTag.NETWORK
         # Learning
-        self.genetic_training = True
-        self.train_network = False
+        self.is_genetic_training = True
+        self.is_backprop_training = False
         self.update_memory = True
         self.memory_length = 16
         self.memory_compression_factor = 16

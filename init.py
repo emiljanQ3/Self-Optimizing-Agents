@@ -22,10 +22,10 @@ def init_agents_data(params, model):
         container = NeuralNetworkContainer(params)
         container.network = model
         return AgentsData(alphas=None, params=params, network_containers=[container for _ in range(params.num_agents)])
-    if params.alpha_tag == AlphaInitTag.NETWORK and params.train_network:
+    if params.alpha_tag == AlphaInitTag.NETWORK and params.is_backprop_training:
         return AgentsData(alphas=None, params=params,
                           network_containers=[NeuralNetworkContainer(params) for _ in range(params.num_agents)])
-    if params.alpha_tag == AlphaInitTag.NETWORK and not params.train_network:
+    if params.alpha_tag == AlphaInitTag.NETWORK and not params.is_backprop_training:
         model = keras.models.load_model("model1")
         container = NeuralNetworkContainer(params)
         container.network = model
