@@ -11,6 +11,7 @@ class Params:
         self.results_path = "results/instant_vs_slow_vs_constant/"
         self.alpha_tag = AlphaInitTag.NETWORK
         # Learning
+        self.genetic_training = True
         self.train_network = False
         self.update_memory = True
         self.memory_length = 16
@@ -19,7 +20,7 @@ class Params:
         self.delta_time = 0.5
         self.speed = 0.01
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.NEURAL_LEVY
+        self.selected_mover = MoveTag.GENETIC_LEVY
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONCAVE_CELLS
