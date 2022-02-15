@@ -118,7 +118,8 @@ class GenNetContainer:
         self.network = create_gen_net(params)
 
     def get_next_alpha(self, compressed_memory, mean_reward, extend_buffer=True):
-        return self.network(compressed_memory)
+        compressed_memory = np.reshape(compressed_memory, (1, len(compressed_memory)))
+        return self.network(compressed_memory) + 1
 
     def train_network(self, num_batches):
         pass
@@ -129,7 +130,7 @@ def create_gen_net(params: Params):
 
     layer1 = layers.Dense(12, activation="relu")(inputs)
 
-    action = layers.Dense(1, activation="linear")(layer1)
+    action = layers.Dense(1, activation="sigmoid")(layer1)
 
     return keras.Model(inputs=inputs, outputs=action)
 
