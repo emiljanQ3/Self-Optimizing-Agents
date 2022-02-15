@@ -21,9 +21,11 @@ from data import DataModifier
 from config import Params
 
 params = Params()
+models = []
 
 
-def run_simulation(params: Params, model: keras.Model):
+def run_simulation(index):
+    model = models[index]
     world = create_world(params)
     mover = create_mover(params)
     data_recorder, visited_segments = create_data_recorder(params)
@@ -33,6 +35,7 @@ def run_simulation(params: Params, model: keras.Model):
 
 
 def evaluate_population(population:np.ndarray, model: keras.Model):
+    global models
     models = [keras.models.clone_model(model) for _ in range(len(population))]
 
     for i in range(len(population)):
@@ -40,8 +43,12 @@ def evaluate_population(population:np.ndarray, model: keras.Model):
         set_params(models[i], population[i], weights)
 
     pool = Pool()
-    scores = np.array(pool.map(lambda m: run_simulation(params, m), models))
+    scores = np.array(test_map(run_simulation, range(len(models))))
     return -scores
+
+
+def test_map(f, xs):
+    return [f(x) for x in xs]
 
 
 
