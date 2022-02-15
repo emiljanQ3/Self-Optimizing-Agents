@@ -18,6 +18,9 @@ from utils import normalize_area_to_best_alpha
 from matplotlib import pyplot as plt
 from tqdm.contrib.concurrent import process_map
 from data import DataModifier
+from config import Params
+
+params = Params()
 
 
 def run_simulation(params: Params, model: keras.Model):
@@ -29,7 +32,7 @@ def run_simulation(params: Params, model: keras.Model):
     return results[ResultTag.AREA]
 
 
-def evaluate_population(population:np.ndarray, model: keras.Model, params: Params):
+def evaluate_population(population:np.ndarray, model: keras.Model):
     models = [keras.models.clone_model(model) for _ in range(len(population))]
 
     for i in range(len(population)):
