@@ -51,7 +51,7 @@ def genetic_algorithm(model: keras.Model,
     for epoch in tqdm(range(epochs)):
         start_time = time.time()
 
-        losses = evaluation.evaluate_population(population, model, f_loss, batched_input[batch], batched_output[batch], node_indices)
+        losses = evaluation.evaluate_population(population, model)
 
         parents = f_select(population, losses)
 
@@ -67,7 +67,7 @@ def genetic_algorithm(model: keras.Model,
 
         epoch_time = time.time()-start_time
         epoch_history.append(data.generate_epoch_data(population=population,
-                                                      train_losses=None,
+                                                      train_losses=losses,
                                                       validation_losses=None,
                                                       epoch_time=epoch_time,
                                                       index=epoch,
@@ -82,4 +82,4 @@ def genetic_algorithm(model: keras.Model,
         if f_print is not None:
             f_print(epoch_history)
 
-    return epoch_history, best
+    return epoch_history
