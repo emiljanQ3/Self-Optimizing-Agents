@@ -22,6 +22,7 @@ def genetic_training(mutation_factor, save_tag, epochs= 1000, decay=1, nr_elites
     num_params = model_standard_genetic.count_params()
 
     standard_genetic_history = genetic_algorithm(model=model_standard_genetic,
+                                                 population_size=params.num_agents,
                                                  epochs=epochs,
                                                  mutator=StandardMutator(
                                                      base_mutation_rate=mutation_factor / num_params,

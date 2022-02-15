@@ -29,7 +29,7 @@ def run_simulation(models):
     data_recorder, visited_segments = create_data_recorder(params)
     data_modifier = DataModifier(visited_segments, params)
     results = simulate(world, mover, data_recorder, data_modifier, params, models)
-    return results[ResultTag.AREA]
+    return np.array(results[ResultTag.AREA])
 
 
 def evaluate_population(population:np.ndarray, model: keras.Model):
@@ -40,7 +40,7 @@ def evaluate_population(population:np.ndarray, model: keras.Model):
         set_params(models[i], population[i], weights)
 
     scores = run_simulation(models)
-    scores = np.mean(scores, axis=(1, 2))
+    scores = np.mean(scores,axis=0)
     return -scores
 
 
