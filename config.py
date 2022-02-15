@@ -4,11 +4,11 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 100000
-        self.num_repeats = 100
-        self.num_agents = 10
-        self.save_id = "run47-"
-        self.results_path = "results/instant_vs_slow_vs_constant/"
+        self.num_steps = 100
+        self.num_repeats = 1
+        self.num_agents = 1
+        self.save_id = "test1-"
+        self.results_path = "results/genetic1/"
         self.alpha_tag = AlphaInitTag.NETWORK
         # Learning
         self.is_genetic_training = True
@@ -30,9 +30,9 @@ class Params:
         self.world_width = 2
         # Record
         self.is_recording_position = False
-        self.is_recording_area = False
+        self.is_recording_area = True
         self.is_recording_area_indices = False
-        self.is_recording_area_over_time = True
+        self.is_recording_area_over_time = False
         self.is_recording_loss = False
         self.is_recording_buffer_dataset = False
         self.area_unit_size = 0.05
