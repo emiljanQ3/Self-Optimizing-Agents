@@ -42,4 +42,4 @@ def genetic_training(mutation_factor, save_tag, epochs= 1000, decay=1, nr_elites
 
 
 if __name__ == '__main__':
-    genetic_training(mutation_factor=2, save_tag=params.save_id, epochs=3, decay=1, nr_elites=0)
+    genetic_training(mutation_factor=2, save_tag=params.save_id, epochs=10, decay=1, nr_elites=0)

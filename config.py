@@ -4,10 +4,10 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 100
+        self.num_steps = 10000
         self.num_repeats = 1
-        self.num_agents = 1
-        self.save_id = "test1-"
+        self.num_agents = 100
+        self.save_id = "gentic_run_1-"
         self.results_path = "results/genetic1/"
         self.alpha_tag = AlphaInitTag.NETWORK
         # Learning
