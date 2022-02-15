@@ -48,13 +48,12 @@ def generate_epoch_data(population: np.ndarray, train_losses: np.ndarray, valida
         median_accuracy_validation = None
 
     best_train_loss_idx = np.argmin(train_losses)
-    best_val_loss_idx = np.argmin(validation_losses)
     return EpochData(time=epoch_time,
                      best_chromosome_training=population[best_train_loss_idx],
                      best_loss_training=train_losses[best_train_loss_idx],
                      median_loss_training=np.median(train_losses),
-                     best_chromosome_validation=population[best_val_loss_idx],
-                     best_loss_validation=validation_losses[best_val_loss_idx],
+                     best_chromosome_validation=None,
+                     best_loss_validation=None,
                      median_loss_validation=np.median(validation_losses),
                      index=index,
                      best_accuracy_training=best_accuracy_training,
