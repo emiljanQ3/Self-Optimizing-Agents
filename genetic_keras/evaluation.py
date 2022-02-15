@@ -44,6 +44,7 @@ def evaluate_population(population:np.ndarray, model: keras.Model):
 
     pool = Pool()
     scores = np.array(test_map(run_simulation, range(len(models))))
+    scores = np.mean(scores, axis=(1, 2))
     return -scores
 
 
