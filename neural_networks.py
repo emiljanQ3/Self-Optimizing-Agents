@@ -33,7 +33,7 @@ class NeuralNetworkContainer:
         # self.network_copy = copy.deepcopy(self.network)
         self.last_memory = None
         self.last_selected_alpha = None
-        self.input_size = params.memory_compression_factor + 1
+        self.input_size = params.memory_length + 1
         self.last_loss = None
 
     def get_next_alpha(self, compressed_memory, mean_reward, extend_buffer=True):
@@ -104,6 +104,28 @@ class NeuralNetworkContainer:
 
 def create_qnet(params: Params):
     inputs = layers.Input(shape=(params.memory_length + 1,))
+
+    layer1 = layers.Dense(12, activation="relu")(inputs)
+
+    action = layers.Dense(1, activation="linear")(layer1)
+
+    return keras.Model(inputs=inputs, outputs=action)
+
+
+class GenNetContainer:
+
+    def __init__(self, params: Params):
+        self.network = create_gen_net(params)
+
+    def get_next_alpha(self, compressed_memory, mean_reward, extend_buffer=True):
+        return self.network(compressed_memory)
+
+    def train_network(self, num_batches):
+        pass
+
+
+def create_gen_net(params: Params):
+    inputs = layers.Input(shape=(params.memory_length,))
 
     layer1 = layers.Dense(12, activation="relu")(inputs)
 
