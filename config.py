@@ -10,6 +10,7 @@ class Params:
         self.save_id = "validation-"
         self.results_path = "results/genetic_validation1/"
         self.alpha_tag = AlphaInitTag.NETWORK
+        self.model_location = "saved_genetic_training/gentic_run_3-/gentic_run_3-"
         # Learning
         self.is_genetic_training = False
         self.is_backprop_training = False

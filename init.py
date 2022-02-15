@@ -3,6 +3,8 @@ from tags import AlphaInitTag
 from data import AgentsData
 from neural_networks import GenNetContainer, NeuralNetworkContainer
 from tensorflow import keras
+from genetic_keras import utils
+import pickle
 
 
 def init_agents_pos(params):
@@ -24,8 +26,12 @@ def init_agents_data(params, models):
         return AgentsData(alphas=None, params=params,
                           network_containers=[NeuralNetworkContainer(params) for _ in range(params.num_agents)])
     if params.alpha_tag == AlphaInitTag.NETWORK and not params.is_backprop_training:
-        model = keras.models.load_model("model1")
-        container = NeuralNetworkContainer(params)
-        container.network = model
+        model: keras.Model = keras.models.load_model(params.model_location + "_sg.mdl")
+        weights = model.get_weights()
+        with open(params.model_location + '.pkl', 'rb') as file:
+            history = pickle.load(file)[0]
+        chromosome = history[-1].best_chromosome_training
+        utils.set_params(model, chromosome, weights)
+        container = GenNetContainer(params, model)
         return AgentsData(alphas=None, params=params, network_containers=[container for _ in range(params.num_agents)])
 
