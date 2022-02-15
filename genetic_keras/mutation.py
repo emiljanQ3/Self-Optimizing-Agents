@@ -1,5 +1,3 @@
-
-import pywt
 from numpy.random import random_sample, standard_normal
 from numpy import random
 import numpy as np
@@ -75,24 +73,3 @@ class StandardMutator(_Mutator):
 
         return chromosome
 
-
-class WaveletMutator(_Mutator):
-    def __init__(self, base_mutation_rate, rand_mult=None, rand_shift=None, mutation_decay=1, batches_to_decay=1,
-                 min_mutation_rate=0, gene_operation="range", wavelet="Haar", weight_increase_factor=1):
-        super().__init__(base_mutation_rate, rand_mult, rand_shift, mutation_decay, batches_to_decay, min_mutation_rate,
-                         gene_operation)
-
-        self.wavelet = wavelet
-        self.weight_increase_factor = weight_increase_factor
-
-    def _single_mutate(self, chromosome, mutation_rate):
-        components = pywt.wavedec(chromosome, self.wavelet)
-        base_weight = (2 - self.weight_increase_factor) / self.weight_increase_factor
-        for i, c in enumerate(components):
-            weight = self.weight_increase_factor ** (len(components) - i) * base_weight
-
-            for j in range(len(c)):
-                if random_sample() < mutation_rate * weight:
-                    c[j] = self.gene_operation(c[j], self.rand_mult, self.rand_shift)
-
-        return pywt.waverec(components, self.wavelet)
