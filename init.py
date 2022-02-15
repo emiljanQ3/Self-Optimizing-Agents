@@ -1,7 +1,7 @@
 import numpy as np
 from tags import AlphaInitTag
 from data import AgentsData
-from neural_networks import NeuralNetworkContainer
+from neural_networks import GenNetContainer, NeuralNetworkContainer
 from tensorflow import keras
 
 
@@ -19,7 +19,7 @@ def init_agents_data(params, model):
     if params.alpha_tag == AlphaInitTag.LINSPACE:
         return AgentsData(alphas=np.linspace(1, 2, params.num_agents), params=params)
     if params.alpha_tag == AlphaInitTag.NETWORK and model is not None:
-        container = NeuralNetworkContainer(params)
+        container = GenNetContainer(params)
         container.network = model
         return AgentsData(alphas=None, params=params, network_containers=[container for _ in range(params.num_agents)])
     if params.alpha_tag == AlphaInitTag.NETWORK and params.is_backprop_training:
