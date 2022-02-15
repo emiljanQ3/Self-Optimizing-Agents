@@ -54,7 +54,7 @@ def generate_epoch_data(population: np.ndarray, train_losses: np.ndarray, valida
                      median_loss_training=np.median(train_losses),
                      best_chromosome_validation=None,
                      best_loss_validation=None,
-                     median_loss_validation=np.median(validation_losses),
+                     median_loss_validation=None,
                      index=index,
                      best_accuracy_training=best_accuracy_training,
                      median_accuracy_training=median_accuracy_training,
