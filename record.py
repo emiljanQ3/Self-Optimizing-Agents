@@ -173,22 +173,6 @@ class ActionBufferRecorder:
         return self.buffer
 
 
-# class NetworkSaver:
-#     def __init__(self, params):
-#         self.tag = None
-#         self.params = copy.deepcopy(params)
-#
-#     def new_repeat(self):
-#         pass
-#
-#     def record(self, agents, new_agents, agent_data, world, mover, rep, step):
-#         pass
-#
-#     def get_results(self):
-#         return self.params
-
-
-
 def create_data_recorder(params: Params):
     components = [ParamRecorder(params)]
     visited_segments = None
