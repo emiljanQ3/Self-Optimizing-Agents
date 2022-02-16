@@ -35,22 +35,17 @@ def x_sum_data_fit_plot(model, x, y_target, ax, title):
 
 def epoch_hist_plot(epoch_history, ax, title):
     epochs = [d.index for d in epoch_history]
-    val_loss_best = [d.best_loss_validation for d in epoch_history]
-    val_loss_median = [d.median_loss_validation for d in epoch_history]
-    train_loss_best = [d.best_loss_training for d in epoch_history]
-    train_loss_median = [d.median_loss_training for d in epoch_history]
+    train_loss_best = [-d.best_loss_training for d in epoch_history]
+    train_loss_median = [-d.median_loss_training for d in epoch_history]
 
     ax.clear()
 
-    final_loss = "{:.2e}".format(train_loss_best[-1])
-    final_val_loss = "{:.2e}".format(val_loss_best[-1])
-    ax.plot(train_loss_median, "-b", label="Median training loss.")
-    ax.plot(train_loss_best, "--b", label="Best training loss " + final_loss)
+    final_best = "{:.2e}".format(train_loss_best[-1])
+    final_median = "{:.2e}".format(train_loss_median[-1])
+    ax.plot(train_loss_median, "-b", label="Median training score." + final_median)
+    ax.plot(train_loss_best, "--b", label="Best training score " + final_best)
 
-    ax.plot(val_loss_median, "-y", label="Median validation loss.")
-    ax.plot(val_loss_best, "--y", label="Best validation loss " + final_val_loss)
-
-    ax.set_xlabel("Epoch index")
-    ax.set_ylabel("Loss")
+    ax.set_xlabel("Generation index")
+    ax.set_ylabel("Score")
     ax.set_title(title)
     ax.legend()
