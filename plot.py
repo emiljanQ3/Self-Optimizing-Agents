@@ -138,7 +138,7 @@ def plot_area_over_alpha(results):
     plt.show()
 
 
-def plot_last_area_over_alpha(result_list, last_steps):
+def plot_last_area_over_alpha(result_list, last_steps, file_names=None):
     results = [(x[ResultTag.AREA_TIME], x[ResultTag.PARAM]) for x in result_list]
 
     mean_areas = []
@@ -153,6 +153,9 @@ def plot_last_area_over_alpha(result_list, last_steps):
 
         mean_areas.append(mean)
         labels.append(params.save_id)
+
+    if file_names is not None:
+        labels = [name[:-4] for name in file_names]
 
     fig, ax = plt.subplots()
 

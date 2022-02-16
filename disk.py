@@ -43,12 +43,14 @@ def load_all_numbered(params):
 
 def load_all(params: Params):
     results = []
+    file_names = []
     for file_name in os.listdir(params.results_path):
         if file_name.startswith(params.save_id):
+            file_names.append(file_name)
             with open(params.results_path + file_name, 'rb') as file:
                 results.append(pickle.load(file))
 
-    return results
+    return results, file_names
 
 
 def map_load_all(params:Params, func):

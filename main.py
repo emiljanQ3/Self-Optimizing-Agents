@@ -70,9 +70,9 @@ if __name__ == '__main__':
     params = Params()
     # run_paralell(params, 8)
     # run_param_search(params)
-    run_simulation(params)
-    results = load_all(params)
-    plot.plot_last_area_over_alpha(results, 50000)
+    # run_simulation(params)
+    results, file_names = load_all(params)
+    plot.plot_last_area_over_alpha(results, 50000, file_names)
     #plot.plot_area_over_alpha(results)
-    #plt.show()
+    plt.show()
 
