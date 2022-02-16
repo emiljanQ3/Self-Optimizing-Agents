@@ -75,12 +75,14 @@ if __name__ == '__main__':
     # run_simulation(params)
 
     results, file_names = load_all(params)
-    plot.plot_area_in_range(results, 50000, 100000-1, file_names)
-
-    with open(params.model_location + '.pkl', 'rb') as file:
-        history = pickle.load(file)[0]
-    fig, ax = plt.subplots()
-    epoch_hist_plot(history, ax, "Agent performance in each generation")
+    #plot.generate_memory_examples(results[0])
+    plot.plot_example_analysis(results[0])
+    #plot.plot_area_in_range(results, 50000, 100000-1, file_names)
+#
+    #with open(params.model_location + '.pkl', 'rb') as file:
+    #    history = pickle.load(file)[0]
+    #fig, ax = plt.subplots()
+    #epoch_hist_plot(history, ax, "Agent performance in each generation")
 
     plt.show()
 

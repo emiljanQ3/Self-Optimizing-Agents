@@ -1,5 +1,6 @@
 import math
 
+import config
 from tags import ResultTag, WorldTag, MoveTag
 from matplotlib import pyplot as plt
 import numpy as np
@@ -338,3 +339,73 @@ def fast_moving_average(list, n):
     ret = np.cumsum([i for i in list if i], dtype=float)
     ret[n:] = ret[n:] - ret[:-n]
     return ret[n - 1:] / n
+
+
+alpha_list = np.linspace(1, 2, 11)
+
+
+def __create_memory(random_index, at, params: config.Params):
+    memory = np.zeros(params.memory_length)
+    for i in range(len(memory)):
+        start = random_index - (params.memory_length-i)*params.memory_compression_factor
+        end = start + params.memory_compression_factor
+        memory[i] = sum(np.logical_and(at >= start, at < end))
+    return memory
+
+
+def generate_memory_examples(result):
+    params: config.Params = result[ResultTag.PARAM]
+    num_examples = 10
+    memory_red_big_delta = np.zeros((len(alpha_list), num_examples, params.memory_length))
+    memory_blue_small_delta = np.zeros((len(alpha_list), num_examples, params.memory_length))
+
+    area_times = result[ResultTag.AREA_TIME]
+    positions: np.ndarray = result[ResultTag.POSITION][0]
+
+    for i in range(len(alpha_list)):
+        at = np.array(area_times[i])
+        x_pos = positions[:, i, 0]
+
+        num_reds_saved = 0
+        num_blues_saved = 0
+        while num_reds_saved < num_examples or num_blues_saved < num_examples:
+            random_index = math.floor((np.random.random_sample()*params.num_steps)-params.memory_length*params.memory_compression_factor) + params.memory_length*params.memory_compression_factor
+
+            if np.floor(x_pos[random_index]) % 2 == 0:
+                if num_reds_saved >= num_examples:
+                    continue
+                memory_red_big_delta[i, num_reds_saved] = __create_memory(random_index, at, params)
+                num_reds_saved += 1
+
+            else:
+                if num_blues_saved >= num_examples:
+                    continue
+                memory_blue_small_delta[i, num_blues_saved, :] = __create_memory(random_index, at, params)
+                num_blues_saved += 1
+
+    return memory_red_big_delta, memory_blue_small_delta
+
+
+
+def plot_example_analysis(result):
+    area_times = result[ResultTag.AREA_TIME]
+    positions: np.ndarray = result[ResultTag.POSITION][0]
+
+    for i in range(len(area_times)):
+        at = area_times[i]
+        x_pos = positions[:, i, 0]
+        at_x_pos = x_pos[at]
+        at_color = ["red" if np.floor(x) % 2 == 0 else "blue" for x in at_x_pos]
+        pos_color = ["red" if np.floor(x) % 2 == 0 else "blue" for x in x_pos]
+
+        fig, ax = plt.subplots(1, 2)
+
+        plot_world(ax[0], result[ResultTag.PARAM], result[ResultTag.POSITION])
+        ax[0].scatter(positions[:, i, 0], positions[:, i, 1], c=pos_color, s=0.5)
+        ax[0].set_aspect('equal')
+
+        ax[1].scatter(at, range(len(at)), c=at_color, s=1)
+
+        fig.suptitle("alpha = " + str(alpha_list[i]) + ", Red == large tic, Blue == low tic rate")
+        print("wow")
+    print("hej")
