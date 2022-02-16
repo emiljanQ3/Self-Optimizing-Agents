@@ -138,7 +138,7 @@ def plot_area_over_alpha(results):
     plt.show()
 
 
-def plot_last_area_over_alpha(result_list, last_steps, file_names=None):
+def plot_area_in_range(result_list, start_step, end_step, file_names=None):
     results = [(x[ResultTag.AREA_TIME], x[ResultTag.PARAM]) for x in result_list]
 
     mean_areas = []
@@ -146,7 +146,7 @@ def plot_last_area_over_alpha(result_list, last_steps, file_names=None):
     for area_times, params in results:
         sum = 0
         for at in area_times:
-            area = np.sum(np.array(at) > (params.num_steps - last_steps))
+            area = np.sum(np.logical_and(start_step <= np.array(at), np.array(at) <= end_step))
             sum += area
 
         mean = sum / len(area_times)

@@ -6,6 +6,7 @@ from disk import save, load_all
 import plot
 from config import Params
 import numpy as np
+import pickle
 from plot import plot_area_over_alpha
 from tags import ResultTag, AlphaInitTag, MoveTag
 import copy
@@ -14,6 +15,7 @@ from utils import normalize_area_to_best_alpha
 from matplotlib import pyplot as plt
 from tqdm.contrib.concurrent import process_map
 from data import DataModifier
+from genetic_keras.plot.plot import epoch_hist_plot
 
 
 def run_simulation(params):
@@ -71,8 +73,14 @@ if __name__ == '__main__':
     # run_paralell(params, 8)
     # run_param_search(params)
     # run_simulation(params)
+
     results, file_names = load_all(params)
-    plot.plot_last_area_over_alpha(results, 50000, file_names)
-    #plot.plot_area_over_alpha(results)
+    plot.plot_area_in_range(results, 50000, 100000-1, file_names)
+
+    with open(params.model_location + '.pkl', 'rb') as file:
+        history = pickle.load(file)[0]
+    fig, ax = plt.subplots()
+    epoch_hist_plot(history, ax, "Agent performance in each generation")
+
     plt.show()
 
