@@ -128,7 +128,7 @@ class GenNetContainer:
 def create_gen_net(params: Params):
     inputs = layers.Input(shape=(params.memory_length,))
 
-    layer1 = layers.Dense(12, activation="relu")(inputs)
+    layer1 = layers.Dense(6, activation="relu")(inputs)
 
     action = layers.Dense(1, activation="sigmoid")(layer1)
 
