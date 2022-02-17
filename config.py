@@ -7,7 +7,7 @@ class Params:
         self.num_steps = 10000
         self.num_repeats = 1
         self.num_agents = 100
-        self.save_id = "gentic_run_4"
+        self.save_id = "gentic_run_5"
         self.results_path = "results/genetic1/"
         self.alpha_tag = AlphaInitTag.NETWORK
         self.model_location = "saved_genetic_training/gentic_run_3-/gentic_run_3-"

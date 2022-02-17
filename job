@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #SBATCH -A C3SE2022-1-1 -p vera
 #SBATCH -n 16
-#SBATCH -t 2-00:00:00
+#SBATCH -t 5-00:00:00
 
 
 singularity exec --nv /cephyr/users/argun/Vera/Singularity/ayks.sif python ./main.py
