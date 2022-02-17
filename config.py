@@ -7,7 +7,7 @@ class Params:
         self.num_steps = 10000
         self.num_repeats = 1
         self.num_agents = 100
-        self.save_id = "gentic_run_5"
+        self.save_id = "gentic_run_6"
         self.results_path = "results/genetic1/"
         self.alpha_tag = AlphaInitTag.NETWORK
         self.model_location = "saved_genetic_training/gentic_run_3-/gentic_run_3-"
@@ -15,8 +15,8 @@ class Params:
         self.is_genetic_training = True
         self.is_backprop_training = False
         self.update_memory = True
-        self.memory_length = 8
-        self.memory_compression_factor = 32
+        self.memory_length = 16
+        self.memory_compression_factor = 16
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01
