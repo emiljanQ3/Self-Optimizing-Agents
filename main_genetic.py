@@ -28,7 +28,8 @@ def genetic_training(mutation_factor, save_tag, epochs= 1000, decay=1, nr_elites
                                                      base_mutation_rate=mutation_factor / num_params,
                                                      mutation_decay=decay,
                                                      batches_to_decay=1,
-                                                     min_mutation_rate=1 / num_params),
+                                                     min_mutation_rate=1 / num_params,
+                                                     gene_operation="gauss"),
                                                  initialize_with_model=False,
                                                  nr_elites=nr_elites
                                                  )
@@ -42,4 +43,4 @@ def genetic_training(mutation_factor, save_tag, epochs= 1000, decay=1, nr_elites
 
 
 if __name__ == '__main__':
-    genetic_training(mutation_factor=2, save_tag=params.save_id, epochs=500, decay=1, nr_elites=0)
+    genetic_training(mutation_factor=2, save_tag=params.save_id, epochs=48, decay=1, nr_elites=0)
