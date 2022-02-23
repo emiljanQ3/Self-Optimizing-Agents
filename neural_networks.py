@@ -125,13 +125,23 @@ class GenNetContainer:
         pass
 
 
+# def create_gen_net(params: Params):
+#     inputs = layers.Input(shape=(params.memory_length,))
+#
+#     layer1 = layers.Dense(12, activation="relu")(inputs)
+#
+#     action = layers.Dense(1, activation="sigmoid")(layer1)
+#
+#     return keras.Model(inputs=inputs, outputs=action)
+
+
 def create_gen_net(params: Params):
-    inputs = layers.Input(shape=(params.memory_length,))
+    model = keras.Sequential()
+    model.add(keras.Input(shape=(params.memory_length, 16)))
+    model.add(layers.SimpleRNN(12))
+    model.add(layers.Dense(1, activation="sigmoid"))
+    model.summary()
+    return model
 
-    layer1 = layers.Dense(12, activation="relu")(inputs)
-
-    action = layers.Dense(1, activation="sigmoid")(layer1)
-
-    return keras.Model(inputs=inputs, outputs=action)
 
 
