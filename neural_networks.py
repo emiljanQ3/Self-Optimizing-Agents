@@ -112,13 +112,16 @@ def create_qnet(params: Params):
     return keras.Model(inputs=inputs, outputs=action)
 
 
+net_input_size = 16
+
+
 class GenNetContainer:
 
     def __init__(self, params: Params, model):
         self.network = model
 
     def get_next_alpha(self, compressed_memory, mean_reward, extend_buffer=True):
-        compressed_memory = np.reshape(compressed_memory, (1, len(compressed_memory)))
+        compressed_memory = np.reshape(compressed_memory, (1, len(compressed_memory)//net_input_size, net_input_size))
         return self.network(compressed_memory) + 1
 
     def train_network(self, num_batches):
@@ -137,7 +140,7 @@ class GenNetContainer:
 
 def create_gen_net(params: Params):
     model = keras.Sequential()
-    model.add(keras.Input(shape=(params.memory_length, 16)))
+    model.add(keras.Input(shape=(None, net_input_size)))
     model.add(layers.SimpleRNN(12))
     model.add(layers.Dense(1, activation="sigmoid"))
     model.summary()
