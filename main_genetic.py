@@ -43,4 +43,5 @@ def genetic_training(mutation_factor, save_tag, epochs= 1000, decay=1, nr_elites
 
 
 if __name__ == '__main__':
-    genetic_training(mutation_factor=2, save_tag=params.save_id, epochs=500, decay=1, nr_elites=0)
+    print(tf.config.list_physical_devices('GPU'))
+    genetic_training(mutation_factor=15, save_tag=params.save_id, epochs=1, decay=1, nr_elites=0)
