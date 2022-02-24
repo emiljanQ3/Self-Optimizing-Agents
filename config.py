@@ -6,11 +6,11 @@ class Params:
         # Meta
         self.num_steps = 10000
         self.num_repeats = 1
-        self.num_agents = 100
-        self.save_id = "genetic_run_9"
+        self.num_agents = 10
+        self.save_id = "genetic_run_10"
         self.results_path = "results/genetic1/"
         self.alpha_tag = AlphaInitTag.NETWORK
-        self.model_location = "saved_genetic_training/genetic_run_9/genetic_run_9"
+        self.model_location = "saved_genetic_training/genetic_run_10/genetic_run_10"
         # Learning
         self.is_genetic_training = True
         self.is_backprop_training = False
