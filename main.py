@@ -72,7 +72,7 @@ if __name__ == '__main__':
     params = Params()
     # run_paralell(params, 8)
     # run_param_search(params)
-    #run_simulation(params)
+    run_simulation(params)
 
     results, file_names = load_all(params)
     #plot.generate_memory_examples(results[0])
