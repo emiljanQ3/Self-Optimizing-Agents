@@ -121,6 +121,29 @@ class GenNetContainer:
         self.network = model
 
     def get_next_alpha(self, compressed_memory, mean_reward, extend_buffer=True):
+        compressed_memory = np.reshape(compressed_memory, (1, len(compressed_memory)))
+        return self.network(compressed_memory) + 1
+
+    def train_network(self, num_batches):
+        pass
+
+
+def create_gen_net(params: Params):
+    inputs = layers.Input(shape=(params.memory_length,))
+
+    layer1 = layers.Dense(12, activation="relu")(inputs)
+
+    action = layers.Dense(1, activation="sigmoid")(layer1)
+
+    return keras.Model(inputs=inputs, outputs=action)
+
+
+class RecNetContainer:
+
+    def __init__(self, params: Params, model):
+        self.network = model
+
+    def get_next_alpha(self, compressed_memory, mean_reward, extend_buffer=True):
         compressed_memory = np.reshape(compressed_memory, (1, len(compressed_memory)//net_input_size, net_input_size))
         return self.network(compressed_memory) + 1
 
@@ -128,17 +151,7 @@ class GenNetContainer:
         pass
 
 
-# def create_gen_net(params: Params):
-#     inputs = layers.Input(shape=(params.memory_length,))
-#
-#     layer1 = layers.Dense(12, activation="relu")(inputs)
-#
-#     action = layers.Dense(1, activation="sigmoid")(layer1)
-#
-#     return keras.Model(inputs=inputs, outputs=action)
-
-
-def create_gen_net(params: Params):
+def create_rec_net(params: Params):
     model = keras.Sequential()
     model.add(keras.Input(shape=(None, net_input_size)))
     model.add(layers.SimpleRNN(12))
