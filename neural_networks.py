@@ -131,9 +131,9 @@ class GenNetContainer:
 def create_gen_net(params: Params):
     inputs = layers.Input(shape=(params.memory_length,))
 
-    layer1 = layers.Dense(12, activation="relu")(inputs)
+    layer1 = layers.Dense(2, activation="relu")(inputs)
 
-    action = layers.Dense(1, activation="sigmoid")(layer1)
+    action = layers.Dense(1)(layer1)
 
     return keras.Model(inputs=inputs, outputs=action)
 
