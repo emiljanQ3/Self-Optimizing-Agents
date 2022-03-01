@@ -7,10 +7,10 @@ class Params:
         self.num_steps = 10000
         self.num_repeats = 1
         self.num_agents = 100
-        self.save_id = "genetic_run_11"
-        self.results_path = "results/genetic_run_11/"
+        self.save_id = "genetic_run_12"
+        self.results_path = "results/genetic_run_12/"
         self.alpha_tag = AlphaInitTag.NETWORK
-        self.model_location = "saved_genetic_training/genetic_run_11/genetic_run_11"
+        self.model_location = "saved_genetic_training/genetic_run_12/genetic_run_12"
         # Learning
         self.is_genetic_training = True
         self.is_backprop_training = False
@@ -21,7 +21,7 @@ class Params:
         self.delta_time = 0.5
         self.speed = 0.01
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.DIRECT_TIMER
+        self.selected_mover = MoveTag.NEURAL_LEVY
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONCAVE_CELLS
