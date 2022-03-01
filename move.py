@@ -175,7 +175,7 @@ class BigContrastNeuralNetworkLevyRotater:
         turning_idx = np.nonzero(self.levy_timer <= 0)[0]
         for i in turning_idx:
             mean_reward = agents_data.reward_since_last_action[i]/agents_data.steps_since_last_action[i]
-            agents_data.network_containers[i].is_backprop_training(1)
+            agents_data.network_containers[i].train_network(1)
             alpha = agents_data.network_containers[i].get_next_alpha(agents_data.memory[i], mean_reward)
             self.levy_timer[i] = np.abs(levy_stable.rvs(alpha=alpha, beta=0))
             agents[i, 2] += np.random.standard_normal() * params.ang_sd
@@ -187,6 +187,25 @@ class BigContrastNeuralNetworkLevyRotater:
         return agents, agents_data
 
 
+class BigContrastNeuralNetworkDirectTimerRotater:
+    def __init__(self, params):
+        self.levy_timer = np.zeros(params.num_agents)
+        self.is_resetting_reward = params.is_backprop_training
+
+    def apply(self, agents, agents_data, params):
+        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
+        turning_idx = np.nonzero(self.levy_timer <= 0)[0]
+        for i in turning_idx:
+            mean_reward = agents_data.reward_since_last_action[i]/agents_data.steps_since_last_action[i]
+            agents_data.network_containers[i].train_network(1)
+            self.levy_timer[i] = agents_data.network_containers[i].get_next_alpha(agents_data.memory[i], mean_reward)
+            agents[i, 2] += np.random.standard_normal() * params.ang_sd
+
+            if self.is_resetting_reward:
+                agents_data.reward_since_last_action[i] = 0
+                agents_data.steps_since_last_action[i] = 0
+
+        return agents, agents_data
 
 
 class PretrainedNetworkLevyRotater:
@@ -231,5 +250,7 @@ def create_mover(params):
         components.extend([BigContrastNeuralNetworkLevyRotater(params), ForwardMovement()])
     if params.selected_mover == MoveTag.NEURAL_LEVY and not params.is_backprop_training:
         components.extend([PretrainedNetworkLevyRotater(params), ForwardMovement()])
+    if params.selected_mover == MoveTag.DIRECT_TIMER:
+        components.extend([BigContrastNeuralNetworkDirectTimerRotater(params), ForwardMovement()])
 
     return Mover(components)
