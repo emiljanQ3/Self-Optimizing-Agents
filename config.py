@@ -21,7 +21,7 @@ class Params:
         self.delta_time = 0.5
         self.speed = 0.01
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.NEURAL_LEVY
+        self.selected_mover = MoveTag.DIRECT_TIMER
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONCAVE_CELLS
