@@ -30,6 +30,7 @@ class ResultTag:
     AREA_TIME = "area_time"
     LOSS = "loss"
     BUFFER = "buffer"
+    DIST = "dist"
 
 
 class AlphaInitTag:

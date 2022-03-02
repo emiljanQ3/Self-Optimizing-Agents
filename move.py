@@ -191,6 +191,14 @@ class BigContrastNeuralNetworkDirectTimerRotater:
     def __init__(self, params):
         self.levy_timer = np.zeros(params.num_agents)
         self.is_resetting_reward = params.is_backprop_training
+        self.listeners = []
+
+    def add_listener(self, listener):
+        self.listeners.append(listener)
+
+    def notify_listeners(self, timer, agent):
+        for l in self.listeners:
+            l.receive(timer, agent)
 
     def apply(self, agents, agents_data, params):
         self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
@@ -199,6 +207,7 @@ class BigContrastNeuralNetworkDirectTimerRotater:
             mean_reward = agents_data.reward_since_last_action[i]/agents_data.steps_since_last_action[i]
             agents_data.network_containers[i].train_network(1)
             self.levy_timer[i] = agents_data.network_containers[i].get_next_alpha(agents_data.memory[i], mean_reward)
+            self.notify_listeners(self.levy_timer[i], agents[i])
             agents[i, 2] += np.random.standard_normal() * params.ang_sd
 
             if self.is_resetting_reward:

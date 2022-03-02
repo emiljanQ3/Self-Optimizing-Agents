@@ -4,6 +4,7 @@ import numpy as np
 from tags import ResultTag
 from config import Params
 from data import AgentsData
+from move import BigContrastNeuralNetworkDirectTimerRotater
 
 
 class DataRecorder:
@@ -144,6 +145,33 @@ class LossRecorder:
         return self.losses
 
 
+class DistributionRecorder:
+    def __init__(self, params):
+        self.tag = ResultTag.DIST
+        self.big_tic_times = []
+        self.small_tic_times = []
+        self.is_first = True
+
+    def new_repeat(self):
+        pass
+
+    def record(self, agents, new_agents, agent_data, world, mover, rep, step):
+        if self.is_first:
+            self.is_first = False
+            for component in mover.components:
+                if isinstance(component, BigContrastNeuralNetworkDirectTimerRotater):
+                    component.add_listener(self)
+
+    def receive(self, time, agent):
+        if np.mod(np.floor(agent[0]), 2) == 0:
+            self.big_tic_times.append(time)
+        else:
+            self.small_tic_times.append(time)
+
+    def get_results(self):
+        return self.big_tic_times, self.small_tic_times
+
+
 class ActionBufferRecorder:
     def __init__(self, params):
         self.num_agents = params.num_agents
@@ -192,7 +220,7 @@ def create_data_recorder(params: Params):
         components.append(LossRecorder(params))
     if params.is_recording_buffer_dataset:
         components.append(ActionBufferRecorder(params))
-#    if params.is_saving_network:
-#        components.append(NetworkSaver(params))
+    if params.is_recording_distribution:
+        components.append(DistributionRecorder(params))
 
     return DataRecorder(components), visited_segments

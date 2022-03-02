@@ -36,6 +36,7 @@ class Params:
         self.is_recording_area_over_time = False
         self.is_recording_loss = False
         self.is_recording_buffer_dataset = False
+        self.is_recording_distribution = True
         self.area_unit_size = 0.05
         # Plot
         self.is_plotting_trajectories = False
