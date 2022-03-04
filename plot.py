@@ -426,6 +426,26 @@ def plot_single_dist(ax, times, bin_size, title):
     ax.set_ylabel("frequency")
 
 
+def plot_single_dist_log(ax, times, title):
+    bins = np.logspace(-3, np.log10(max(times)), 100)
+    bin_indices = np.digitize(times, bins)
+    bin_count = np.bincount(bin_indices)
+
+    bin_sizes = np.insert(arr=bins[1:] - bins[:-1], obj=0, values=bins[0])
+    bin_count = bin_count[:len(bin_sizes)]
+    bin_sizes = bin_sizes[:len(bin_count)]
+
+    relative_frequency = bin_count/bin_sizes
+    relative_frequency = relative_frequency/sum(relative_frequency)
+    x = np.repeat(np.insert(bins, 0, 0), 2)[1:-1]
+    y = np.repeat(relative_frequency, 2)
+    ax.loglog(x, y)
+
+    ax.set_title(title)
+    ax.set_xlabel("time")
+    ax.set_ylabel("frequency")
+
+
 def plot_distribution(results):
     bin_size = 0.5
 
@@ -438,8 +458,68 @@ def plot_distribution(results):
             big_tic_list.extend(big)
             small_tic_list.extend(small)
 
-    fig, ax = plt.subplots(1, 3)
+    fig, ax = plt.subplots(2, 3)
 
-    plot_single_dist(ax[0], big_tic_list, bin_size, "Distribution of selected times in high tic areas")
-    plot_single_dist(ax[1], small_tic_list, bin_size, "Distribution of selected times in low tic areas")
-    plot_single_dist(ax[2], big_tic_list + small_tic_list, bin_size, "Combined distribution of selected times")
+    plot_single_dist(ax[0, 0], big_tic_list, bin_size, "Distribution of selected times in high tic areas")
+    plot_single_dist(ax[0, 1], small_tic_list, bin_size, "Distribution of selected times in low tic areas")
+    plot_single_dist(ax[0, 2], big_tic_list + small_tic_list, bin_size, "Combined distribution of selected times")
+
+    plot_single_dist_log(ax[1, 0], big_tic_list, "Distribution of selected times in high tic areas")
+    plot_single_dist_log(ax[1, 1], small_tic_list, "Distribution of selected times in low tic areas")
+    plot_single_dist_log(ax[1, 2], big_tic_list + small_tic_list, "Combined distribution of selected times")
+
+
+def plot_single_cumdist(ax, times, title):
+    bins = np.linspace(0, np.log10(max(times)), 100)
+    bin_indices = np.digitize(times, bins)
+    bin_count = np.bincount(bin_indices)
+    bin_count[1] += bin_count[0]
+    bin_count = bin_count[1:len(bins)]
+
+    relative_frequency = bin_count / sum(bin_count)
+    cumsum = np.cumsum(relative_frequency)
+    x = np.repeat(bins, 2)[1:-1]
+    y = 1 - np.repeat(np.insert(cumsum, 0, 0), 2)[:-2]
+    ax.plot(x, y)
+
+    ax.set_title(title)
+    ax.set_xlabel("time")
+    ax.set_ylabel("inverse cumulative frequency")
+
+
+def plot_single_cumdist_log(ax, times, title):
+    bins = np.logspace(-3, np.log10(max(times)), 100)
+    bin_indices = np.digitize(times, bins)
+    bin_count = np.bincount(bin_indices)
+    bin_count = bin_count[:len(bins)]
+
+    relative_frequency = bin_count / sum(bin_count)
+    cumsum = np.cumsum(relative_frequency)
+    x = np.repeat(np.insert(bins, 0, 0), 2)[1:-1]
+    y = 1 - np.repeat(np.insert(cumsum, 0, 0), 2)[:-2]
+    ax.loglog(x, y)
+
+    ax.set_title(title)
+    ax.set_xlabel("time")
+    ax.set_ylabel("inverse cumulative frequency")
+
+
+def plot_inverse_cumulative_distribution(results):
+    big_tic_list = []
+    small_tic_list = []
+
+    for r in results:
+        if tags.ResultTag.DIST in r:
+            big, small = r[tags.ResultTag.DIST]
+            big_tic_list.extend(big)
+            small_tic_list.extend(small)
+
+    fig, ax = plt.subplots(2, 3)
+
+    plot_single_cumdist(ax[0, 0], big_tic_list, "Inverse cumulative distribution of selected times in high tic areas")
+    plot_single_cumdist(ax[0, 1], small_tic_list, "Inverse cumulative distribution of selected times in low tic areas")
+    plot_single_cumdist(ax[0, 2], big_tic_list + small_tic_list, "Combined inverse cumulative distribution of selected times")
+
+    plot_single_cumdist_log(ax[1, 0], big_tic_list, "Inverse cumulative distribution of selected times in high tic areas")
+    plot_single_cumdist_log(ax[1, 1], small_tic_list, "Inverse cumulative distribution of selected times in low tic areas")
+    plot_single_cumdist_log(ax[1, 2], big_tic_list + small_tic_list, "Combined inverse cumulative distribution of selected times")
