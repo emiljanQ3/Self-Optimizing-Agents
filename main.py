@@ -77,6 +77,9 @@ if __name__ == '__main__':
     results, file_names = load_all(params)
     #plot.generate_memory_examples(results[0])
     #plot.plot_example_analysis(results[0])
+
+    plot.plot_distribution(results)
+
     plot.plot_area_in_range(results, 50000, 100000-1, file_names)
 #
     with open(params.model_location + '.pkl', 'rb') as file:
