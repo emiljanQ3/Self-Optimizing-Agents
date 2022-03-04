@@ -1,6 +1,7 @@
 import math
 
 import config
+import tags
 from tags import ResultTag, WorldTag, MoveTag
 from matplotlib import pyplot as plt
 import numpy as np
@@ -409,3 +410,36 @@ def plot_example_analysis(result):
         fig.suptitle("alpha = " + str(alpha_list[i]) + ", Red == large tic, Blue == low tic rate")
         print("wow")
     print("hej")
+
+
+def plot_single_dist(ax, times, bin_size, title):
+    bins = np.arange(0, max(times), bin_size)
+    bin_indices = np.digitize(times, bins)
+    bin_count = np.bincount(bin_indices)
+
+    x = bins + bin_size/2
+    y = bin_count[:-1]/len(times)
+    ax.scatter(x, y)
+
+    ax.set_title(title)
+    ax.set_xlabel("time")
+    ax.set_ylabel("frequency")
+
+
+def plot_distribution(results):
+    bin_size = 0.5
+
+    big_tic_list = []
+    small_tic_list = []
+
+    for r in results:
+        if tags.ResultTag.DIST in r:
+            big, small = r[tags.ResultTag.DIST]
+            big_tic_list.extend(big)
+            small_tic_list.extend(small)
+
+    fig, ax = plt.subplots(1, 3)
+
+    plot_single_dist(ax[0], big_tic_list, bin_size, "Distribution of selected times in high tic areas")
+    plot_single_dist(ax[1], small_tic_list, bin_size, "Distribution of selected times in low tic areas")
+    plot_single_dist(ax[2], big_tic_list + small_tic_list, bin_size, "Combined distribution of selected times")
