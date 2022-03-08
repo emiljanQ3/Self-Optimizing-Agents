@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 from matplotlib import cm
 from move import cell_exponent
+from config import Params
 
 
 def display_results(results, params):
@@ -256,27 +257,28 @@ def get_varied_time(params):
     return time
 
 
-def plot_alpha_speed_surface(results):
+def plot_alpha_delta_surface(results):
     params = [r[ResultTag.PARAM] for r in results]
     alphas = set()
-    speeds = set()
+    deltas = set()
     for p in params:
+        p: Params
         alphas.add(p.alpha)
-        speeds.add(p.speed)
+        deltas.add(p.delta_time)
 
     alphas = list(alphas)
     alphas.sort()
-    speeds = list(speeds)
-    speeds.sort()
-    X = -np.ones((len(speeds), len(alphas)))
-    Y = -np.ones((len(speeds), len(alphas)))
-    Z = -np.ones((len(speeds), len(alphas)))
-    for i in range(len(speeds)):
+    deltas = list(deltas)
+    deltas.sort()
+    X = -np.ones((len(deltas), len(alphas)))
+    Y = -np.ones((len(deltas), len(alphas)))
+    Z = -np.ones((len(deltas), len(alphas)))
+    for i in range(len(deltas)):
         for j in range(len(alphas)):
-            X[i, j] = speeds[i]
+            X[i, j] = deltas[i]/0.5
             Y[i, j] = alphas[j]
             matching_results = filter(lambda it: it[ResultTag.PARAM].alpha == alphas[j]
-                                                 and it[ResultTag.PARAM].speed == speeds[i], results)
+                                                 and it[ResultTag.PARAM].delta_time == deltas[i], results)
 
             count = 0
             sum = 0
@@ -294,7 +296,7 @@ def plot_alpha_speed_surface(results):
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
     ax.plot_surface(np.log2(X), Y, Z, cmap=cm.get_cmap('viridis'))
-    ax.set_xlabel("log2(speed)")
+    ax.set_xlabel("log2(tic_rate)")
     ax.set_ylabel("alpha")
     ax.set_zlabel("area")
 
