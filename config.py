@@ -8,7 +8,7 @@ class Params:
         self.num_repeats = 100
         self.num_agents = 10
         self.save_id = ""
-        self.results_path = "results/overview_6_-6/"
+        self.results_path = "results/overview_6_2/"
         self.alpha_tag = AlphaInitTag.SAME
         self.model_location = "saved_genetic_training/genetic_run_1337/genetic_run_1337"
         # Learning
