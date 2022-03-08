@@ -28,27 +28,28 @@ def run_simulation(params):
     #display_results(results, params)
 
 
-def run_param_search(params: Params):
+def run_contrast_param_search(params: Params):
 
     params_list = []
 
-    # slow_optimal_params = copy.deepcopy(params)
-    # slow_optimal_params.save_id += "_slow_optimal"
-    # slow_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
-    # slow_optimal_params.alpha = 2.2
-    # params_list.append(slow_optimal_params)
-    #
-    # instant_optimal_params = copy.deepcopy(params)
-    # instant_optimal_params.save_id += "_instant_optimal"
-    # instant_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH
-    # instant_optimal_params.alpha = 2.3
-    # params_list.append(instant_optimal_params)
+    slow_optimal_params = copy.deepcopy(params)
+    slow_optimal_params.save_id += "_slow_optimal"
+    slow_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
+    slow_optimal_params.alpha = 2.2
+    params_list.append(slow_optimal_params)
+
+    instant_optimal_params = copy.deepcopy(params)
+    instant_optimal_params.save_id += "_instant_optimal"
+    instant_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH
+    instant_optimal_params.alpha = 2.3
+    params_list.append(instant_optimal_params)
 
     for alpha in np.linspace(1, 2, 11):
         temp_params = copy.deepcopy(params)
         temp_params.alpha = alpha
 
-        temp_params.save_id += f"_a{alpha}"
+        temp_params.save_id += f"_a{alpha:.1f}"
+        temp_params.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
         params_list.append(temp_params)
 
     process_map(run_simulation, params_list)
@@ -71,21 +72,22 @@ def run_paralell(params: Params, num_simulations):
 if __name__ == '__main__':
     params = Params()
     # run_paralell(params, 8)
-    # run_param_search(params)
-    run_simulation(params)
+    run_contrast_param_search(params)
+    #run_simulation(params)
 
-    results, file_names = load_all(params)
+    #results, file_names = load_all(params)
     #plot.generate_memory_examples(results[0])
     #plot.plot_example_analysis(results[0])
 
-    plot.plot_distribution(results)
+    #plot.plot_distribution(results)
+    #plot.plot_inverse_cumulative_distribution(results)
 
-    plot.plot_area_in_range(results, 50000, 100000-1, file_names)
+    #plot.plot_area_in_range(results, 50000, 100000-1, file_names)
 #
-    with open(params.model_location + '.pkl', 'rb') as file:
-        history = pickle.load(file)[0]
-    fig, ax = plt.subplots()
-    epoch_hist_plot(history, ax, "Agent performance in each generation")
+    # with open(params.model_location + '.pkl', 'rb') as file:
+    #     history = pickle.load(file)[0]
+    # fig, ax = plt.subplots()
+    # epoch_hist_plot(history, ax, "Agent performance in each generation")
 
     plt.show()
 
