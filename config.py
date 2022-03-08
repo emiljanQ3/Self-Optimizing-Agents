@@ -8,7 +8,7 @@ class Params:
         self.num_repeats = 100
         self.num_agents = 10
         self.save_id = ""
-        self.results_path = "results/slow_opti_dist/"
+        self.results_path = "results/finer_2D_concave/"
         self.alpha_tag = AlphaInitTag.SAME
         self.model_location = "saved_genetic_training/genetic_run_1337/genetic_run_1337"
         # Learning
@@ -21,12 +21,14 @@ class Params:
         self.delta_time = 0.5
         self.speed = 0.01
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
+        self.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONCAVE_CELLS
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
+        self.tic_rate_0 = 3
+        self.tic_rate_1 = -4
         self.world_height = 2
         self.world_width = 2
         # Record
@@ -36,7 +38,7 @@ class Params:
         self.is_recording_area_over_time = True
         self.is_recording_loss = False
         self.is_recording_buffer_dataset = False
-        self.is_recording_distribution = True
+        self.is_recording_distribution = False
         self.area_unit_size = 0.05
         # Plot
         self.is_plotting_trajectories = False

@@ -3,6 +3,7 @@ import math
 import numpy as np
 from scipy.stats import levy_stable
 from tags import MoveTag, AlphaInitTag
+from config import Params
 
 
 class Mover:
@@ -61,10 +62,10 @@ def delta_variation(x, width):
     return 2 ** cell_exponent(x, width)
 
 
-def big_contrast_delta_variation(x):
+def big_contrast_delta_variation(x, params: Params):
     cells = np.mod(np.floor(x), 2)
-    cells[cells == 0] = 3
-    cells[cells == 1] = -4
+    cells[cells == 0] = params.tic_rate_0
+    cells[cells == 1] = params.tic_rate_1
     return 2 ** cells
 
 
@@ -116,7 +117,7 @@ class BigContrastLevyRotaterVaryingDelta:
         self.dist_sampler = levy_dist_sampler
 
     def apply(self, agents, agents_data, params):
-        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
+        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0], params=params)
 
         is_turning = self.levy_timer <= 0
         self.levy_timer[is_turning] = self.dist_sampler(is_turning.sum(), params)
@@ -133,7 +134,7 @@ class BigContrastOptimalLevyRotater:
         # self.optimal_alphas = {3: 1.0, -4: 2.0}
 
     def apply(self, agents, agents_data, params):
-        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
+        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0], params=params)
         turning_idx = np.argwhere(np.logical_or(self.levy_timer <= 0,  self.apply_instant_switch(agents)))
         for i in turning_idx:
             self.levy_timer[i] = np.abs(levy_stable.rvs(
@@ -171,7 +172,7 @@ class BigContrastNeuralNetworkLevyRotater:
         self.is_resetting_reward = params.is_backprop_training
 
     def apply(self, agents, agents_data, params):
-        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
+        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0], params=params)
         turning_idx = np.nonzero(self.levy_timer <= 0)[0]
         for i in turning_idx:
             mean_reward = agents_data.reward_since_last_action[i]/agents_data.steps_since_last_action[i]
@@ -201,7 +202,7 @@ class BigContrastNeuralNetworkDirectTimerRotater:
             l.receive(timer, agent)
 
     def apply(self, agents, agents_data, params):
-        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
+        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0], params=params)
         turning_idx = np.nonzero(self.levy_timer <= 0)[0]
         for i in turning_idx:
             mean_reward = agents_data.reward_since_last_action[i]/agents_data.steps_since_last_action[i]
@@ -222,7 +223,7 @@ class PretrainedNetworkLevyRotater:
         self.levy_timer = np.zeros(params.num_agents)
 
     def apply(self, agents, agents_data, params):
-        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0])
+        self.levy_timer -= params.delta_time * big_contrast_delta_variation(x=agents[:, 0], params=params)
         turning_idx = np.nonzero(self.levy_timer <= 0)[0]
         for i in turning_idx:
             alpha = agents_data.network_containers[i].get_next_alpha(agents_data.memory[i], None, extend_buffer=False)
