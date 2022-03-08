@@ -28,7 +28,7 @@ class Params:
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
         self.tic_rate_0 = 6
-        self.tic_rate_1 = -6
+        self.tic_rate_1 = 2
         self.world_height = 2
         self.world_width = 2
         # Record
