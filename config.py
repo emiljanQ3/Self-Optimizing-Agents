@@ -8,7 +8,7 @@ class Params:
         self.num_repeats = 100
         self.num_agents = 10
         self.save_id = ""
-        self.results_path = "results/overview_-2_-6/"
+        self.results_path = "results/overview_6_4/"
         self.alpha_tag = AlphaInitTag.SAME
         self.model_location = "saved_genetic_training/genetic_run_1337/genetic_run_1337"
         # Learning
@@ -27,8 +27,8 @@ class Params:
         self.selected_world = WorldTag.CONCAVE_CELLS
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
-        self.tic_rate_0 = -2
-        self.tic_rate_1 = -6
+        self.tic_rate_0 = 6
+        self.tic_rate_1 = 4
         self.world_height = 2
         self.world_width = 2
         # Record
