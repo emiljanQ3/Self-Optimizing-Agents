@@ -7,10 +7,10 @@ class Params:
         self.num_steps = 100
         self.num_repeats = 1
         self.num_agents = 10
-        self.save_id = "genetic_run_-2_-6"
-        self.results_path = "results/genetic_run_-2_-6/"
+        self.save_id = "genetic_run_2_-6"
+        self.results_path = "results/genetic_run_2_-6/"
         self.alpha_tag = AlphaInitTag.NETWORK
-        self.model_location = "saved_genetic_training/genetic_run_-2_-6/genetic_run_-2_-6"
+        self.model_location = "saved_genetic_training/genetic_run_2_-6/genetic_run_2_-6"
         # Learning
         self.is_genetic_training = True
         self.is_backprop_training = False
@@ -27,7 +27,7 @@ class Params:
         self.selected_world = WorldTag.CONCAVE_CELLS
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
-        self.tic_rate_0 = -2
+        self.tic_rate_0 = 2
         self.tic_rate_1 = -6
         self.world_height = 2
         self.world_width = 2
