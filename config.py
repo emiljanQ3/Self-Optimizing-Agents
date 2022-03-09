@@ -4,9 +4,9 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 100
+        self.num_steps = 10000
         self.num_repeats = 1
-        self.num_agents = 10
+        self.num_agents = 100
         self.save_id = "genetic_run_6_-6"
         self.results_path = "results/genetic_run_6_-6/"
         self.alpha_tag = AlphaInitTag.NETWORK
