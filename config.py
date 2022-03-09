@@ -4,38 +4,38 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 100000
-        self.num_repeats = 100
-        self.num_agents = 10
-        self.save_id = ""
-        self.results_path = "results/overview_6_-2/"
-        self.alpha_tag = AlphaInitTag.SAME
-        self.model_location = "saved_genetic_training/genetic_run_1337/genetic_run_1337"
+        self.num_steps = 10000
+        self.num_repeats = 1
+        self.num_agents = 100
+        self.save_id = "genetic_run_-2_-6"
+        self.results_path = "results/genetic_run_-2_-6/"
+        self.alpha_tag = AlphaInitTag.NETWORK
+        self.model_location = "saved_genetic_training/genetic_run_-2_-6/genetic_run_-2_-6"
         # Learning
-        self.is_genetic_training = False
+        self.is_genetic_training = True
         self.is_backprop_training = False
-        self.update_memory = False
+        self.update_memory = True
         self.memory_length = 4
         self.memory_compression_factor = 64
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
+        self.selected_mover = MoveTag.NEURAL_LEVY
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONCAVE_CELLS
         self.cell_size = 1
         self.obstacle_size = 0.8  # relative to cell
-        self.tic_rate_0 = 6
-        self.tic_rate_1 = -2
+        self.tic_rate_0 = -2
+        self.tic_rate_1 = -6
         self.world_height = 2
         self.world_width = 2
         # Record
         self.is_recording_position = False
-        self.is_recording_area = False
+        self.is_recording_area = True
         self.is_recording_area_indices = False
-        self.is_recording_area_over_time = True
+        self.is_recording_area_over_time = False
         self.is_recording_loss = False
         self.is_recording_buffer_dataset = False
         self.is_recording_distribution = False

@@ -45,4 +45,4 @@ def genetic_training(mutation_factor, save_tag, epochs= 1000, decay=1, nr_elites
 if __name__ == '__main__':
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
     print(tf.config.list_physical_devices('GPU'))
-    genetic_training(mutation_factor=1, save_tag=params.save_id, epochs=150, decay=0.993, nr_elites=0)
+    genetic_training(mutation_factor=1, save_tag=params.save_id, epochs=300, decay=1, nr_elites=0)
