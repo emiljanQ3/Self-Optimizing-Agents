@@ -4,9 +4,9 @@ from numpy import pi
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 10000
+        self.num_steps = 100
         self.num_repeats = 1
-        self.num_agents = 100
+        self.num_agents = 10
         self.save_id = "genetic_run_-2_-6"
         self.results_path = "results/genetic_run_-2_-6/"
         self.alpha_tag = AlphaInitTag.NETWORK
@@ -21,7 +21,7 @@ class Params:
         self.delta_time = 0.5
         self.speed = 0.01
         self.ang_sd = pi/6
-        self.selected_mover = MoveTag.NEURAL_LEVY
+        self.selected_mover = MoveTag.DIRECT_TIMER
         self.alpha = 1
         # World
         self.selected_world = WorldTag.CONCAVE_CELLS
