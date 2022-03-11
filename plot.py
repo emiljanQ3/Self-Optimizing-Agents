@@ -141,7 +141,7 @@ def plot_area_over_alpha(results):
     plt.show()
 
 
-def plot_area_in_range(result_list, start_step, end_step, file_names=None):
+def plot_area_in_range(result_list, start_step, end_step, file_names=None, title=""):
     results = [(x[ResultTag.AREA_TIME], x[ResultTag.PARAM]) for x in result_list]
 
     mean_areas = []
@@ -163,6 +163,8 @@ def plot_area_in_range(result_list, start_step, end_step, file_names=None):
     fig, ax = plt.subplots()
 
     ax.bar(range(len(mean_areas)), mean_areas, tick_label=labels)
+
+    ax.set_title(title)
 
 
 def plot_many_area_at_time(result_list, time):
@@ -448,7 +450,7 @@ def plot_single_dist_log(ax, times, title):
     ax.set_ylabel("frequency")
 
 
-def plot_distribution(results):
+def plot_distribution(results, title=""):
     bin_size = 0.5
 
     big_tic_list = []
@@ -469,6 +471,8 @@ def plot_distribution(results):
     plot_single_dist_log(ax[1, 0], big_tic_list, "Distribution of selected times in high tic areas")
     plot_single_dist_log(ax[1, 1], small_tic_list, "Distribution of selected times in low tic areas")
     plot_single_dist_log(ax[1, 2], big_tic_list + small_tic_list, "Combined distribution of selected times")
+
+    fig.suptitle(title)
 
 
 def plot_single_cumdist(ax, times, title):
@@ -506,7 +510,7 @@ def plot_single_cumdist_log(ax, times, title):
     ax.set_ylabel("inverse cumulative frequency")
 
 
-def plot_inverse_cumulative_distribution(results):
+def plot_inverse_cumulative_distribution(results, title=""):
     big_tic_list = []
     small_tic_list = []
 
@@ -525,3 +529,5 @@ def plot_inverse_cumulative_distribution(results):
     plot_single_cumdist_log(ax[1, 0], big_tic_list, "Inverse cumulative distribution of selected times in high tic areas")
     plot_single_cumdist_log(ax[1, 1], small_tic_list, "Inverse cumulative distribution of selected times in low tic areas")
     plot_single_cumdist_log(ax[1, 2], big_tic_list + small_tic_list, "Combined inverse cumulative distribution of selected times")
+
+    fig.suptitle(title)
