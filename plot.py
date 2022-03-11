@@ -391,7 +391,6 @@ def generate_memory_examples(result):
     return memory_red_big_delta, memory_blue_small_delta
 
 
-
 def plot_example_analysis(result):
     area_times = result[ResultTag.AREA_TIME]
     positions: np.ndarray = result[ResultTag.POSITION][0]
@@ -464,13 +463,13 @@ def plot_distribution(results, title=""):
 
     fig, ax = plt.subplots(2, 3)
 
-    plot_single_dist(ax[0, 0], big_tic_list, bin_size, "Distribution of selected times in high tic areas")
-    plot_single_dist(ax[0, 1], small_tic_list, bin_size, "Distribution of selected times in low tic areas")
-    plot_single_dist(ax[0, 2], big_tic_list + small_tic_list, bin_size, "Combined distribution of selected times")
+    plot_single_dist(ax[0, 0], big_tic_list, bin_size, "Distribution in high tic areas")
+    plot_single_dist(ax[0, 1], small_tic_list, bin_size, "Distribution in low tic areas")
+    plot_single_dist(ax[0, 2], big_tic_list + small_tic_list, bin_size, "Combined distribution")
 
-    plot_single_dist_log(ax[1, 0], big_tic_list, "Distribution of selected times in high tic areas")
-    plot_single_dist_log(ax[1, 1], small_tic_list, "Distribution of selected times in low tic areas")
-    plot_single_dist_log(ax[1, 2], big_tic_list + small_tic_list, "Combined distribution of selected times")
+    plot_single_dist_log(ax[1, 0], big_tic_list, "Distribution in high tic areas")
+    plot_single_dist_log(ax[1, 1], small_tic_list, "Distribution in low tic areas")
+    plot_single_dist_log(ax[1, 2], big_tic_list + small_tic_list, "Combined distribution")
 
     fig.suptitle(title)
 
@@ -522,12 +521,12 @@ def plot_inverse_cumulative_distribution(results, title=""):
 
     fig, ax = plt.subplots(2, 3)
 
-    plot_single_cumdist(ax[0, 0], big_tic_list, "Inverse cumulative distribution of selected times in high tic areas")
-    plot_single_cumdist(ax[0, 1], small_tic_list, "Inverse cumulative distribution of selected times in low tic areas")
-    plot_single_cumdist(ax[0, 2], big_tic_list + small_tic_list, "Combined inverse cumulative distribution of selected times")
+    plot_single_cumdist(ax[0, 0], big_tic_list, "Inverse cumulative distribution in high tic areas")
+    plot_single_cumdist(ax[0, 1], small_tic_list, "Inverse cumulative distribution in low tic areas")
+    plot_single_cumdist(ax[0, 2], big_tic_list + small_tic_list, "Combined inverse cumulative distribution")
 
-    plot_single_cumdist_log(ax[1, 0], big_tic_list, "Inverse cumulative distribution of selected times in high tic areas")
-    plot_single_cumdist_log(ax[1, 1], small_tic_list, "Inverse cumulative distribution of selected times in low tic areas")
-    plot_single_cumdist_log(ax[1, 2], big_tic_list + small_tic_list, "Combined inverse cumulative distribution of selected times")
+    plot_single_cumdist_log(ax[1, 0], big_tic_list, "Inverse cumulative distribution in high tic areas")
+    plot_single_cumdist_log(ax[1, 1], small_tic_list, "Inverse cumulative distribution in low tic areas")
+    plot_single_cumdist_log(ax[1, 2], big_tic_list + small_tic_list, "Combined inverse cumulative distribution")
 
     fig.suptitle(title)
