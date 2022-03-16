@@ -475,7 +475,7 @@ def plot_distribution(results, title=""):
 
 
 def plot_single_cumdist(ax, times, title):
-    bins = np.linspace(0, np.log10(max(times)), 100)
+    bins = np.linspace(0, max(times), 100)
     bin_indices = np.digitize(times, bins)
     bin_count = np.bincount(bin_indices)
     bin_count[1] += bin_count[0]
