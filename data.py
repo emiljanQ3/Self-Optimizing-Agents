@@ -15,8 +15,9 @@ class DataModifier:
 
     def __init__(self, visited_spaces, params):
         self.visited_spaces = visited_spaces
-        self.old_counts = np.array([len(x) for x in self.visited_spaces])
         self.update_memory = params.update_memory
+        if self.update_memory:
+            self.old_counts = np.array([len(x) for x in self.visited_spaces])
         self.counter = 0
         self.sum = np.zeros(params.num_agents)
 
