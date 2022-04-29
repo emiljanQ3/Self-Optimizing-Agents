@@ -13,7 +13,7 @@ class Params:
         self.model_location = "saved_genetic_training/genetic_run_6_4/genetic_run_6_4"
         # Learning
         self.is_genetic_training = False
-        self.is_backprop_training = False # TODO remove? is not part of the thesis
+        self.is_backprop_training = False
         self.update_memory = True
         self.memory_length = 4
         self.memory_compression_factor = 64
