@@ -28,10 +28,10 @@ class Params:
         self.cell_size = 1
         self.area_unit_size = 0.05
         self.obstacle_size = 0.8  # relative to cell
-        self.tic_rate_0 = 6   # Resistance in even cells TODO change name
-        self.tic_rate_1 = 4   # Resistance in odd cells TODO change name
-        self.world_height = 2   # Currently only used for initializing the position of the agents TODO remove? change name?
-        self.world_width = 2   # Currently only used for initializing the position of the agents TODO remove? change name?
+        self.tic_rate_0 = 6   # Resistance in even cells
+        self.tic_rate_1 = 4   # Resistance in odd cells
+        self.world_height = 2   # Currently only used for initializing the position of the agents
+        self.world_width = 2   # Currently only used for initializing the position of the agents
         # Record
         self.is_recording_position = False
         self.is_recording_area = False
@@ -41,7 +41,7 @@ class Params:
         self.is_recording_buffer_dataset = False
         self.is_recording_distribution = True
         # Plot
-        self.is_plotting_trajectories = False  # TODO remove
-        self.is_plotting_area_units = False  # TODO remove
+        self.is_plotting_trajectories = False
+        self.is_plotting_area_units = False
 
 
