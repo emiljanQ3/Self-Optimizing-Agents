@@ -301,6 +301,7 @@ def plot_alpha_delta_surface(results):
     ax.set_xlabel("resistance")
     ax.set_ylabel("alpha")
     ax.set_zlabel("area")
+    #fig.colorbar(label="area discovered")
 
     max_indices = np.argmax(Z, axis=1)
 
@@ -313,6 +314,12 @@ def plot_alpha_delta_surface(results):
     for i in range(len(scatter_x)):
         string += str(scatter_x[i]) + ": " + str(scatter_y[i]) + ", "
     print(string)
+
+    fig, ax = plt.subplots()
+    ax.pcolor(np.log2(X), Y, Z)
+    ax.set_xlabel("resistance")
+    ax.set_ylabel("alpha")
+    ax.scatter(scatter_x, scatter_y, c='red')
 
 
 def scatter_alpha_speed_surface(results):
