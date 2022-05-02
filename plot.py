@@ -298,9 +298,16 @@ def plot_alpha_delta_surface(results):
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
     ax.plot_surface(np.log2(X), Y, Z, cmap=cm.get_cmap('viridis'))
-    ax.set_xlabel("log2(tic_rate)")
+    ax.set_xlabel("resistance")
     ax.set_ylabel("alpha")
     ax.set_zlabel("area")
+
+    max_indices = np.argmax(Z, axis=1)
+
+    scatter_x = np.log2(X[np.array(range(25)), max_indices])
+    scatter_y = Y[np.array(range(25)), max_indices]
+    scatter_z = Z[np.array(range(25)), max_indices]
+    ax.scatter(scatter_x, scatter_y, scatter_z, c='red')
 
 
 def scatter_alpha_speed_surface(results):
