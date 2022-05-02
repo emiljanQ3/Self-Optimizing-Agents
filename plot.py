@@ -309,6 +309,11 @@ def plot_alpha_delta_surface(results):
     scatter_z = Z[np.array(range(25)), max_indices]
     ax.scatter(scatter_x, scatter_y, scatter_z, c='red')
 
+    string = ""
+    for i in range(len(scatter_x)):
+        string += str(scatter_x[i]) + ": " + str(scatter_y[i]) + ", "
+    print(string)
+
 
 def scatter_alpha_speed_surface(results):
     params = [r[ResultTag.PARAM] for r in results]
