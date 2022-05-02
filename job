@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH -A C3SE2022-1-1 -p vera
-#SBATCH -n 64
+#SBATCH -n 32
 #SBATCH -t 3-00:00:00
 
 
