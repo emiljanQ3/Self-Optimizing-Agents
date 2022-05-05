@@ -7,8 +7,8 @@ class Params:
         self.num_steps = 100000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = "ReRun5-18_finer_concave"
-        self.results_path = "results/rerun5-finer_2D_concave/"
+        self.save_id = "ReRunMulti-18_finer_concave"
+        self.results_path = "results/rerunMulti-finer_2D_concave/"
         self.alpha_tag = AlphaInitTag.SAME
         # Movement
         self.delta_time = 0.5

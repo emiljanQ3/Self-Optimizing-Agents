@@ -27,8 +27,8 @@ def run_simulation(params):
 def run_param_search(params: Params):
 
     params_list = []
-    for v in np.logspace(-6, 6, num=25, base=2):
-        for alpha in np.linspace(1, 2, 21):
+    for v in np.flip(np.logspace(-6, 6, num=25, base=2)):
+        for alpha in np.flip(np.linspace(1, 2, 21)):
             temp_params = copy.deepcopy(params)
             temp_params.alpha = alpha
             temp_params.speed *= v
