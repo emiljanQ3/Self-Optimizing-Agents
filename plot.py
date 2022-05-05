@@ -275,6 +275,7 @@ def plot_alpha_delta_surface(results):
     X = -np.ones((len(deltas), len(alphas)))
     Y = -np.ones((len(deltas), len(alphas)))
     Z = -np.ones((len(deltas), len(alphas)))
+    counts = np.zeros((len(deltas), len(alphas)))
     for i in range(len(deltas)):
         for j in range(len(alphas)):
             X[i, j] = deltas[i]/0.5
@@ -295,12 +296,14 @@ def plot_alpha_delta_surface(results):
                 mean = sum / count
 
             Z[i, j] = mean
+            counts[i, j] = count
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
     ax.plot_surface(np.log2(X), Y, Z, cmap=cm.get_cmap('viridis'))
     ax.set_xlabel("resistance")
     ax.set_ylabel("alpha")
     ax.set_zlabel("area")
+    ax.set_title(f"Optimal alpha for varying resistances. Each point is a mean of {np.min(counts)} simulations.")
     #fig.colorbar(label="area discovered")
 
     max_indices = np.argmax(Z, axis=1)
@@ -319,6 +322,7 @@ def plot_alpha_delta_surface(results):
     ax.pcolor(np.log2(X), Y, Z)
     ax.set_xlabel("resistance")
     ax.set_ylabel("alpha")
+    ax.set_title(f"Optimal alpha for varying resistances. Each point is a mean of {np.min(counts)} simulations.")
     ax.scatter(scatter_x, scatter_y, c='red')
 
 

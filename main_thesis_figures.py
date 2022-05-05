@@ -19,7 +19,7 @@ from genetic_keras.plot.plot import epoch_hist_plot
 
 def plot_local_optima():
     params = Params()
-    params.results_path = "thesis_data/finer_2D_concave/"
+    params.results_path = "thesis_data/2D_plot/all_combined/"
     params.save_id = ""
     results, _ = load_all(params)
     plot.plot_alpha_delta_surface(results)
