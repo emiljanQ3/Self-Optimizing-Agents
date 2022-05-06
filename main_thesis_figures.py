@@ -25,6 +25,23 @@ def plot_local_optima():
     plot.plot_alpha_delta_surface(results)
 
 
+def plot_overview(folder):
+    params = Params()
+    params.results_path = f"thesis_data/overviews/{folder}/"
+    params.save_id = ""
+    results, file_names = load_all(params)
+    plot.plot_area_in_range(results, 0, 100000-1, file_names, f"{folder}")
+
+
+def plot_compressed_overview(folder):
+    params = Params()
+    params.results_path = f"thesis_data/overviews/{folder}/"
+    params.save_id = ""
+    results, file_names = load_all(params)
+    plot.plot_top_contenders(results)
+
 if __name__ == '__main__':
-    plot_local_optima()
+    #plot_local_optima()
+    #plot_overview("overview_-4_-6")
+    plot_compressed_overview("heavy_overview_-4_-6")
     plt.show()

@@ -141,6 +141,54 @@ def plot_area_over_alpha(results):
     plt.show()
 
 
+def plot_top_contenders(result_list):
+    results = [(x[ResultTag.AREA_TIME], x[ResultTag.PARAM]) for x in result_list]
+
+    mean_areas = []
+    for area_times, params in results:
+        sum = 0
+        for at in area_times:
+            area = len(at)
+            sum += area
+
+        mean = sum / len(area_times)
+
+        mean_areas.append(mean)
+
+    params_list = [it[1] for it in results]
+    zipped = list(zip(params_list, mean_areas))
+    genetic_data = list(filter(lambda it: it[0].selected_mover == MoveTag.NEURAL_LEVY, zipped))
+    instant_opti_data = list(filter(lambda it: it[0].selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH, zipped))
+    slow_opti_data = list(filter(lambda it: it[0].selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST, zipped))
+    single_alpha_data = list(filter(lambda it: it[0].selected_mover == MoveTag.LEVY_VARYING_DELTA_CONTRAST, zipped))
+
+    worst_alpha = "X"
+    best_alpha = "X"
+    if len(single_alpha_data) > 0:
+        best_alpha = single_alpha_data[np.argmax([it[1] for it in single_alpha_data])][0].alpha
+        worst_alpha = single_alpha_data[np.argmin([it[1] for it in single_alpha_data])][0].alpha
+        best_alpha_data = list(filter(lambda it: it[0].alpha == best_alpha, single_alpha_data))
+        worst_alpha_data = list(filter(lambda it: it[0].alpha == worst_alpha, single_alpha_data))
+
+    fig, ax = plt.subplots()
+    labels = [f"worst alpha: {worst_alpha}", f"best alpha: {best_alpha}", "slow optimal", "instant optimal", "genetic"]
+    if len(single_alpha_data) > 0:
+        worst_alpha_width = 0.7/len(worst_alpha_data) if len(worst_alpha_data) != 0 else 1
+        ax.bar(np.arange(len(worst_alpha_data)) * worst_alpha_width + 0, [it[1] for it in worst_alpha_data], worst_alpha_width)
+        best_alpha_width = 0.7/len(best_alpha_data) if len(best_alpha_data) != 0 else 1
+        ax.bar(np.arange(len(best_alpha_data)) * best_alpha_width + 1, [it[1] for it in best_alpha_data], best_alpha_width)
+    if len(slow_opti_data) > 0:
+        slow_opti_width = 0.7/len(slow_opti_data) if len(slow_opti_data) != 0 else 1
+        ax.bar(np.arange(len(slow_opti_data)) * slow_opti_width + 2, [it[1] for it in slow_opti_data], slow_opti_width)
+    if len(instant_opti_data) > 0:
+        instant_opti_width = 0.7/len(instant_opti_data) if len(instant_opti_data) != 0 else 1
+        ax.bar(np.arange(len(instant_opti_data)) * instant_opti_width + 3, [it[1] for it in instant_opti_data], instant_opti_width)
+    if len(genetic_data) > 0:
+        genetic_width = 0.7/len(genetic_data) if len(genetic_data) != 0 else 1
+        ax.bar(np.arange(len(genetic_data)) * genetic_width + 4, [it[1] for it in genetic_data], genetic_width)
+    ax.bar(range(5), np.zeros(5), tick_label=labels)
+
+
 def plot_area_in_range(result_list, start_step, end_step, file_names=None, title=""):
     results = [(x[ResultTag.AREA_TIME], x[ResultTag.PARAM]) for x in result_list]
 
