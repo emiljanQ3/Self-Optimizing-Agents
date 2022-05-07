@@ -72,11 +72,15 @@ def run_paralell(params: Params, num_simulations):
 def run_genetic_validations(params: Params):
     params_list = []
 
+    r0 = params.tic_rate_0
+    r1 = params.tic_rate_1
+
     for i in range(5):
         temp_params = copy.deepcopy(params)
 
         temp_params.save_id += f"{i}-"
-        temp_params.model_location += f"{i}"
+        temp_params.model_location = \
+            f"thesis_data/genetic_training/genetic_run_{r0}_{r1}/genetic_run_{r0}_{r1}{i}/genetic_run_{r0}_{r1}{i}"
 
         params_list.append(temp_params)
 

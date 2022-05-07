@@ -7,13 +7,13 @@ r1 = -6
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 100000
-        self.num_repeats = 100
+        self.num_steps = 100
+        self.num_repeats = 2
         self.num_agents = 10
         self.save_id = "genetic-"
         self.results_path = f"thesis_data/overviews/overview_{r0}_{r1}/"
         self.alpha_tag = AlphaInitTag.NETWORK
-        self.model_location = f"thesis_data/genetic_training/genetic_run_{r0}_{r1}/genetic_run_{r0}_{r1}"
+        self.model_location = f""
         # Learning
         self.is_genetic_training = False
         self.is_backprop_training = False
