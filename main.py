@@ -69,10 +69,25 @@ def run_paralell(params: Params, num_simulations):
     process_map(run_simulation, params_list)
 
 
+def run_genetic_validations(params: Params):
+    params_list = []
+
+    for i in range(5):
+        temp_params = copy.deepcopy(params)
+
+        temp_params.save_id += f"{i}-"
+        temp_params.model_location += f"{i}"
+
+        params_list.append(temp_params)
+
+    process_map(run_simulation, params_list)
+
+
 if __name__ == '__main__':
     params = Params()
+    run_genetic_validations(params)
     # run_paralell(params, 8)
-    run_contrast_param_search(params)
+    # run_contrast_param_search(params)
     # run_simulation(params)
 
     #results, file_names = load_all(params)
