@@ -7,8 +7,8 @@ r1 = -6
 class Params:
     def __init__(self):
         # Meta
-        self.num_steps = 100
-        self.num_repeats = 2
+        self.num_steps = 100000
+        self.num_repeats = 100
         self.num_agents = 10
         self.save_id = "genetic-"
         self.results_path = f"thesis_data/overviews/overview_{r0}_{r1}/"
