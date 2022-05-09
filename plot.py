@@ -8,7 +8,8 @@ import numpy as np
 from matplotlib import cm
 from move import cell_exponent
 from config import Params
-from disk import load_all, quicksave, quickload
+from disk import load_all, quicksave, quickload, load_histories
+from genetic_keras.data import EpochData
 
 
 def display_results(results, params):
@@ -623,3 +624,18 @@ def plot_inverse_cumulative_distribution(results, title=""):
     plot_single_cumdist_log(ax[1, 2], big_tic_list + small_tic_list, "Combined inverse cumulative distribution")
 
     fig.suptitle(title)
+
+
+def plot_genetic_training_history(params):
+    histories, dir_names = load_histories(params)
+    score_histories = []
+    for hist in histories:
+        score_histories.append([it.median_loss_training for it in hist[0]])
+
+    fig, ax = plt.subplots()
+    for i in range(len(score_histories)):
+        ax.plot(-np.array(score_histories[i])/0.05**2, label=dir_names[i])
+
+    ax.legend()
+    ax.set_xlabel("generations")
+    ax.set_ylabel("area units discovered")

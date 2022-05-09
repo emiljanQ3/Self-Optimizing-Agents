@@ -42,6 +42,21 @@ def plot_compressed_overview(r0, r1, force_recalculation=False):
     params.tic_rate_1 = r1
     plot.plot_top_contenders(params, force_recalculation)
 
+
+def plot_genetic_training_history(r0, r1):
+    params = Params()
+    params.results_path = f"thesis_data/genetic_training/genetic_run_{r0}_{r1}/"
+    params.save_id = f"genetic_run_{r0}_{r1}"
+    params.tic_rate_0 = r0
+    params.tic_rate_1 = r1
+    plot.plot_genetic_training_history(params)
+
+
+
+def plot_validation_distribution(r0, r1):
+    pass
+
+
 if __name__ == '__main__':
     #plot_local_optima()
     #plot_overview("overview_-4_-6")
@@ -49,7 +64,7 @@ if __name__ == '__main__':
                     (-2, -6),
                     (0, -6),
                     (2, -6),
-                    #(3, -4),
+                    (3, -4),
                     (4, -3),
                     (6, -6),
                     (6, -2),
@@ -58,5 +73,9 @@ if __name__ == '__main__':
                     (6, 4)]
     for e in environments:
         plot_compressed_overview(*e)
+        plot_genetic_training_history(*e)
+        plot_validation_distribution(*e)
+
+
 
     plt.show()
