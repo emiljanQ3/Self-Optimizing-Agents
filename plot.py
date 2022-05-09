@@ -183,7 +183,7 @@ def prepare_top_contender_data(params):
         mean_areas.append(mean)
     params_list = [x[ResultTag.PARAM] for x in result_list]
     zipped = list(zip(params_list, mean_areas))
-    genetic_data = list(filter(lambda it: it[0].selected_mover == MoveTag.NEURAL_LEVY, zipped))
+    genetic_data = list(filter(lambda it: it[0].selected_mover == MoveTag.DIRECT_TIMER, zipped))
     instant_opti_data = list(
         filter(lambda it: it[0].selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH, zipped))
     slow_opti_data = list(filter(lambda it: it[0].selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST, zipped))
