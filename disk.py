@@ -56,6 +56,19 @@ def load_all(params: Params):
     return results, file_names
 
 
+def load_histories(params: Params):
+    histories = []
+    dir_names = []
+    for dir_name in os.listdir(params.results_path):
+        if dir_name.startswith(params.save_id):
+            path = params.results_path + dir_name + "/" + dir_name + ".pkl"
+            dir_names.append(dir_name)
+            with open(path, 'rb') as file:
+                histories.append(pickle.load(file))
+
+    return histories, dir_names
+
+
 def map_load_all(params:Params, func):
     results = []
     for file_name in os.listdir(params.results_path):
