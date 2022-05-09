@@ -61,3 +61,29 @@ def map_load_all(params:Params, func):
                 results.append(func(pickle.load(file)))
 
     return results
+
+
+def quickload(params, name):
+    temp_string: str = params.results_path + params.save_id
+    file_name = temp_string.replace("/", "~")
+    path = f"quicksaves/{name}-{file_name}"
+
+    try:
+        with open(path, 'rb') as file:
+            data = pickle.load(file)
+        success = True
+    except (OSError, IOError) as e:
+        data = None
+        success = False
+
+    return data, success
+
+
+def quicksave(data, params, name):
+    temp_string: str = params.results_path + params.save_id
+    file_name = temp_string.replace("/", "~")
+    path = f"quicksaves/{name}-{file_name}"
+
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'wb') as file:
+        pickle.dump(data, file)
