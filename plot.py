@@ -142,11 +142,11 @@ def plot_area_over_alpha(results):
     plt.show()
 
 
-def plot_top_contenders(params):
+def plot_top_contenders(params, force_recalculation=False):
     data, success = quickload(params, "top_contenders")
 
-    best_alpha, best_alpha_data, genetic_data, instant_opti_data, single_alpha_data, slow_opti_data, \
-        worst_alpha, worst_alpha_data = data if success else prepare_top_contender_data(params)
+    best_alpha, best_alpha_data, genetic_data, instant_opti_data, single_alpha_data, slow_opti_data, worst_alpha, \
+        worst_alpha_data = data if success and not force_recalculation else prepare_top_contender_data(params)
 
 
     fig, ax = plt.subplots()

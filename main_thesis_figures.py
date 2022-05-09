@@ -34,14 +34,24 @@ def plot_overview(folder):
     plot.plot_area_in_range(results, 0, 100000-1, file_names, f"{folder}")
 
 
-def plot_compressed_overview(folder):
+def plot_compressed_overview(folder, force_recalculation=False):
     params = Params()
     params.results_path = f"thesis_data/overviews/{folder}/"
     params.save_id = ""
-    plot.plot_top_contenders(params)
+    plot.plot_top_contenders(params, force_recalculation)
 
 if __name__ == '__main__':
     #plot_local_optima()
     #plot_overview("overview_-4_-6")
-    plot_compressed_overview("heavy_overview_-4_-6")
+    plot_compressed_overview("overview_-4_-6")
+    plot_compressed_overview("overview_-2_-6")
+    plot_compressed_overview("overview_0_-6")
+    plot_compressed_overview("overview_2_-6")
+    #plot_compressed_overview("overview_3_-4")
+    plot_compressed_overview("overview_4_-3")
+    plot_compressed_overview("overview_6_-6")
+    plot_compressed_overview("overview_6_-2")
+    plot_compressed_overview("overview_6_0")
+    plot_compressed_overview("overview_6_2")
+    plot_compressed_overview("overview_6_4")
     plt.show()
