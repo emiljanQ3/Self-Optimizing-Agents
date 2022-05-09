@@ -8,6 +8,7 @@ import numpy as np
 from matplotlib import cm
 from move import cell_exponent
 from config import Params
+from disk import load_all, quicksave, quickload
 
 
 def display_results(results, params):
@@ -141,11 +142,37 @@ def plot_area_over_alpha(results):
     plt.show()
 
 
-def plot_top_contenders(result_list):
-    results = [(x[ResultTag.AREA_TIME], x[ResultTag.PARAM]) for x in result_list]
+def plot_top_contenders(params):
+    data, success = quickload(params, "top_contenders")
 
+    best_alpha, best_alpha_data, genetic_data, instant_opti_data, single_alpha_data, slow_opti_data, \
+        worst_alpha, worst_alpha_data = data if success else prepare_top_contender_data(params)
+
+
+    fig, ax = plt.subplots()
+    labels = [f"worst alpha: {worst_alpha}", f"best alpha: {best_alpha}", "slow optimal", "instant optimal", "genetic"]
+
+    if len(single_alpha_data) > 0:
+        plot_bar_category(ax, worst_alpha_data, 0)
+        plot_bar_category(ax, best_alpha_data, 1)
+
+    if len(slow_opti_data) > 0:
+        plot_bar_category(ax, slow_opti_data, 2)
+
+    if len(instant_opti_data) > 0:
+        plot_bar_category(ax, instant_opti_data, 3)
+
+    if len(genetic_data) > 0:
+        plot_bar_category(ax, genetic_data, 4)
+
+    ax.bar(range(5), np.zeros(5), tick_label=labels)
+
+
+def prepare_top_contender_data(params):
+    result_list, _ = load_all(params)
+    area_times_list = [x[ResultTag.AREA_TIME] for x in result_list]
     mean_areas = []
-    for area_times, params in results:
+    for area_times in area_times_list:
         sum = 0
         for at in area_times:
             area = len(at)
@@ -154,14 +181,13 @@ def plot_top_contenders(result_list):
         mean = sum / len(area_times)
 
         mean_areas.append(mean)
-
-    params_list = [it[1] for it in results]
+    params_list = [x[ResultTag.PARAM] for x in result_list]
     zipped = list(zip(params_list, mean_areas))
     genetic_data = list(filter(lambda it: it[0].selected_mover == MoveTag.NEURAL_LEVY, zipped))
-    instant_opti_data = list(filter(lambda it: it[0].selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH, zipped))
+    instant_opti_data = list(
+        filter(lambda it: it[0].selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH, zipped))
     slow_opti_data = list(filter(lambda it: it[0].selected_mover == MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST, zipped))
     single_alpha_data = list(filter(lambda it: it[0].selected_mover == MoveTag.LEVY_VARYING_DELTA_CONTRAST, zipped))
-
     worst_alpha = "X"
     best_alpha = "X"
     if len(single_alpha_data) > 0:
@@ -170,23 +196,16 @@ def plot_top_contenders(result_list):
         best_alpha_data = list(filter(lambda it: it[0].alpha == best_alpha, single_alpha_data))
         worst_alpha_data = list(filter(lambda it: it[0].alpha == worst_alpha, single_alpha_data))
 
-    fig, ax = plt.subplots()
-    labels = [f"worst alpha: {worst_alpha}", f"best alpha: {best_alpha}", "slow optimal", "instant optimal", "genetic"]
-    if len(single_alpha_data) > 0:
-        worst_alpha_width = 0.7/len(worst_alpha_data) if len(worst_alpha_data) != 0 else 1
-        ax.bar(np.arange(len(worst_alpha_data)) * worst_alpha_width + 0, [it[1] for it in worst_alpha_data], worst_alpha_width)
-        best_alpha_width = 0.7/len(best_alpha_data) if len(best_alpha_data) != 0 else 1
-        ax.bar(np.arange(len(best_alpha_data)) * best_alpha_width + 1, [it[1] for it in best_alpha_data], best_alpha_width)
-    if len(slow_opti_data) > 0:
-        slow_opti_width = 0.7/len(slow_opti_data) if len(slow_opti_data) != 0 else 1
-        ax.bar(np.arange(len(slow_opti_data)) * slow_opti_width + 2, [it[1] for it in slow_opti_data], slow_opti_width)
-    if len(instant_opti_data) > 0:
-        instant_opti_width = 0.7/len(instant_opti_data) if len(instant_opti_data) != 0 else 1
-        ax.bar(np.arange(len(instant_opti_data)) * instant_opti_width + 3, [it[1] for it in instant_opti_data], instant_opti_width)
-    if len(genetic_data) > 0:
-        genetic_width = 0.7/len(genetic_data) if len(genetic_data) != 0 else 1
-        ax.bar(np.arange(len(genetic_data)) * genetic_width + 4, [it[1] for it in genetic_data], genetic_width)
-    ax.bar(range(5), np.zeros(5), tick_label=labels)
+    data = best_alpha, best_alpha_data, genetic_data, instant_opti_data, single_alpha_data, slow_opti_data, worst_alpha, worst_alpha_data
+    quicksave(data, params, "top_contenders")
+    return data
+
+
+def plot_bar_category(ax, data, offset):
+    cmap = plt.get_cmap("tab10")
+    bar_width = 0.7 / len(data) if len(data) != 0 else 1
+    ax.bar(np.arange(len(data)) * bar_width + offset - (len(data)-1)/2*bar_width, [it[1] for it in data],
+           bar_width, color=cmap(range(len(data))))
 
 
 def plot_area_in_range(result_list, start_step, end_step, file_names=None, title=""):
