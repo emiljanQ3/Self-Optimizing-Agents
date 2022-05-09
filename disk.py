@@ -47,8 +47,11 @@ def load_all(params: Params):
     for file_name in os.listdir(params.results_path):
         if file_name.startswith(params.save_id):
             file_names.append(file_name)
-            with open(params.results_path + file_name, 'rb') as file:
-                results.append(pickle.load(file))
+            try:
+                with open(params.results_path + file_name, 'rb') as file:
+                    results.append(pickle.load(file))
+            except EOFError as e:
+                print(f"Failed loading file: {file_name} in {params.results_path}. Possible file corruption.")
 
     return results, file_names
 
