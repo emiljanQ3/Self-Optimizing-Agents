@@ -17,6 +17,7 @@ from tqdm.contrib.concurrent import process_map
 from data import DataModifier
 from genetic_keras.plot.plot import epoch_hist_plot
 
+
 def plot_local_optima():
     params = Params()
     params.results_path = "thesis_data/2D_plot/all_combined/"
@@ -37,8 +38,7 @@ def plot_compressed_overview(folder):
     params = Params()
     params.results_path = f"thesis_data/overviews/{folder}/"
     params.save_id = ""
-    results, file_names = load_all(params)
-    plot.plot_top_contenders(results)
+    plot.plot_top_contenders(params)
 
 if __name__ == '__main__':
     #plot_local_optima()
