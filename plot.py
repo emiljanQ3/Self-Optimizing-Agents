@@ -150,7 +150,6 @@ def plot_top_contenders(params, force_recalculation=False):
 
 
     fig, ax = plt.subplots()
-    labels = [f"worst alpha: {worst_alpha}", f"best alpha: {best_alpha}", "slow optimal", "instant optimal", "genetic"]
 
     if len(single_alpha_data) > 0:
         plot_bar_category(ax, worst_alpha_data, 0)
@@ -165,7 +164,11 @@ def plot_top_contenders(params, force_recalculation=False):
     if len(genetic_data) > 0:
         plot_bar_category(ax, genetic_data, 4)
 
+    labels = [f"$\\alpha_{{worst}}: {worst_alpha}$", f"$\\alpha_{{best}}: {best_alpha}$",
+              "local", "local$_{s}$", "genetic"]
     ax.bar(range(5), np.zeros(5), tick_label=labels)
+
+    ax.set_title(f"Performance of different strategies when: $r_0 = {params.tic_rate_0}, r_1 = {params.tic_rate_1}$")
 
 
 def prepare_top_contender_data(params):
