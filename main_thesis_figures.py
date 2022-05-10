@@ -67,6 +67,7 @@ def plot_validation_distribution(r0, r1):
 
 
 if __name__ == '__main__':
+    plot_local_optima()
     environments = [
                     #(-4, -6),
                     #(-2, -6),
@@ -81,10 +82,10 @@ if __name__ == '__main__':
                     #(6, 4)
                     ]
     for e in environments:
-        ax_opti = plot_local_optima(e)
-        ax_comp = plot_compressed_overview(*e)
-        ax_hist = plot_genetic_training_history(*e)
-        ax_dist = plot_validation_distribution(*e)
+        plot_local_optima(e)
+        plot_compressed_overview(*e)
+        plot_genetic_training_history(*e)
+        plot_validation_distribution(*e)
 
 
     plt.show()
