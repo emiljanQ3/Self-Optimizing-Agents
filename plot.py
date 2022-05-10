@@ -371,11 +371,10 @@ def plot_alpha_delta_surface(results):
 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
     ax.plot_surface(np.log2(X), Y, Z, cmap=cm.get_cmap('viridis'))
-    ax.set_xlabel("resistance")
-    ax.set_ylabel("alpha")
+    ax.set_xlabel("Resistance: $r$")
+    ax.set_ylabel("$\\alpha$")
     ax.set_zlabel("area")
-    ax.set_title(f"Optimal alpha for varying resistances. Each point is a mean of {np.min(counts)} simulations.")
-    #fig.colorbar(label="area discovered")
+    ax.set_title(f"Each point is a mean of {np.min(counts)} simulations.")
 
     max_indices = np.argmax(Z, axis=1)
 
@@ -390,11 +389,13 @@ def plot_alpha_delta_surface(results):
     print(string)
 
     fig, ax = plt.subplots()
-    ax.pcolor(np.log2(X), Y, Z)
+    c = ax.pcolor(np.log2(X), Y, Z)
+    fig.colorbar(c, ax=ax, label="Area units discovered")
     ax.set_xlabel("resistance")
     ax.set_ylabel("alpha")
-    ax.set_title(f"Optimal alpha for varying resistances. Each point is a mean of {np.min(counts)} simulations.")
-    ax.scatter(scatter_x, scatter_y, c='red')
+    ax.set_title(f"Mean of {np.min(counts)} simulations.")
+    ax.scatter(scatter_x, scatter_y, c='red', label="Best alpha for each resistance")
+    ax.legend()
 
 
 def scatter_alpha_speed_surface(results):
