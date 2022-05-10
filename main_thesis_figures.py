@@ -52,28 +52,35 @@ def plot_genetic_training_history(r0, r1):
     plot.plot_genetic_training_history(params)
 
 
-
 def plot_validation_distribution(r0, r1):
-    pass
+    params = Params()
+    params.results_path = f"thesis_data/overviews/overview_{r0}_{r1}/"
+    params.save_id = "gen"
+    params.tic_rate_0 = r0
+    params.tic_rate_1 = r1
+
+    plot.plot_distribution(params)
 
 
 if __name__ == '__main__':
     #plot_local_optima()
     #plot_overview("overview_-4_-6")
-    environments = [(-4, -6),
-                    (-2, -6),
-                    (0, -6),
-                    (2, -6),
-                    (3, -4),
-                    (4, -3),
-                    (6, -6),
-                    (6, -2),
-                    (6, 0),
-                    (6, 2),
-                    (6, 4)]
+    environments = [
+                    (-4, -6),
+                    #(-2, -6),
+                    #(0, -6),
+                    #(2, -6),
+                    #(3, -4),
+                    #(4, -3),
+                    #(6, -6),
+                    #(6, -2),
+                    #(6, 0),
+                    #(6, 2),
+                    (6, 4)
+                    ]
     for e in environments:
-        plot_compressed_overview(*e)
-        plot_genetic_training_history(*e)
+        #plot_compressed_overview(*e)
+        #plot_genetic_training_history(*e)
         plot_validation_distribution(*e)
 
 

@@ -509,14 +509,10 @@ def plot_example_analysis(result):
     print("hej")
 
 
-def plot_single_dist(ax, times, bin_size, title):
-    bins = np.arange(0, max(times), bin_size)
-    bin_indices = np.digitize(times, bins)
-    bin_count = np.bincount(bin_indices)
-
+def plot_single_dist(ax, bin_size, bins, bin_count, title):
     x = bins + bin_size/2
-    y = bin_count[:-1]/len(times)
-    ax.scatter(x, y)
+    y = bin_count[:-1]/sum(bin_count)
+    ax.bar(x, y, bin_size)
 
     ax.set_title(title)
     ax.set_xlabel("time")
@@ -543,29 +539,44 @@ def plot_single_dist_log(ax, times, title):
     ax.set_ylabel("frequency")
 
 
-def plot_distribution(results, title=""):
-    bin_size = 0.5
+def plot_distribution(params):
+    qs_tag = "distribution"
 
-    big_tic_list = []
-    small_tic_list = []
+    data, success = quickload(params, qs_tag)
 
-    for r in results:
-        if tags.ResultTag.DIST in r:
-            big, small = r[tags.ResultTag.DIST]
-            big_tic_list.extend(big)
-            small_tic_list.extend(small)
+    if success:
+        plot_data_list = data
+    else:
+        results, filenames = load_all(params)
+        plot_data_list = []
+        for r in results:
+            if tags.ResultTag.DIST in r:
+                big, small = r[tags.ResultTag.DIST]
 
-    fig, ax = plt.subplots(2, 3)
+                plot_data = []
+                for times in [big, small]:
+                    num_bins = 30
+                    bin_size = max(times) / num_bins
+                    bins = np.linspace(0, max(times), num_bins + 1)
+                    bin_indices = np.digitize(times, bins)
+                    bin_count = np.bincount(bin_indices)
+                    plot_data.append((bin_size, bins, bin_count))
 
-    plot_single_dist(ax[0, 0], big_tic_list, bin_size, "Distribution in high tic areas")
-    plot_single_dist(ax[0, 1], small_tic_list, bin_size, "Distribution in low tic areas")
-    plot_single_dist(ax[0, 2], big_tic_list + small_tic_list, bin_size, "Combined distribution")
+                plot_data_list.append(plot_data)
 
-    plot_single_dist_log(ax[1, 0], big_tic_list, "Distribution in high tic areas")
-    plot_single_dist_log(ax[1, 1], small_tic_list, "Distribution in low tic areas")
-    plot_single_dist_log(ax[1, 2], big_tic_list + small_tic_list, "Combined distribution")
+        quicksave(plot_data_list, params, qs_tag)
 
-    fig.suptitle(title)
+    fig, ax = plt.subplots(5, 3)
+
+    for i in range(len(plot_data_list)):
+        big_plot_data = plot_data_list[i][0]
+        small_plot_data = plot_data_list[i][1]
+        combined_plot_data = (big_plot_data[0], big_plot_data[1], big_plot_data[2]+small_plot_data[2])
+        plot_single_dist(ax[i, 0], *big_plot_data, "Distribution in high tic areas")
+        plot_single_dist(ax[i, 1], *small_plot_data, "Distribution in low tic areas")
+        plot_single_dist(ax[i, 2], *combined_plot_data, "Combined distribution")
+
+    fig.suptitle(f"{params.tic_rate_0}_{params.tic_rate_1}")
 
 
 def plot_single_cumdist(ax, times, title):
