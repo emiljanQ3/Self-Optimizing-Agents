@@ -23,8 +23,8 @@ def plot_local_optima(highlighted=None):
     params.results_path = "thesis_data/2D_plot/all_combined/"
     params.save_id = ""
     results, _ = load_all(params)
-    plot.plot_alpha_delta_surface(results)
-    plt.savefig(f"figures/dist_{highlighted}.pdf", bbox_inches="tight")
+    plot.plot_alpha_delta_surface(results, highlighted)
+    plt.savefig(f"figures/opti_{highlighted}.pdf", bbox_inches="tight")
 
 
 def plot_overview(folder):

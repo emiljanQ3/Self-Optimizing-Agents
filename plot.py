@@ -391,8 +391,8 @@ def plot_alpha_delta_surface(results, highlighted=None):
     fig, ax = plt.subplots()
     c = ax.pcolor(np.log2(X), Y, Z)
     fig.colorbar(c, ax=ax, label="Area units discovered")
-    ax.set_xlabel("resistance")
-    ax.set_ylabel("alpha")
+    ax.set_xlabel("Resistance: $r$")
+    ax.set_ylabel("$\\alpha$")
     ax.set_title(f"Mean of {np.min(counts)} simulations.")
     if highlighted is not None:
         idx = np.array([np.where(it == scatter_x)[0] for it in highlighted])
@@ -587,6 +587,8 @@ def plot_distribution(params):
     fig.suptitle(f"$r_0 = {params.tic_rate_0}, r_1 = {params.tic_rate_1}$")
     fig.supxlabel("Frequency")
     fig.supylabel("Time")
+    fig.set_tight_layout(True)
+    fig.set_size_inches(10, 18)
 
 
 def plot_single_cumdist(ax, times, title):
@@ -658,5 +660,5 @@ def plot_genetic_training_history(params):
         ax.plot(-np.array(score_histories[i])/0.05**2, label=dir_names[i])
 
     ax.legend()
-    ax.set_xlabel("generations")
-    ax.set_ylabel("area units discovered")
+    ax.set_xlabel("Generations")
+    ax.set_ylabel("Area units discovered")
