@@ -509,14 +509,15 @@ def plot_example_analysis(result):
     print("hej")
 
 
-def plot_single_dist(ax, bin_size, bins, bin_count, title):
+def plot_single_dist(ax, bin_size, bins, bin_count, title, color):
     x = bins + bin_size/2
-    y = bin_count[:-1]/sum(bin_count)
-    ax.bar(x, y, bin_size)
+    bin_count[1] += bin_count[0]
+    y = bin_count[1:]/sum(bin_count)
+    ax.bar(x, y, bin_size, color=color)
 
     ax.set_title(title)
-    ax.set_xlabel("time")
-    ax.set_ylabel("frequency")
+    #ax.set_xlabel("time")
+    #ax.set_ylabel("frequency")
 
 
 def plot_single_dist_log(ax, times, title):
@@ -568,15 +569,20 @@ def plot_distribution(params):
 
     fig, ax = plt.subplots(5, 3)
 
+    cmap = plt.get_cmap("tab10")
     for i in range(len(plot_data_list)):
         big_plot_data = plot_data_list[i][0]
         small_plot_data = plot_data_list[i][1]
         combined_plot_data = (big_plot_data[0], big_plot_data[1], big_plot_data[2]+small_plot_data[2])
-        plot_single_dist(ax[i, 0], *big_plot_data, "Distribution in high tic areas")
-        plot_single_dist(ax[i, 1], *small_plot_data, "Distribution in low tic areas")
-        plot_single_dist(ax[i, 2], *combined_plot_data, "Combined distribution")
 
-    fig.suptitle(f"{params.tic_rate_0}_{params.tic_rate_1}")
+        color = cmap(i)
+        plot_single_dist(ax[i, 0], *big_plot_data, "$r_0$" if i == 0 else "", color)
+        plot_single_dist(ax[i, 1], *small_plot_data, "$r_1$" if i == 0 else "", color)
+        plot_single_dist(ax[i, 2], *combined_plot_data, "$combined$" if i == 0 else "", color)
+
+    fig.suptitle(f"$r_0 = {params.tic_rate_0}, r_1 = {params.tic_rate_1}$")
+    fig.supxlabel("Frequency")
+    fig.supylabel("Time")
 
 
 def plot_single_cumdist(ax, times, title):
