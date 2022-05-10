@@ -330,7 +330,7 @@ def get_varied_time(params):
     return time
 
 
-def plot_alpha_delta_surface(results):
+def plot_alpha_delta_surface(results, highlighted=None):
     params = [r[ResultTag.PARAM] for r in results]
     alphas = set()
     deltas = set()
@@ -369,19 +369,19 @@ def plot_alpha_delta_surface(results):
             Z[i, j] = mean
             counts[i, j] = count
 
-    fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-    ax.plot_surface(np.log2(X), Y, Z, cmap=cm.get_cmap('viridis'))
-    ax.set_xlabel("Resistance: $r$")
-    ax.set_ylabel("$\\alpha$")
-    ax.set_zlabel("area")
-    ax.set_title(f"Each point is a mean of {np.min(counts)} simulations.")
-
+    # fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+    # ax.plot_surface(np.log2(X), Y, Z, cmap=cm.get_cmap('viridis'))
+    # ax.set_xlabel("Resistance: $r$")
+    # ax.set_ylabel("$\\alpha$")
+    # ax.set_zlabel("area")
+    # ax.set_title(f"Each point is a mean of {np.min(counts)} simulations.")
+    #
     max_indices = np.argmax(Z, axis=1)
-
+    #
     scatter_x = np.log2(X[np.array(range(25)), max_indices])
     scatter_y = Y[np.array(range(25)), max_indices]
     scatter_z = Z[np.array(range(25)), max_indices]
-    ax.scatter(scatter_x, scatter_y, scatter_z, c='red')
+    # ax.scatter(scatter_x, scatter_y, scatter_z, c='red')
 
     string = ""
     for i in range(len(scatter_x)):
@@ -394,6 +394,9 @@ def plot_alpha_delta_surface(results):
     ax.set_xlabel("resistance")
     ax.set_ylabel("alpha")
     ax.set_title(f"Mean of {np.min(counts)} simulations.")
+    if highlighted is not None:
+        idx = np.array([np.where(it == scatter_x)[0] for it in highlighted])
+        ax.scatter(scatter_x[idx], scatter_y[idx], s=10**2, c='black', label="Current environment")
     ax.scatter(scatter_x, scatter_y, c='red', label="Best alpha for each resistance")
     ax.legend()
 
