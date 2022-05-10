@@ -18,12 +18,13 @@ from data import DataModifier
 from genetic_keras.plot.plot import epoch_hist_plot
 
 
-def plot_local_optima():
+def plot_local_optima(highlighted=None):
     params = Params()
     params.results_path = "thesis_data/2D_plot/all_combined/"
     params.save_id = ""
     results, _ = load_all(params)
     plot.plot_alpha_delta_surface(results)
+    plt.savefig(f"figures/dist_{highlighted}.pdf", bbox_inches="tight")
 
 
 def plot_overview(folder):
@@ -41,6 +42,7 @@ def plot_compressed_overview(r0, r1, force_recalculation=False):
     params.tic_rate_0 = r0
     params.tic_rate_1 = r1
     plot.plot_top_contenders(params, force_recalculation)
+    plt.savefig(f"figures/comp_{r0}_{r1}.pdf", bbox_inches="tight")
 
 
 def plot_genetic_training_history(r0, r1):
@@ -50,6 +52,7 @@ def plot_genetic_training_history(r0, r1):
     params.tic_rate_0 = r0
     params.tic_rate_1 = r1
     plot.plot_genetic_training_history(params)
+    plt.savefig(f"figures/hist_{r0}_{r1}.pdf", bbox_inches="tight")
 
 
 def plot_validation_distribution(r0, r1):
@@ -60,29 +63,28 @@ def plot_validation_distribution(r0, r1):
     params.tic_rate_1 = r1
 
     plot.plot_distribution(params)
+    plt.savefig(f"figures/dist_{r0}_{r1}.pdf", bbox_inches="tight")
 
 
 if __name__ == '__main__':
-    #plot_local_optima()
-    #plot_overview("overview_-4_-6")
     environments = [
-                    (-4, -6),
-                    (-2, -6),
-                    (0, -6),
-                    (2, -6),
+                    #(-4, -6),
+                    #(-2, -6),
+                    #(0, -6),
+                    #(2, -6),
                     (3, -4),
-                    (4, -3),
-                    (6, -6),
-                    (6, -2),
-                    (6, 0),
-                    (6, 2),
-                    (6, 4)
+                    #(4, -3),
+                    #(6, -6),
+                    #(6, -2),
+                    #(6, 0),
+                    #(6, 2),
+                    #(6, 4)
                     ]
     for e in environments:
-        #plot_compressed_overview(*e)
-        #plot_genetic_training_history(*e)
-        plot_validation_distribution(*e)
-
+        ax_opti = plot_local_optima(e)
+        ax_comp = plot_compressed_overview(*e)
+        ax_hist = plot_genetic_training_history(*e)
+        ax_dist = plot_validation_distribution(*e)
 
 
     plt.show()
