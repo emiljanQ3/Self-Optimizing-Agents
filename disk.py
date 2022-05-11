@@ -63,8 +63,11 @@ def load_histories(params: Params):
         if dir_name.startswith(params.save_id):
             path = params.results_path + dir_name + "/" + dir_name + ".pkl"
             dir_names.append(dir_name)
-            with open(path, 'rb') as file:
-                histories.append(pickle.load(file))
+            try:
+                with open(path, 'rb') as file:
+                    histories.append(pickle.load(file))
+            except EOFError as e:
+                print(f"Failed loading file: {path}. Possible file corruption.")
 
     return histories, dir_names
 
