@@ -586,7 +586,7 @@ def plot_distribution(params):
 
     fig.suptitle(f"$r_0 = {params.tic_rate_0}, r_1 = {params.tic_rate_1}$")
     fig.supxlabel("Frequency")
-    fig.supylabel("Time")
+    fig.supylabel("Effort")
     fig.set_tight_layout(True)
     fig.set_size_inches(8, 10)
 
