@@ -588,7 +588,7 @@ def plot_distribution(params):
     fig.supxlabel("Frequency")
     fig.supylabel("Time")
     fig.set_tight_layout(True)
-    fig.set_size_inches(10, 18)
+    fig.set_size_inches(8, 10)
 
 
 def plot_single_cumdist(ax, times, title):

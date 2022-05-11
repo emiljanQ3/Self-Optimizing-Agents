@@ -66,7 +66,15 @@ def plot_validation_distribution(r0, r1):
     plt.savefig(f"figures/dist_{r0}_{r1}.pdf", bbox_inches="tight")
 
 
+def setup_matplot_params():
+    #plt.rcParams["figure.figsize"] = [4.8, 2.25]  # default [6.4, 4.8]
+    pass
+
+
+
 if __name__ == '__main__':
+    setup_matplot_params()
+    
     plot_local_optima()
     environments = [
                     #(-4, -6),
