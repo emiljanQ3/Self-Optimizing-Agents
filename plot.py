@@ -170,6 +170,11 @@ def plot_top_contenders(params, force_recalculation=False):
     ax.bar(range(5), np.zeros(5), tick_label=labels)
 
     ax.set_title(f"Performance of different strategies when: $r_0 = {params.tic_rate_0}, r_1 = {params.tic_rate_1}$")
+    ax.set_ylabel("Area units discovered")
+
+    print(f"({params.tic_rate_0}, {params.tic_rate_1}) - alpha_worst: {np.mean([it[1] for it in worst_alpha_data])}, alpha_best: "
+          f"{np.mean([it[1] for it in best_alpha_data])}, local: {np.mean([it[1] for it in slow_opti_data])}, local_s:  {np.mean([it[1] for it in instant_opti_data])}, "
+          f"genetic_mean: {np.mean([it[1] for it in genetic_data])}")
 
 
 def prepare_top_contender_data(params):
@@ -369,27 +374,19 @@ def plot_alpha_delta_surface(results, highlighted=None):
             Z[i, j] = mean
             counts[i, j] = count
 
-    # fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-    # ax.plot_surface(np.log2(X), Y, Z, cmap=cm.get_cmap('viridis'))
-    # ax.set_xlabel("Resistance: $r$")
-    # ax.set_ylabel("$\\alpha$")
-    # ax.set_zlabel("area")
-    # ax.set_title(f"Each point is a mean of {np.min(counts)} simulations.")
-    #
     max_indices = np.argmax(Z, axis=1)
-    #
+
     scatter_x = np.log2(X[np.array(range(25)), max_indices])
     scatter_y = Y[np.array(range(25)), max_indices]
-    scatter_z = Z[np.array(range(25)), max_indices]
-    # ax.scatter(scatter_x, scatter_y, scatter_z, c='red')
 
-    string = ""
-    for i in range(len(scatter_x)):
-        string += str(scatter_x[i]) + ": " + str(scatter_y[i]) + ", "
-    print(string)
+    if highlighted is None:
+        string = ""
+        for i in range(len(scatter_x)):
+            string += str(scatter_x[i]) + ": " + str(scatter_y[i]) + ", "
+        print(string)
 
     fig, ax = plt.subplots()
-    c = ax.pcolor(np.log2(X), Y, Z)
+    c = ax.pcolor(np.log2(X), Y, Z, shading="nearest")
     fig.colorbar(c, ax=ax, label="Area units discovered")
     ax.set_xlabel("Resistance: $r$")
     ax.set_ylabel("$\\alpha$")
