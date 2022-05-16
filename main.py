@@ -56,6 +56,21 @@ def run_contrast_param_search(params: Params):
     # it = [run_simulation(x) for x in params_list]
 
 
+def run_alpha_linspace(params:Params):
+    params_list = []
+
+    for alpha in np.linspace(1, 2, 11):
+        temp_params = copy.deepcopy(params)
+        temp_params.alpha = alpha
+
+        temp_params.save_id += f"{params.selected_world}_a{alpha:.1f}-"
+        temp_params.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
+        params_list.append(temp_params)
+
+    process_map(run_simulation, params_list)
+    # it = [run_simulation(x) for x in params_list]
+
+
 def run_paralell(params: Params, num_simulations):
 
     params_list = []
@@ -89,30 +104,4 @@ def run_genetic_validations(params: Params):
 
 if __name__ == '__main__':
     params = Params()
-    run_genetic_validations(params)
-    # run_paralell(params, 8)
-    # run_contrast_param_search(params)
-    # run_simulation(params)
-
-    #results, file_names = load_all(params)
-    #plot.generate_memory_examples(results[0])
-    #plot.plot_example_analysis(results[0])
-
-    #title = params.results_path[0:-1]
-
-    #plot.plot_distribution(results, title)
-    #plot.plot_inverse_cumulative_distribution(results, title)
-
-    #plot.plot_area_in_range(results, 0, 100000-1, file_names,
-                            #["gen.pkl", "a1.0.pkl", "a1.1.pkl", "a1.2.pkl", "a1.3.pkl", "a1.4.pkl",
-                            #"a1.5.pkl", "a1.6.pkl", "a1.7.pkl", "a1.8.pkl", "a1.9.pkl",
-                            #"a2.0.pkl", "fast_opt.pkl","slow_opt.pkl"],
-                            #title)
-#
-    # with open(params.model_location + '.pkl', 'rb') as file:
-    #     history = pickle.load(file)[0]
-    # fig, ax = plt.subplots()
-    # epoch_hist_plot(history, ax, "Agent performance in each generation")
-
-    #plt.show()
-
+    run_alpha_linspace(params)
