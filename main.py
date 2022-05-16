@@ -1,3 +1,6 @@
+import sys
+
+import tags
 from world import create_world
 from move import create_mover
 from simulation import simulate
@@ -57,6 +60,16 @@ def run_contrast_param_search(params: Params):
 
 
 def run_alpha_linspace(params:Params):
+    if sys.argv[1] == 0:
+        params.selected_world = tags.WorldTag.CONCAVE_CELLS
+    elif sys.argv[1] == 1:
+        params.selected_world = tags.WorldTag.CONVEX_CELLS
+    elif sys.argv[1] == 2:
+        params.selected_world = tags.WorldTag.EMPTY
+    else:
+        print("invalid job argument")
+        return
+
     params_list = []
 
     for alpha in np.linspace(1, 2, 11):
