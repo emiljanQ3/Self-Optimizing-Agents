@@ -143,6 +143,52 @@ def plot_area_over_alpha(results):
     plt.show()
 
 
+def prepare_units_over_alpha_data(params: Params):
+    result_list, _ = load_all(params)
+    area_times_list = [x[ResultTag.AREA_TIME] for x in result_list]
+    mean_areas = []
+    for area_times in area_times_list:
+        sum = 0
+        for at in area_times:
+            area = len(at)
+            sum += area
+
+        mean = sum / len(area_times)
+
+        mean_areas.append(mean)
+    params_list = [x[ResultTag.PARAM] for x in result_list]
+    zipped = list(zip(params_list, mean_areas))
+    single_alpha_data = list(filter(lambda it: it[0].selected_mover == MoveTag.LEVY_VARYING_DELTA_CONTRAST, zipped))
+
+    x = [it[0].alpha for it in single_alpha_data]
+    y = [it[1] for it in single_alpha_data]
+
+    data = x, y
+    quicksave(data, params, "units_v_alpha")
+    return data
+
+
+def plot_units_over_alpha(params, force_recalculation=False):
+    data, success = quickload(params, "units_v_alpha")
+
+    x, y = data if success and not force_recalculation else prepare_units_over_alpha_data(params)
+
+    fig, ax = plt.subplots()
+    ax.scatter(x, y)
+
+    if params.selected_world == tags.WorldTag.CONVEX_CELLS:
+        env_str = "convex"
+    elif params.selected_world == tags.WorldTag.CONCAVE_CELLS:
+        env_str = "concave"
+    else:
+        env_str = "homogenous"
+
+    ax.set_title(f"Performance of different alphas in {env_str} environment with "
+                 f"resistances $r_0 = {params.tic_rate_0}$, $r_1 = {params.tic_rate_1}$")
+    ax.set_xlabel("$\\alpha$")
+    ax.set_ylabel("Area units discovered")
+
+
 def plot_top_contenders(params, force_recalculation=False):
     data, success = quickload(params, "top_contenders")
 
