@@ -1,3 +1,4 @@
+import tags
 from world import create_world
 from move import create_mover
 from simulation import simulate
@@ -71,29 +72,53 @@ def setup_matplot_params():
     pass
 
 
+def plot_alphas(rs, env=None):
+    params = Params()
+    params.tic_rate_0, params.tic_rate_1 = rs
+
+    if env is not None:
+        params.selected_world = env
+        params.results_path = f"thesis_data/initial/??/"
+        params.save_id = "???"
+        return
+    else:
+        params.results_path = f"thesis_data/overviews/overview_{rs[0]}_{rs[1]}/"
+        params.save_id = ""
+
+    plot.plot_units_over_alpha(params)
+    plt.savefig(f"figures/alphas_{rs[0]}_{[rs[1]]}.pdf", bbox_inches="tight")
+
 
 if __name__ == '__main__':
     setup_matplot_params()
     
     plot_local_optima()
+    plot_alphas((0, 0), tags.WorldTag.CONCAVE_CELLS)
+    plot_alphas((0, 0), tags.WorldTag.CONVEX_CELLS)
+    plot_alphas((0, 0), tags.WorldTag.EMPTY)
+
     environments = [
-                    #(-4, -6),
-                    #(-2, -6),
-                    #(0, -6),
-                    #(2, -6),
+                    (-4, -6),
+                    (-2, -6),
+                    (0, -6),
+                    (2, -6),
                     (3, -4),
-                    #(4, -3),
-                    #(6, -6),
-                    #(6, -2),
-                    #(6, 0),
-                    #(6, 2),
-                    #(6, 4)
+                    (4, -3),
+                    (6, -6),
+                    (6, -2),
+                    (6, 0),
+                    (6, 2),
+                    (6, 4)
                     ]
     for e in environments:
         plot_local_optima(e)
+        plot_alphas(e)
         plot_compressed_overview(*e)
         plot_genetic_training_history(*e)
         plot_validation_distribution(*e)
+        pass
 
 
-    plt.show()
+
+
+    # plt.show()
