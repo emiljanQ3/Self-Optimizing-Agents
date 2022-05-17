@@ -135,4 +135,4 @@ def run_genetic_validations(params: Params):
 
 if __name__ == '__main__':
     params = Params()
-    run_alpha_linspace(params)
+    run_alpha_r_surface(params)
