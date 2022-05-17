@@ -31,7 +31,7 @@ def run_simulation(params):
     #display_results(results, params)
 
 
-def run_contrast_param_search(params: Params):
+def run_overview(params: Params):
 
     params_list = []
 
@@ -79,6 +79,24 @@ def run_alpha_linspace(params:Params):
         temp_params.save_id += f"{params.selected_world}_a{alpha:.1f}-"
         temp_params.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
         params_list.append(temp_params)
+
+    process_map(run_simulation, params_list)
+    # it = [run_simulation(x) for x in params_list]
+
+
+def run_alpha_r_surface(params:Params):
+    params_list = []
+
+    for alpha in np.linspace(1, 2, 21):
+        for r in np.linspace(-6, 6, 25):
+            temp_params = copy.deepcopy(params)
+            temp_params.alpha = alpha
+            temp_params.tic_rate_0 = r
+            temp_params.tic_rate_1 = r
+
+            temp_params.save_id += f"2d_a{alpha:.1f}_r{r}-"
+            temp_params.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
+            params_list.append(temp_params)
 
     process_map(run_simulation, params_list)
     # it = [run_simulation(x) for x in params_list]

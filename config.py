@@ -11,7 +11,7 @@ class Params:
         self.num_repeats = 100
         self.num_agents = 10
         self.save_id = ""
-        self.results_path = f"thesis_data/initial/"
+        self.results_path = f"thesis_data/2D_plot/fixed"
         self.alpha_tag = AlphaInitTag.SAME
         self.model_location = f""
         # Learning
