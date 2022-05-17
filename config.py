@@ -36,7 +36,7 @@ class Params:
         self.world_height = 2   # Currently only used for initializing the position of the agents
         self.world_width = 2   # Currently only used for initializing the position of the agents
         # Record
-        self.is_recording_position = True
+        self.is_recording_position = False
         self.is_recording_area = False
         self.is_recording_area_indices = False
         self.is_recording_area_over_time = True
