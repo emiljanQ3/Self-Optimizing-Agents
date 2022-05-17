@@ -183,7 +183,7 @@ def plot_units_over_alpha(params, force_recalculation=False):
     else:
         env_str = "homogenous"
 
-    ax.set_title(f"Performance of different alphas in {env_str} environment with "
+    ax.set_title(f"In {env_str} environment with "
                  f"resistances $r_0 = {params.tic_rate_0}$, $r_1 = {params.tic_rate_1}$")
     ax.set_xlabel("$\\alpha$")
     ax.set_ylabel("Area units discovered")
