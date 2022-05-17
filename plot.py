@@ -628,8 +628,8 @@ def plot_distribution(params):
         plot_single_dist(ax[i, 2], *combined_plot_data, "$combined$" if i == 0 else "", color)
 
     fig.suptitle(f"$r_0 = {params.tic_rate_0}, r_1 = {params.tic_rate_1}$")
-    fig.supxlabel("Frequency")
-    fig.supylabel("Effort")
+    fig.supxlabel("Effort")
+    fig.supylabel("Frequency")
     fig.set_tight_layout(True)
     fig.set_size_inches(8, 10)
 
