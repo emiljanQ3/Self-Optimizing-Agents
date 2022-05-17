@@ -83,9 +83,13 @@ def map_load_all(params:Params, func):
 
 
 def quickload(params, name):
-    temp_string: str = params.results_path + params.save_id
-    file_name = temp_string.replace("/", "~")
-    path = f"quicksaves/{name}-{file_name}"
+
+    if params is not None:
+        temp_string: str = params.results_path + params.save_id
+        file_name = temp_string.replace("/", "~")
+        path = f"quicksaves/{name}-{file_name}"
+    else:
+        path = f"quicksaves/{name}"
 
     try:
         with open(path, 'rb') as file:
@@ -99,9 +103,13 @@ def quickload(params, name):
 
 
 def quicksave(data, params, name):
-    temp_string: str = params.results_path + params.save_id
-    file_name = temp_string.replace("/", "~")
-    path = f"quicksaves/{name}-{file_name}"
+
+    if params is not None:
+        temp_string: str = params.results_path + params.save_id
+        file_name = temp_string.replace("/", "~")
+        path = f"quicksaves/{name}-{file_name}"
+    else:
+        path = f"quicksaves/{name}"
 
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, 'wb') as file:
