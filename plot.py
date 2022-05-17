@@ -402,20 +402,21 @@ def plot_alpha_delta_surface(results, highlighted=None):
         for j in range(len(alphas)):
             X[i, j] = deltas[i]/0.5
             Y[i, j] = alphas[j]
-            matching_results = filter(lambda it: it[ResultTag.PARAM].alpha == alphas[j]
-                                                 and it[ResultTag.PARAM].delta_time == deltas[i], results)
+            matching_results = list(filter(lambda it: it[ResultTag.PARAM].alpha == alphas[j]
+                                                 and it[ResultTag.PARAM].delta_time == deltas[i], results))
 
             count = 0
-            sum = 0
+            mean = 0
             for r in matching_results:
                 areas = r[ResultTag.AREA]
-                sum += np.sum(areas)
-                count += np.size(areas)
+                num_a_units = np.array(areas) * 20 ** 2
+                mean += np.mean(num_a_units)
+                count += 1
 
             if count == 0:
                 mean = -1
             else:
-                mean = sum / count
+                mean = mean / count
 
             Z[i, j] = mean
             counts[i, j] = count
@@ -432,15 +433,18 @@ def plot_alpha_delta_surface(results, highlighted=None):
         print(string)
 
     fig, ax = plt.subplots()
+
     c = ax.pcolor(np.log2(X), Y, Z, shading="nearest")
     fig.colorbar(c, ax=ax, label="Area units discovered")
-    ax.set_xlabel("Resistance: $r$")
-    ax.set_ylabel("$\\alpha$")
-    ax.set_title(f"Mean of {np.min(counts)} simulations.")
+
     if highlighted is not None:
         idx = np.array([np.where(it == scatter_x)[0] for it in highlighted])
         ax.scatter(scatter_x[idx], scatter_y[idx], s=10**2, c='black', label="Current environment")
     ax.scatter(scatter_x, scatter_y, c='red', label="Best alpha for each resistance")
+
+    ax.set_xlabel("Resistance: $r$")
+    ax.set_ylabel("$\\alpha$")
+    ax.set_title(f"Mean of {np.min(counts)} simulations.")
     ax.legend()
 
 
