@@ -381,29 +381,37 @@ def get_varied_time(params):
     return time
 
 
-def plot_alpha_delta_surface(results, highlighted=None):
-    params = [r[ResultTag.PARAM] for r in results]
+def plot_alpha_delta_surface(results, highlighted=None, old_data=False):
+    if old_data:
+        X, Y, Z, counts = generate_surface_plot_data_old(results)
+    else:
+        X, Y, Z, counts = generate_surface_plot_data_new(results)
+
+    plot_surface_helper(X, Y, Z, counts, highlighted)
+
+
+def generate_surface_plot_data_new(results):
+    params = [res[ResultTag.PARAM] for res in results]
     alphas = set()
-    deltas = set()
+    rs = set()
     for p in params:
         p: Params
         alphas.add(p.alpha)
-        deltas.add(p.delta_time)
-
+        rs.add(p.tic_rate_0)
     alphas = list(alphas)
     alphas.sort()
-    deltas = list(deltas)
-    deltas.sort()
-    X = -np.ones((len(deltas), len(alphas)))
-    Y = -np.ones((len(deltas), len(alphas)))
-    Z = -np.ones((len(deltas), len(alphas)))
-    counts = np.zeros((len(deltas), len(alphas)))
-    for i in range(len(deltas)):
+    rs = list(rs)
+    rs.sort()
+    X = -np.ones((len(rs), len(alphas)))
+    Y = -np.ones((len(rs), len(alphas)))
+    Z = -np.ones((len(rs), len(alphas)))
+    counts = np.zeros((len(rs), len(alphas)))
+    for i in range(len(rs)):
         for j in range(len(alphas)):
-            X[i, j] = deltas[i]/0.5
+            X[i, j] = rs[i]
             Y[i, j] = alphas[j]
             matching_results = list(filter(lambda it: it[ResultTag.PARAM].alpha == alphas[j]
-                                                 and it[ResultTag.PARAM].delta_time == deltas[i], results))
+                                                      and it[ResultTag.PARAM].tic_rate_0 == rs[i], results))
 
             count = 0
             mean = 0
@@ -421,27 +429,68 @@ def plot_alpha_delta_surface(results, highlighted=None):
             Z[i, j] = mean
             counts[i, j] = count
 
+    return X, Y, Z, counts
+
+
+def generate_surface_plot_data_old(results):
+    params = [r[ResultTag.PARAM] for r in results]
+    alphas = set()
+    deltas = set()
+    for p in params:
+        p: Params
+        alphas.add(p.alpha)
+        deltas.add(p.delta_time)
+    alphas = list(alphas)
+    alphas.sort()
+    deltas = list(deltas)
+    deltas.sort()
+    X = -np.ones((len(deltas), len(alphas)))
+    Y = -np.ones((len(deltas), len(alphas)))
+    Z = -np.ones((len(deltas), len(alphas)))
+    counts = np.zeros((len(deltas), len(alphas)))
+    for i in range(len(deltas)):
+        for j in range(len(alphas)):
+            X[i, j] = deltas[i] / 0.5
+            Y[i, j] = alphas[j]
+            matching_results = list(filter(lambda it: it[ResultTag.PARAM].alpha == alphas[j]
+                                                      and it[ResultTag.PARAM].delta_time == deltas[i], results))
+
+            count = 0
+            mean = 0
+            for r in matching_results:
+                areas = r[ResultTag.AREA]
+                num_a_units = np.array(areas) * 20 ** 2
+                mean += np.mean(num_a_units)
+                count += 1
+
+            if count == 0:
+                mean = -1
+            else:
+                mean = mean / count
+
+            Z[i, j] = mean
+            counts[i, j] = count
+
+    X = np.log2(X)
+    return X, Y, Z, counts
+
+
+def plot_surface_helper(X, Y, Z, counts, highlighted):
     max_indices = np.argmax(Z, axis=1)
-
-    scatter_x = np.log2(X[np.array(range(25)), max_indices])
+    scatter_x = X[np.array(range(25)), max_indices]
     scatter_y = Y[np.array(range(25)), max_indices]
-
     if highlighted is None:
         string = ""
         for i in range(len(scatter_x)):
             string += str(scatter_x[i]) + ": " + str(scatter_y[i]) + ", "
         print(string)
-
     fig, ax = plt.subplots()
-
-    c = ax.pcolor(np.log2(X), Y, Z, shading="nearest")
+    c = ax.pcolor(X, Y, Z, shading="nearest")
     fig.colorbar(c, ax=ax, label="Area units discovered")
-
     if highlighted is not None:
         idx = np.array([np.where(it == scatter_x)[0] for it in highlighted])
-        ax.scatter(scatter_x[idx], scatter_y[idx], s=10**2, c='black', label="Current environment")
+        ax.scatter(scatter_x[idx], scatter_y[idx], s=10 ** 2, c='black', label="Current environment")
     ax.scatter(scatter_x, scatter_y, c='red', label="Best alpha for each resistance")
-
     ax.set_xlabel("Resistance: $r$")
     ax.set_ylabel("$\\alpha$")
     ax.set_title(f"Mean of {np.min(counts)} simulations.")
