@@ -80,9 +80,8 @@ def plot_alphas(rs, env=None):
 
     if env is not None:
         params.selected_world = env
-        params.results_path = f"thesis_data/initial/??/"
-        params.save_id = "???"
-        return
+        params.results_path = f"thesis_data/initial/"
+        params.save_id = f"{env}"
     else:
         params.results_path = f"thesis_data/overviews/overview_{rs[0]}_{rs[1]}/"
         params.save_id = ""
