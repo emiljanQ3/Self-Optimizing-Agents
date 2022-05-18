@@ -11,7 +11,7 @@ class Params:
         self.num_repeats = 100
         self.num_agents = 10
         self.save_id = ""
-        self.results_path = f"thesis_data/2D_plot/fixed/"
+        self.results_path = f"thesis_data/2D_plot/fixed_over_time/"
         self.alpha_tag = AlphaInitTag.SAME
         self.model_location = f""
         # Learning
@@ -39,7 +39,7 @@ class Params:
         self.is_recording_position = False
         self.is_recording_area = True
         self.is_recording_area_indices = False
-        self.is_recording_area_over_time = False
+        self.is_recording_area_over_time = True
         self.is_recording_loss = False
         self.is_recording_buffer_dataset = False
         self.is_recording_distribution = False
