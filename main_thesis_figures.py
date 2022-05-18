@@ -87,7 +87,13 @@ def plot_alphas(rs, env=None):
         params.save_id = ""
 
     plot.plot_units_over_alpha(params)
-    plt.savefig(f"figures/alphas_{rs[0]}_{rs[1]}.pdf", bbox_inches="tight")
+
+    if env is None:
+        plt.savefig(f"figures/alphas_{rs[0]}_{rs[1]}.pdf", bbox_inches="tight")
+    else:
+        str = "convex" if env == tags.WorldTag.CONVEX_CELLS else \
+            "concave" if env == tags.WorldTag.CONCAVE_CELLS else "homogenous"
+        plt.savefig(f"figures/alphas_{str}.pdf", bbox_inches="tight")
 
 
 if __name__ == '__main__':
