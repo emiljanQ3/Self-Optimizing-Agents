@@ -460,7 +460,7 @@ def generate_surface_plot_data_old(results):
             for r in matching_results:
                 areas = r[ResultTag.AREA]
                 num_a_units = np.array(areas) * 20 ** 2
-                mean += np.mean(num_a_units)
+                mean += np.mean(num_a_units[-1, :])
                 count += 1
 
             if count == 0:
