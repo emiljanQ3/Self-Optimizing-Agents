@@ -380,13 +380,15 @@ def get_varied_time(params):
     return time
 
 
-def plot_alpha_delta_surface(results, highlighted=None, old_data=False):
+def plot_alpha_delta_surface(results, highlighted=None, old_data=False, last_line=False):
     if old_data:
-        X, Y, Z, counts = generate_surface_plot_data_old(results)
+        X, Y, Z, counts = generate_surface_plot_data_old(results, last_line)
     else:
         X, Y, Z, counts = generate_surface_plot_data_new(results)
 
-    plot_surface_helper(X, Y, Z, counts, highlighted)
+    x_opti, y_opti = plot_surface_helper(X, Y, Z, counts, highlighted)
+
+    return x_opti, y_opti
 
 
 def generate_surface_plot_data_new(results):
@@ -431,7 +433,7 @@ def generate_surface_plot_data_new(results):
     return X, Y, Z, counts
 
 
-def generate_surface_plot_data_old(results):
+def generate_surface_plot_data_old(results, last_line):
     params = [r[ResultTag.PARAM] for r in results]
     alphas = set()
     deltas = set()
@@ -459,7 +461,9 @@ def generate_surface_plot_data_old(results):
             for r in matching_results:
                 areas = r[ResultTag.AREA]
                 num_a_units = np.array(areas) * 20 ** 2
-                mean += np.mean(num_a_units[-1, :])
+                if last_line:
+                    num_a_units = num_a_units[-1, :]
+                mean += np.mean(num_a_units)
                 count += 1
 
             if count == 0:
@@ -494,6 +498,8 @@ def plot_surface_helper(X, Y, Z, counts, highlighted):
     ax.set_ylabel("$\\alpha$")
     ax.set_title(f"Mean of {np.min(counts)} simulations.")
     ax.legend()
+
+    return scatter_x, scatter_y
 
 
 def scatter_alpha_speed_surface(results):
@@ -757,3 +763,16 @@ def plot_genetic_training_history(params):
     ax.legend()
     ax.set_xlabel("Generations")
     ax.set_ylabel("Area units discovered")
+
+
+def plot_2d_comparison(x_bug, y_bug, x_many, y_many, x_single, y_single):
+
+    fig, ax = plt.subplots()
+    #ax.scatter(scatter_x, scatter_y, s=10 ** 2, c='black', label="Current environment")
+    ax.scatter(x_bug, y_bug, s=10 ** 2, label="Bugged")
+    ax.scatter(x_many, y_many, s=7 ** 2, label="100 agents")
+    ax.scatter(x_single, y_single, s=5 ** 2, label="1 agent")
+    ax.set_xlabel("Resistance: $r$")
+    ax.set_ylabel("$\\alpha$")
+    #ax.set_title(f"Mean of {np.min(counts)} simulations.")
+    ax.legend()

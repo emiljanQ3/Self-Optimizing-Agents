@@ -95,15 +95,43 @@ def plot_alphas(rs, env=None):
             "concave" if env == tags.WorldTag.CONCAVE_CELLS else "homogenous"
         plt.savefig(f"figures/alphas_{str}.pdf", bbox_inches="tight")
 
+def compare_local_optima_plot():
+        params_bug = Params()
+        params_bug.results_path = "thesis_data/2D_plot/all_combined/"
+        params_bug.save_id = ""
+        results_bug, _ = load_all(params_bug)
+
+        x_bug, y_bug = plot.plot_alpha_delta_surface(results_bug, highlighted=None, old_data=True)
+
+        params_many = Params()
+        params_many.results_path = "thesis_data/2D_plot/all_combined/"
+        params_many.save_id = ""
+        results_many, _ = load_all(params_many)
+
+        x_many, y_many = plot.plot_alpha_delta_surface(results_many, highlighted=None, old_data=True, last_line=True)
+
+        params_single = Params()
+        params_single.results_path = "thesis_data/2D_plot/fixed/"
+        params_single.save_id = ""
+        results_single, _ = load_all(params_single)
+
+        x_single, y_single = plot.plot_alpha_delta_surface(results_single, highlighted=None, old_data=False)
+
+        plot.plot_2d_comparison(x_bug, y_bug, x_many, y_many, x_single, y_single)
+
+        plt.savefig(f"figures/opti_comparison.pdf", bbox_inches="tight")
+
+
 
 if __name__ == '__main__':
     setup_matplot_params()
 
-    plot_local_optima(old_data=True)
-    plot_local_optima()
-    plot_alphas((0, 0), tags.WorldTag.CONCAVE_CELLS)
-    plot_alphas((0, 0), tags.WorldTag.CONVEX_CELLS)
-    plot_alphas((0, 0), tags.WorldTag.EMPTY)
+    compare_local_optima_plot()
+    #plot_local_optima(old_data=True)
+    #plot_local_optima()
+    #plot_alphas((0, 0), tags.WorldTag.CONCAVE_CELLS)
+    #plot_alphas((0, 0), tags.WorldTag.CONVEX_CELLS)
+    #plot_alphas((0, 0), tags.WorldTag.EMPTY)
 
     #environments = [
     #                (-4, -6),
