@@ -485,7 +485,7 @@ def plot_surface_helper(X, Y, Z, counts, highlighted):
     if highlighted is None:
         string = ""
         for i in range(len(scatter_x)):
-            string += str(scatter_x[i]) + ": " + str(scatter_y[i]) + ", "
+            string += str(scatter_x[i]) + ": " + "{:.2f}".format(scatter_y[i]) + ", "
         print(string)
     fig, ax = plt.subplots()
     c = ax.pcolor(X, Y, Z, shading="nearest")
@@ -767,12 +767,17 @@ def plot_genetic_training_history(params):
 
 def plot_2d_comparison(x_bug, y_bug, x_many, y_many, x_single, y_single):
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(1, 2)
     #ax.scatter(scatter_x, scatter_y, s=10 ** 2, c='black', label="Current environment")
-    ax.scatter(x_bug, y_bug, s=10 ** 2, label="Bugged")
-    ax.scatter(x_many, y_many, s=7 ** 2, label="100 agents")
-    ax.scatter(x_single, y_single, s=5 ** 2, label="1 agent")
-    ax.set_xlabel("Resistance: $r$")
-    ax.set_ylabel("$\\alpha$")
-    #ax.set_title(f"Mean of {np.min(counts)} simulations.")
-    ax.legend()
+    ax[0].scatter(x_bug, y_bug, s=10 ** 2, label="Bugged")
+    #ax[0].scatter(x_many, y_many, s=7 ** 2, label="100 agents")
+    ax[0].scatter(x_single, y_single, s=5 ** 2, label="Correct")
+    ax[0].set_xlabel("Resistance: $r$")
+    ax[0].set_ylabel("$\\alpha$")
+    #ax[0].set_title(f"Mean of {np.min(counts)} simulations.")
+    ax[0].legend()
+
+    ax[1].bar(x_single, np.abs(y_single-y_bug))
+    ax[1].set_xlabel("Resistance: $r$")
+    ax[1].set_ylabel("$\\alpha_{error}$")
+    fig.set_size_inches(10, 4)
