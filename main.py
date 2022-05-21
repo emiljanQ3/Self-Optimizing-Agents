@@ -20,6 +20,19 @@ from tqdm.contrib.concurrent import process_map
 from data import DataModifier
 from genetic_keras.plot.plot import epoch_hist_plot
 
+environments = [
+                (-4, -6),
+                (-2, -6),
+                (0, -6),
+                (2, -6),
+                (3, -4),
+                (4, -3),
+                (6, -6),
+                (6, -2),
+                (6, 0),
+                (6, 2),
+                (6, 4)
+                ]
 
 def run_simulation(params):
     world = create_world(params)
@@ -129,6 +142,29 @@ def run_genetic_validations(params: Params):
             f"thesis_data/genetic_training/genetic_run_{r0}_{r1}/genetic_run_{r0}_{r1}{i}/genetic_run_{r0}_{r1}{i}"
 
         params_list.append(temp_params)
+
+    process_map(run_simulation, params_list)
+
+def opti_reruns(params: Params):
+    params_list = []
+    for env in environments:
+        temp_opti = copy.deepcopy(params)
+        temp_opti_s = copy.deepcopy(params)
+
+        temp_opti.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
+        temp_opti_s.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH
+
+        temp_opti.tic_rate_0 = env[0]
+        temp_opti.tic_rate_1 = env[1]
+        temp_opti.save_id += "opti_" + str(env)
+
+        params_list.append(temp_opti)
+
+        temp_opti_s.tic_rate_0 = env[0]
+        temp_opti_s.tic_rate_1 = env[1]
+        temp_opti_s.save_id += "opti_s_" + str(env)
+
+        params_list.append(temp_opti_s)
 
     process_map(run_simulation, params_list)
 
