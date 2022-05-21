@@ -145,6 +145,7 @@ def run_genetic_validations(params: Params):
 
     process_map(run_simulation, params_list)
 
+
 def opti_reruns(params: Params):
     params_list = []
     for env in environments:
@@ -171,4 +172,4 @@ def opti_reruns(params: Params):
 
 if __name__ == '__main__':
     params = Params()
-    run_alpha_r_surface(params)
+    opti_reruns(params)
