@@ -20,10 +20,20 @@ from genetic_keras.plot.plot import epoch_hist_plot
 
 
 def plot_local_optima(highlighted=None, old_data=False):
-    params = Params()
-    params.results_path = "thesis_data/2D_plot/all_combined/" if old_data else "thesis_data/2D_plot/fixed/"
-    params.save_id = ""
-    results, _ = load_all(params)
+    if not old_data:
+        params_single = Params()
+        params_single.results_path = "thesis_data/2D_plot/fixed/"
+        params_single.save_id = ""
+        results, _ = load_all(params_single)
+        params_single.results_path = "thesis_data/2D_plot/fixed_multi/"
+        res2, _ = load_all(params_single)
+        results.extend(res2)
+    else:
+        params = Params()
+        params.results_path = "thesis_data/2D_plot/all_combined/"
+        params.save_id = ""
+        results, _ = load_all(params)
+
     plot.plot_alpha_delta_surface(results, highlighted, old_data)
 
     save_str = "faulty" if old_data else "fixed"
@@ -95,6 +105,7 @@ def plot_alphas(rs, env=None):
             "concave" if env == tags.WorldTag.CONCAVE_CELLS else "homogenous"
         plt.savefig(f"figures/alphas_{str}.pdf", bbox_inches="tight")
 
+
 def compare_local_optima_plot():
         params_bug = Params()
         params_bug.results_path = "thesis_data/2D_plot/all_combined/"
@@ -114,6 +125,10 @@ def compare_local_optima_plot():
         params_single.results_path = "thesis_data/2D_plot/fixed/"
         params_single.save_id = ""
         results_single, _ = load_all(params_single)
+        params_single.results_path = "thesis_data/2D_plot/fixed_multi/"
+        res2, _ = load_all(params_single)
+        results_single.extend(res2)
+
 
         x_single, y_single = plot.plot_alpha_delta_surface(results_single, highlighted=None, old_data=False)
 
@@ -126,9 +141,9 @@ def compare_local_optima_plot():
 if __name__ == '__main__':
     setup_matplot_params()
 
-    compare_local_optima_plot()
+    #compare_local_optima_plot()
     #plot_local_optima(old_data=True)
-    #plot_local_optima()
+    plot_local_optima()
     #plot_alphas((0, 0), tags.WorldTag.CONCAVE_CELLS)
     #plot_alphas((0, 0), tags.WorldTag.CONVEX_CELLS)
     #plot_alphas((0, 0), tags.WorldTag.EMPTY)
