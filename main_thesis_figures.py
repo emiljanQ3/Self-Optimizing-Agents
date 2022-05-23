@@ -137,39 +137,59 @@ def compare_local_optima_plot():
         plt.savefig(f"figures/opti_comparison.pdf", bbox_inches="tight")
 
 
+def cell_example():
+    params = Params()
+
+    fig, ax = plt.subplots()
+    plot.plot_world_concave_cells(ax, 0.5, 0.5, 0.5, 0.5, params)
+    format_cell(ax)
+    plt.savefig(f"figures/concave_cell.pdf", bbox_inches="tight")
+
+    fig, ax = plt.subplots()
+    plot.plot_world_convex_cells(ax, 0.5, 0.5, 0.5, 0.5, params)
+    format_cell(ax)
+    plt.savefig(f"figures/convex_cell.pdf", bbox_inches="tight")
+
+
+def format_cell(ax):
+    ax.set_aspect('equal')
+    # TODO
+
+
 
 if __name__ == '__main__':
     setup_matplot_params()
 
-    #compare_local_optima_plot()
-    #plot_local_optima(old_data=True)
+    cell_example()
+    compare_local_optima_plot()
+    plot_local_optima(old_data=True)
     plot_local_optima()
-    #plot_alphas((0, 0), tags.WorldTag.CONCAVE_CELLS)
-    #plot_alphas((0, 0), tags.WorldTag.CONVEX_CELLS)
-    #plot_alphas((0, 0), tags.WorldTag.EMPTY)
+    plot_alphas((0, 0), tags.WorldTag.CONCAVE_CELLS)
+    plot_alphas((0, 0), tags.WorldTag.CONVEX_CELLS)
+    plot_alphas((0, 0), tags.WorldTag.EMPTY)
 
-    #environments = [
-    #                (-4, -6),
-    #                (-2, -6),
-    #                (0, -6),
-    #                (2, -6),
-    #                (3, -4),
-    #                (4, -3),
-    #                (6, -6),
-    #                (6, -2),
-    #                (6, 0),
-    #                (6, 2),
-    #                (6, 4)
-    #                ]
-    #for e in environments:
-    #    plot_local_optima(e)
-    #    plot_alphas(e)
-    #    plot_compressed_overview(*e)
-    #    plot_genetic_training_history(*e)
-    #    plot_validation_distribution(*e)
-    #    pass
-
-
+    environments = [
+                    (-4, -6),
+                    (-2, -6),
+                    (0, -6),
+                    (2, -6),
+                    (3, -4),
+                    (4, -3),
+                    (6, -6),
+                    (6, -2),
+                    (6, 0),
+                    (6, 2),
+                    (6, 4)
+                    ]
+    for e in environments:
+        plot_local_optima(e)
+        plot_alphas(e)
+        plot_compressed_overview(*e)
+        plot_genetic_training_history(*e)
+        plot_validation_distribution(*e)
+        pass
 
 
-    plt.show()
+
+
+    #plt.show()
