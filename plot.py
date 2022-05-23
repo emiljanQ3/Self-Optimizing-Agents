@@ -217,9 +217,27 @@ def plot_top_contenders(params, force_recalculation=False):
     ax.set_title(f"Performance of different strategies when: $r_0 = {params.tic_rate_0}, r_1 = {params.tic_rate_1}$")
     ax.set_ylabel("Area units discovered")
 
-    print(f"({params.tic_rate_0}, {params.tic_rate_1}) - alpha_worst: {np.mean([it[1] for it in worst_alpha_data])}, alpha_best: "
-          f"{np.mean([it[1] for it in best_alpha_data])}, local: {np.mean([it[1] for it in slow_opti_data])}, local_s:  {np.mean([it[1] for it in instant_opti_data])}, "
-          f"genetic_mean: {np.mean([it[1] for it in genetic_data])}")
+    #print(f"({params.tic_rate_0}, {params.tic_rate_1}) - alpha_worst: {np.mean([it[1] for it in worst_alpha_data]):.0f}, "
+    #      f"alpha_best: {np.mean([it[1] for it in best_alpha_data]):.0f}, local: "
+    #      f"{np.mean([it[1] for it in slow_opti_data]):.0f}, local_s:  {np.mean([it[1] for it in instant_opti_data]):.0f}, "
+    #      f"genetic_mean: {np.mean([it[1] for it in genetic_data]):.0f}")
+
+    m_aw = np.mean([it[1] for it in worst_alpha_data])
+    m_ab = np.mean([it[1] for it in best_alpha_data])
+    m_op = np.mean([it[1] for it in slow_opti_data])
+    m_ops = np.mean([it[1] for it in instant_opti_data])
+    m_gn = np.mean([it[1] for it in genetic_data])
+
+    means = [m_aw, m_ab, m_op, m_ops, m_gn]
+    colors = ["\\ca", "\\cb", "\\cc", "\\cd", "\\ce"]
+    sort = np.argsort(np.argsort(-np.array(means)))
+    str = ""
+    for i in range(len(means)):
+        str += f" & {colors[sort[i]]} {means[i]:.0f}"
+
+    str = f"({params.tic_rate_0}, {params.tic_rate_1})" + str + "\\\\ \\hline"
+
+    print(str)
 
 
 def prepare_top_contender_data(params):
