@@ -510,11 +510,12 @@ def plot_surface_helper(X, Y, Z, counts, highlighted):
     fig.colorbar(c, ax=ax, label="Area units discovered")
     if highlighted is not None:
         idx = np.array([np.where(it == scatter_x)[0] for it in highlighted])
+        ax.scatter(scatter_x[idx], scatter_y[idx], s=12 ** 2, c='white', label='_nolegend_')
         ax.scatter(scatter_x[idx], scatter_y[idx], s=10 ** 2, c='black', label="Current environment")
     ax.scatter(scatter_x, scatter_y, c='red', label="Best alpha for each resistance")
     ax.set_xlabel("Resistance: $r$")
     ax.set_ylabel("$\\alpha$")
-    ax.set_title(f"Mean of {np.min(counts)} simulations.")
+    ax.set_title(f"Mean of {np.min(counts)*10000} simulated agents.")
     ax.legend()
 
     return scatter_x, scatter_y
