@@ -211,7 +211,7 @@ def plot_top_contenders(params, force_recalculation=False):
         plot_bar_category(ax, genetic_data, 4)
 
     labels = [f"$\\alpha_{{worst}}: {worst_alpha}$", f"$\\alpha_{{best}}: {best_alpha}$",
-              "local", "local$_{s}$", "genetic"]
+              "$L$", "$L_{s}$", "genetic"]
     ax.bar(range(5), np.zeros(5), tick_label=labels)
 
     ax.set_title(f"Performance of different strategies when: $r_0 = {params.tic_rate_0}, r_1 = {params.tic_rate_1}$")
