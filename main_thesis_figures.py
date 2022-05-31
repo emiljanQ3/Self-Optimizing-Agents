@@ -18,6 +18,8 @@ from tqdm.contrib.concurrent import process_map
 from data import DataModifier
 from genetic_keras.plot.plot import epoch_hist_plot
 
+savetype = ".png"
+
 
 def plot_local_optima(highlighted=None, old_data=False):
     if not old_data:
@@ -37,7 +39,7 @@ def plot_local_optima(highlighted=None, old_data=False):
     plot.plot_alpha_delta_surface(results, highlighted, old_data)
 
     save_str = "faulty" if old_data else "fixed"
-    plt.savefig(f"figures/opti_{highlighted}_{save_str}.pdf", bbox_inches="tight")
+    plt.savefig(f"figures/opti_{highlighted}_{save_str}{savetype}", bbox_inches="tight")
 
 
 def plot_overview(folder):
@@ -55,7 +57,7 @@ def plot_compressed_overview(r0, r1, force_recalculation=False):
     params.tic_rate_0 = r0
     params.tic_rate_1 = r1
     plot.plot_top_contenders(params, force_recalculation)
-    plt.savefig(f"figures/comp_{r0}_{r1}.pdf", bbox_inches="tight")
+    plt.savefig(f"figures/comp_{r0}_{r1}{savetype}", bbox_inches="tight")
 
 
 def plot_genetic_training_history(r0, r1):
@@ -65,7 +67,7 @@ def plot_genetic_training_history(r0, r1):
     params.tic_rate_0 = r0
     params.tic_rate_1 = r1
     plot.plot_genetic_training_history(params)
-    plt.savefig(f"figures/hist_{r0}_{r1}.pdf", bbox_inches="tight")
+    plt.savefig(f"figures/hist_{r0}_{r1}{savetype}", bbox_inches="tight")
 
 
 def plot_validation_distribution(r0, r1):
@@ -76,7 +78,7 @@ def plot_validation_distribution(r0, r1):
     params.tic_rate_1 = r1
 
     plot.plot_distribution(params)
-    plt.savefig(f"figures/dist_{r0}_{r1}.pdf", bbox_inches="tight")
+    plt.savefig(f"figures/dist_{r0}_{r1}{savetype}", bbox_inches="tight")
 
 
 def setup_matplot_params():
@@ -99,11 +101,11 @@ def plot_alphas(rs, env=None):
     plot.plot_units_over_alpha(params)
 
     if env is None:
-        plt.savefig(f"figures/alphas_{rs[0]}_{rs[1]}.pdf", bbox_inches="tight")
+        plt.savefig(f"figures/alphas_{rs[0]}_{rs[1]}{savetype}", bbox_inches="tight")
     else:
         str = "convex" if env == tags.WorldTag.CONVEX_CELLS else \
             "concave" if env == tags.WorldTag.CONCAVE_CELLS else "homogenous"
-        plt.savefig(f"figures/alphas_{str}.pdf", bbox_inches="tight")
+        plt.savefig(f"figures/alphas_{str}{savetype}", bbox_inches="tight")
 
 
 def compare_local_optima_plot():
@@ -134,7 +136,7 @@ def compare_local_optima_plot():
 
         plot.plot_2d_comparison(x_bug, y_bug, x_many, y_many, x_single, y_single)
 
-        plt.savefig(f"figures/opti_comparison.pdf", bbox_inches="tight")
+        plt.savefig(f"figures/opti_comparison{savetype}", bbox_inches="tight")
 
 
 def cell_example():
@@ -143,12 +145,12 @@ def cell_example():
     fig, ax = plt.subplots()
     plot.plot_world_concave_cells(ax, 0.5, 0.5, 0.5, 0.5, params)
     format_cell(ax)
-    plt.savefig(f"figures/concave_cell.pdf", bbox_inches="tight")
+    plt.savefig(f"figures/concave_cell{savetype}", bbox_inches="tight")
 
     fig, ax = plt.subplots()
     plot.plot_world_convex_cells(ax, 0.5, 0.5, 0.5, 0.5, params)
     format_cell(ax)
-    plt.savefig(f"figures/convex_cell.pdf", bbox_inches="tight")
+    plt.savefig(f"figures/convex_cell{savetype}", bbox_inches="tight")
 
 
 def format_cell(ax):
@@ -160,10 +162,10 @@ def format_cell(ax):
 if __name__ == '__main__':
     setup_matplot_params()
 
-    cell_example()
-    compare_local_optima_plot()
-    plot_local_optima(old_data=True)
-    plot_local_optima()
+    #cell_example()
+    #compare_local_optima_plot()
+    #plot_local_optima(old_data=True)
+    #plot_local_optima()
     plot_alphas((0, 0), tags.WorldTag.CONCAVE_CELLS)
     plot_alphas((0, 0), tags.WorldTag.CONVEX_CELLS)
     plot_alphas((0, 0), tags.WorldTag.EMPTY)
@@ -182,14 +184,14 @@ if __name__ == '__main__':
                     (6, 4)
                     ]
     for e in environments:
-        plot_local_optima(e)
-        plot_alphas(e)
-        plot_compressed_overview(*e)
-        plot_genetic_training_history(*e)
-        plot_validation_distribution(*e)
+        #plot_local_optima(e)
+        #plot_alphas(e)
+        #plot_compressed_overview(*e)
+        #plot_genetic_training_history(*e)
+        #plot_validation_distribution(*e)
         pass
 
 
 
 
-    #plt.show()
+    plt.show()
