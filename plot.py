@@ -672,24 +672,7 @@ def plot_distribution(params):
     if success:
         plot_data_list = data
     else:
-        results, filenames = load_all(params)
-        plot_data_list = []
-        for r in results:
-            if tags.ResultTag.DIST in r:
-                big, small = r[tags.ResultTag.DIST]
-
-                plot_data = []
-                for times in [big, small]:
-                    num_bins = 30
-                    bin_size = max(times) / num_bins
-                    bins = np.linspace(0, max(times), num_bins + 1)
-                    bin_indices = np.digitize(times, bins)
-                    bin_count = np.bincount(bin_indices)
-                    plot_data.append((bin_size, bins, bin_count))
-
-                plot_data_list.append(plot_data)
-
-        quicksave(plot_data_list, params, qs_tag)
+        plot_data_list = prepare_dist_data(params, qs_tag)
 
     fig, ax = plt.subplots(5, 3)
 
@@ -709,6 +692,27 @@ def plot_distribution(params):
     fig.supylabel("Frequency")
     fig.set_tight_layout(True)
     fig.set_size_inches(8, 10)
+
+
+def prepare_dist_data(params, qs_tag):
+    results, filenames = load_all(params)
+    plot_data_list = []
+    for r in results:
+        if tags.ResultTag.DIST in r:
+            big, small = r[tags.ResultTag.DIST]
+
+            plot_data = []
+            for times in [big, small]:
+                num_bins = 30
+                bin_size = max(times) / num_bins
+                bins = np.linspace(0, max(times), num_bins + 1)
+                bin_indices = np.digitize(times, bins)
+                bin_count = np.bincount(bin_indices)
+                plot_data.append((bin_size, bins, bin_count))
+
+            plot_data_list.append(plot_data)
+    quicksave(plot_data_list, params, qs_tag)
+    return plot_data_list
 
 
 def plot_single_cumdist(ax, times, title):
