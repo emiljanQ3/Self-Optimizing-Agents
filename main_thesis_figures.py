@@ -151,36 +151,36 @@ def format_cell(ax):
 if __name__ == '__main__':
     setup_matplot_params()
 
-    #cell_example()
-    #compare_local_optima_plot()
-    #plot_local_optima(old_data=True)
-    #plot_local_optima()
+    cell_example()
+    compare_local_optima_plot()
+    plot_local_optima(old_data=True)
+    plot_local_optima()
     plot_alphas((0, 0), tags.WorldTag.CONCAVE_CELLS)
     plot_alphas((0, 0), tags.WorldTag.CONVEX_CELLS)
     plot_alphas((0, 0), tags.WorldTag.EMPTY)
 
     environments = [
                     (-4, -6),
-                    #(-2, -6),
-                    #(0, -6),
-                    #(2, -6),
-                    #(3, -4),
-                    #(4, -3),
-                    #(6, -6),
-                    #(6, -2),
-                    #(6, 0),
+                    (-2, -6),
+                    (0, -6),
+                    (2, -6),
+                    (3, -4),
+                    (4, -3),
+                    (6, -6),
+                    (6, -2),
+                    (6, 0),
                     (6, 2),
-                    #(6, 4)
+                    (6, 4)
                     ]
     for e in environments:
         plot_local_optima(e)
-        #plot_alphas(e)
-        #plot_compressed_overview(*e)
-        #plot_genetic_training_history(*e)
-        #plot_validation_distribution(*e)
+        plot_alphas(e)
+        plot_compressed_overview(*e)
+        plot_genetic_training_history(*e)
+        plot_validation_distribution(*e)
         pass
 
 
 
 
-    plt.show()
+    #plt.show()
