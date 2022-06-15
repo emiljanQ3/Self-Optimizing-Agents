@@ -103,6 +103,7 @@ def plot_alphas(rs, env=None):
     if env is None:
         plt.savefig(f"figures/alphas_{rs[0]}_{rs[1]}{savetype}", bbox_inches="tight")
     else:
+        plt.rcParams["figure.figsize"] = [3.6, 2.4]  # default [6.4, 4.8]
         str = "convex" if env == tags.WorldTag.CONVEX_CELLS else \
             "concave" if env == tags.WorldTag.CONCAVE_CELLS else "homogenous"
         plt.savefig(f"figures/alphas_{str}{savetype}", bbox_inches="tight")
@@ -122,6 +123,7 @@ def compare_local_optima_plot():
         results_many, _ = load_all(params_many)
 
         x_many, y_many = plot.plot_alpha_delta_surface(results_many, highlighted=None, old_data=True, last_line=True)
+        plt.savefig(f"figures/opti_many{savetype}", bbox_inches="tight")
 
         params_single = Params()
         params_single.results_path = "thesis_data/2D_plot/fixed/"
@@ -172,16 +174,16 @@ if __name__ == '__main__':
 
     environments = [
                     (-4, -6),
-                    (-2, -6),
-                    (0, -6),
-                    (2, -6),
-                    (3, -4),
-                    (4, -3),
-                    (6, -6),
-                    (6, -2),
-                    (6, 0),
+                    #(-2, -6),
+                    #(0, -6),
+                    #(2, -6),
+                    #(3, -4),
+                    #(4, -3),
+                    #(6, -6),
+                    #(6, -2),
+                    #(6, 0),
                     (6, 2),
-                    (6, 4)
+                    #(6, 4)
                     ]
     for e in environments:
         #plot_local_optima(e)
