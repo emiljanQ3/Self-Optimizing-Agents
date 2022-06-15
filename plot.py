@@ -791,17 +791,12 @@ def plot_genetic_training_history(params):
 
 def plot_2d_comparison(x_bug, y_bug, x_many, y_many, x_single, y_single):
 
-    fig, ax = plt.subplots(1, 2)
+    fig, ax = plt.subplots()
     #ax.scatter(scatter_x, scatter_y, s=10 ** 2, c='black', label="Current environment")
     #ax[0].scatter(x_bug, y_bug, s=10 ** 2, label="Bugged")
-    ax[0].scatter(x_many, y_many, s=7 ** 2, label="100 agents")
-    ax[0].scatter(x_single, y_single, s=5 ** 2, label="Single agent")
-    ax[0].set_xlabel("Resistance: $r$")
-    ax[0].set_ylabel("$\\alpha$")
-    #ax[0].set_title(f"Mean of {np.min(counts)} simulations.")
-    ax[0].legend()
-
-    ax[1].bar(x_single, np.abs(y_single-y_many))
-    ax[1].set_xlabel("Resistance: $r$")
-    ax[1].set_ylabel("$\\alpha_{diff}$")
-    fig.set_size_inches(10, 4)
+    ax.scatter(x_many, y_many, s=7 ** 2, label="100 agents")
+    ax.scatter(x_single, y_single, s=5 ** 2, label="Single agent")
+    ax.set_xlabel("Resistance: $r$")
+    ax.set_ylabel("$\\alpha$")
+    #ax.set_title(f"Mean of {np.min(counts)} simulations.")
+    ax.legend()
