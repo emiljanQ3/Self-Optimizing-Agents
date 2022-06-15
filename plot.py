@@ -186,6 +186,7 @@ def plot_units_over_alpha(params, force_recalculation=False):
     ax.set_title(f"{env_str} env, $r_0 = {params.tic_rate_0}$, $r_1 = {params.tic_rate_1}$")
     ax.set_xlabel("$\\alpha$")
     ax.set_ylabel("Area units discovered")
+    return fig
 
 
 def plot_top_contenders(params, force_recalculation=False):

@@ -1,24 +1,11 @@
 import tags
-from world import create_world
-from move import create_mover
-from simulation import simulate
-from record import create_data_recorder
-from disk import save, load_all
+from disk import load_all
 import plot
 from config import Params
-import numpy as np
-import pickle
-from plot import plot_area_over_alpha
-from tags import ResultTag, AlphaInitTag, MoveTag
-import copy
-from multiprocessing import Pool
-from utils import normalize_area_to_best_alpha
 from matplotlib import pyplot as plt
-from tqdm.contrib.concurrent import process_map
-from data import DataModifier
-from genetic_keras.plot.plot import epoch_hist_plot
 
-savetype = ".png"
+
+savetype = ".pdf"
 
 
 def plot_local_optima(highlighted=None, old_data=False):
@@ -98,12 +85,12 @@ def plot_alphas(rs, env=None):
         params.results_path = f"thesis_data/overviews/overview_{rs[0]}_{rs[1]}/"
         params.save_id = ""
 
-    plot.plot_units_over_alpha(params)
+    fig = plot.plot_units_over_alpha(params)
 
     if env is None:
         plt.savefig(f"figures/alphas_{rs[0]}_{rs[1]}{savetype}", bbox_inches="tight")
     else:
-        plt.rcParams["figure.figsize"] = [3.6, 2.4]  # default [6.4, 4.8]
+        fig.set_size_inches(3.2, 2.4)  # default [6.4, 4.8]
         str = "convex" if env == tags.WorldTag.CONVEX_CELLS else \
             "concave" if env == tags.WorldTag.CONCAVE_CELLS else "homogenous"
         plt.savefig(f"figures/alphas_{str}{savetype}", bbox_inches="tight")
@@ -186,7 +173,7 @@ if __name__ == '__main__':
                     #(6, 4)
                     ]
     for e in environments:
-        #plot_local_optima(e)
+        plot_local_optima(e)
         #plot_alphas(e)
         #plot_compressed_overview(*e)
         #plot_genetic_training_history(*e)
