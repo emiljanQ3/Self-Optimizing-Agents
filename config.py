@@ -11,7 +11,7 @@ class Params:
         self.num_repeats = 100
         self.num_agents = 10
         self.save_id = "placeholder"
-        self.results_path = f"thesis_data/placeholder"
+        self.results_path = f"data/placeholder/"
         self.alpha_tag = AlphaInitTag.SAME
         self.model_location = f""
         # Learning
@@ -50,5 +50,6 @@ class Params:
 
 def get_initial_simulations_params():
     params = Params()
-
+    params.save_id = "initial_simulations"
+    params.results_path = "data/initial_simulations/"
     return params

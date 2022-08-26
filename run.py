@@ -74,6 +74,10 @@ def run_overview(params: Params, skip_opti=False):
 
 
 def run_alpha_linspace(params:Params):
+    if len(sys.argv) < 2:
+        print("invalid job argument")
+        return
+
     if sys.argv[1] == "0":
         params.selected_world = tags.WorldTag.CONCAVE_CELLS
     elif sys.argv[1] == "1":
@@ -90,7 +94,7 @@ def run_alpha_linspace(params:Params):
         temp_params = copy.deepcopy(params)
         temp_params.alpha = alpha
 
-        temp_params.save_id += f"{params.selected_world}_a{alpha:.1f}-"
+        temp_params.save_id += f"_{str(params.selected_world)[9:]}_a{alpha:.1f}-"
         temp_params.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
         params_list.append(temp_params)
 
