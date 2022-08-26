@@ -36,12 +36,26 @@ class Params:
         self.world_height = 2  # Currently only used for initializing the position of the agents
         self.world_width = 2  # Currently only used for initializing the position of the agents
         # Record
+
+        # Saves data for plotting the agent position at each timestep. # Can be used to plot agent trajectories.
+        # Will overflow memory quickly, don't use on long runs.
         self.is_recording_position = False
+        # Saves the total area discovered for each agent
         self.is_recording_area = False
+        # Saves the indices of the are units that are discovered by an agent. Can be used to visualize agent
+        # discoveries in combination with trajectories. Will overflow memory quickly, don't use on long runs.
         self.is_recording_area_indices = False
+        # Saves the timesteps at which new area was discovered. Makes it possible to visualize area discovered over
+        # time and to vary the timespan one examines while still using the same data. I (Emil Jansson) prefer this
+        # method over saving the area as a single value.
         self.is_recording_area_over_time = True
+        # Records training progress over time.
         self.is_recording_loss = False
+        # Collects representative samples from agent memory to use for training outside of simulation.
+        # Can be used for deep-Q-learning. This was not used to produce the results of the 2022 thesis.
         self.is_recording_buffer_dataset = False
+        # Saves the distribution of effort values selected. Can be used to visualize said
+        # distribution in regions with r0 and r1.
         self.is_recording_distribution = False
         # Plot
         self.is_plotting_trajectories = False

@@ -9,6 +9,8 @@ To get all the data you therefore need to run it three times with these three di
 
 When the program is finished you should see that a folder called data has appeared in your project. Here is the saved 
 information from your simulations.
+
+To plot figures based on the data, use the corresponding plot file: plot1_initial_simulations.py
 """
 
 if __name__ == '__main__':
