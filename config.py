@@ -1,17 +1,17 @@
+import copy
+
 from tags import WorldTag, MoveTag, AlphaInitTag
 from numpy import pi
 
-r0 = 0
-r1 = 0
 
 class Params:
-    def __init__(self):
+    def __init__(self, r0=0, r1=0):
         # Meta
         self.num_steps = 100000
         self.num_repeats = 100
         self.num_agents = 10
-        self.save_id = ""
-        self.results_path = f"thesis_data/overviews/opti_rerun"
+        self.save_id = "placeholder"
+        self.results_path = f"thesis_data/placeholder"
         self.alpha_tag = AlphaInitTag.SAME
         self.model_location = f""
         # Learning
@@ -23,7 +23,7 @@ class Params:
         # Movement
         self.delta_time = 0.5
         self.speed = 0.01
-        self.ang_sd = pi/6
+        self.ang_sd = pi / 6
         self.selected_mover = MoveTag.LEVY_VARYING_DELTA_CONTRAST
         self.alpha = 1  # Only relevant if the current selected strategy does not change alpha
         # World
@@ -31,10 +31,10 @@ class Params:
         self.cell_size = 1
         self.area_unit_size = 0.05
         self.obstacle_size = 0.8  # relative to cell
-        self.tic_rate_0 = r0   # Resistance in even cells
-        self.tic_rate_1 = r1   # Resistance in odd cells
-        self.world_height = 2   # Currently only used for initializing the position of the agents
-        self.world_width = 2   # Currently only used for initializing the position of the agents
+        self.tic_rate_0 = r0  # Resistance in even cells
+        self.tic_rate_1 = r1  # Resistance in odd cells
+        self.world_height = 2  # Currently only used for initializing the position of the agents
+        self.world_width = 2  # Currently only used for initializing the position of the agents
         # Record
         self.is_recording_position = False
         self.is_recording_area = False
@@ -48,3 +48,7 @@ class Params:
         self.is_plotting_area_units = False
 
 
+def get_initial_simulations_params():
+    params = Params()
+
+    return params

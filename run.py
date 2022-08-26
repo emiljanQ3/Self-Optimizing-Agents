@@ -44,21 +44,22 @@ def run_simulation(params):
     #display_results(results, params)
 
 
-def run_overview(params: Params):
+def run_overview(params: Params, skip_opti=False):
 
     params_list = []
 
-    slow_optimal_params = copy.deepcopy(params)
-    slow_optimal_params.save_id += "_slow_optimal"
-    slow_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
-    slow_optimal_params.alpha = 2.2
-    params_list.append(slow_optimal_params)
+    if not skip_opti:
+        slow_optimal_params = copy.deepcopy(params)
+        slow_optimal_params.save_id += "_slow_optimal"
+        slow_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST
+        slow_optimal_params.alpha = 2.2
+        params_list.append(slow_optimal_params)
 
-    instant_optimal_params = copy.deepcopy(params)
-    instant_optimal_params.save_id += "_instant_optimal"
-    instant_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH
-    instant_optimal_params.alpha = 2.3
-    params_list.append(instant_optimal_params)
+        instant_optimal_params = copy.deepcopy(params)
+        instant_optimal_params.save_id += "_instant_optimal"
+        instant_optimal_params.selected_mover = MoveTag.LEVY_OPTIMAL_ALPHA_CONTRAST_INSTANT_SWITCH
+        instant_optimal_params.alpha = 2.3
+        params_list.append(instant_optimal_params)
 
     for alpha in np.linspace(1, 2, 11):
         temp_params = copy.deepcopy(params)
