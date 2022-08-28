@@ -67,3 +67,10 @@ def get_initial_simulations_params():
     params.save_id = "initial_simulations"
     params.results_path = "data/initial_simulations/"
     return params
+
+
+def get_identifying_optimal_alphas_params():
+    params = Params()
+    params.save_id = "identifying_optimal_alphas"
+    params.results_path = "data/identifying_optimal_alphas/"
+    return params
