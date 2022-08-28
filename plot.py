@@ -516,7 +516,7 @@ def plot_surface_helper(X, Y, Z, counts, highlighted):
     ax.scatter(scatter_x, scatter_y, c='red', label="Best alpha for each resistance")
     ax.set_xlabel("Resistance: $r$")
     ax.set_ylabel("$\\alpha$")
-    ax.set_title(f"Mean of {np.min(counts)*10000} simulated agents.")
+    #ax.set_title(f"Mean of {np.min(counts)*10000} simulated agents.")
     ax.legend()
 
     return scatter_x, scatter_y
