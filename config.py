@@ -48,7 +48,7 @@ class Params:
         # Saves the timesteps at which new area was discovered. Makes it possible to visualize area discovered over
         # time and to vary the timespan one examines while still using the same data. I (Emil Jansson) prefer this
         # method over saving the area as a single value.
-        self.is_recording_area_over_time = True
+        self.is_recording_area_over_time = False
         # Records training progress over time.
         self.is_recording_loss = False
         # Collects representative samples from agent memory to use for training outside of simulation.
@@ -66,6 +66,8 @@ def get_initial_simulations_params():
     params = Params()
     params.save_id = "initial_simulations"
     params.results_path = "data/initial_simulations/"
+
+    params.is_recording_area_over_time = True
     return params
 
 
@@ -73,4 +75,6 @@ def get_identifying_optimal_alphas_params():
     params = Params()
     params.save_id = "identifying_optimal_alphas"
     params.results_path = "data/identifying_optimal_alphas/"
+
+    params.is_recording_area = True
     return params
